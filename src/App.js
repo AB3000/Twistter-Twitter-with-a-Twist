@@ -77,9 +77,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h3>This is a todo app</h3>
+        <h3>Welcome to Twistter</h3>
         <hr />
-        <p>Add a Todo Item:</p>
+        <p>Log In here</p>
         <form onSubmit={this.addTodo}>
           <label>
             <input
@@ -87,8 +87,12 @@ class App extends Component {
               value={this.state.value}
               onChange={this.handleChange}
             />
+            <input
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}/>
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="LogIn" />
         </form>
         <ul>
           {/* Map over the todos from our remote DB */}
