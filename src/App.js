@@ -8,14 +8,14 @@ class App extends Component {
     <div className={css(styles.body)}>
     <div className={css(styles.absoluteCenteredDiv)}>
       <form action="index.html" method="post">
-        <div class="box">
+        <div className={css(styles.box)}>
             <h1>Login Form</h1>
-            <input class="username" name="username" type="text" placeholder="User Name"></input>
-            <input class="username" name="username" type="password" placeholder="Password"></input>
-            <a href="#"><div class="button">Sign In</div></a> 
+            <input className={css(styles.username)} name="username" type="text" placeholder="User Name"></input>
+            <input className={css(styles.username)} name="username" type="password" placeholder="Password"></input>
+            <a href="#"><div className={css(styles.button)}>Sign In</div></a> 
         </div>
       </form>
-      <p>Forgot your password? <a class="fpwd" href="#">Click Here!</a></p>
+      <p>Forgot your password? <a className={css(styles.fwpd)} href="#">Click Here!</a></p>
     </div>
     </div>);
   }
