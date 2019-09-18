@@ -22,7 +22,7 @@ class App extends Component {
 
   componentDidMount() {
     // Initialize the App Client
-    this.client = Stitch.initializeDefaultAppClient("YOUR_APP_ID");
+    this.client = Stitch.initializeDefaultAppClient("mongodb+srv://Twistter:<password>@twistter-dcrea.mongodb.net/test?retryWrites=true&w=majority");
     // Get a MongoDB Service Client
     // This is used for logging in and communicating with Stitch
     const mongodb = this.client.getServiceClient(
@@ -33,7 +33,45 @@ class App extends Component {
     this.db = mongodb.db("todos");
     this.displayTodosOnLoad();
   }
-  
+
+  displayTodos() {
+    // query the remote DB and update the component state
+    this.db
+      .collection("item")
+      .find({}, { limit: 1000 })
+      .asArray()
+      .then(todos => {
+        this.setState({todos});
+      });
+   }
+
+   displayTodosOnLoad() {
+    // Anonymously log in and display comments on load
+    this.client.auth
+      .loginWithCredential(new AnonymousCredential())
+      .then(this.displayTodos)
+      .catch(console.error);
+  }
+
+  addTodo(event) {
+    event.preventDefault();
+    const { value } = this.state;
+    // insert the todo into the remote Stitch DB
+    // then re-query the DB and display the new todos
+    this.db
+      .collection("item")
+      .insertOne({
+        owner_id: this.client.auth.user.id,
+        item: value
+      })
+      .then(this.displayTodos)
+      .catch(console.error);
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
 
   render() {
     return (
