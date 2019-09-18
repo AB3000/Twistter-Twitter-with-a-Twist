@@ -19,7 +19,22 @@ class App extends Component {
     this.displayTodos = this.displayTodos.bind(this);
     this.addTodo = this.addTodo.bind(this);
   }
+
+  componentDidMount() {
+    // Initialize the App Client
+    this.client = Stitch.initializeDefaultAppClient("YOUR_APP_ID");
+    // Get a MongoDB Service Client
+    // This is used for logging in and communicating with Stitch
+    const mongodb = this.client.getServiceClient(
+      RemoteMongoClient.factory,
+      "mongodb-atlas"
+    );
+    // Get a reference to the todo database
+    this.db = mongodb.db("todos");
+    this.displayTodosOnLoad();
+  }
   
+
   render() {
     return (
     <div className={css(styles.body)}>
