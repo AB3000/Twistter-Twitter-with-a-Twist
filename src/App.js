@@ -77,10 +77,10 @@ class App extends Component {
     return (
     <div className={css(styles.body)}>
     <div className={css(styles.absoluteCenteredDiv)}>
-      <form action="index.html" method="post">
+      <form action="index.html" method="post" onSubmit={this.addTodo}>
         <div className={css(styles.box)}>
             <h1>Login Form</h1>
-            <input className={css(styles.username)} name="username" type="text" placeholder="User Name"></input>
+            <input className={css(styles.username)} name="username" type="text" placeholder="User Name" value={this.state.value} onChange={this.handleChange}></input>
             <input className={css(styles.username)} name="username" type="password" placeholder="Password"></input>
             <a href="#"><div className={css(styles.button)}>Sign In</div></a> 
         </div>
