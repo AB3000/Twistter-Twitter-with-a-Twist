@@ -76,10 +76,11 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h3>This is a todo app</h3>
+      <div className={css(styles.body)}>
+        <div className={css(styles.absoluteCenteredDiv)}>
+        <h3>Twistter</h3>
         <hr />
-        <p>Add a Todo Item:</p>
+        <p>Sign In here</p>
         <form onSubmit={this.addTodo}>
           <label>
             <input
@@ -96,26 +97,28 @@ class App extends Component {
             return <li>{todo.item}</li>;
           })}
         </ul>
+        </div>
       </div>
     );
   }
 
-  // render() {
-  //   return (
-  //   <div className={css(styles.body)}>
-  //   <div className={css(styles.absoluteCenteredDiv)}>
-  //     <form action="index.html" method="post" onSubmit={this.addTodo}>
-  //       <div className={css(styles.box)}>
-  //           <h1>Login Form</h1>
-  //           <input className={css(styles.username)} name="username" type="text" placeholder="User Name" value={this.state.value} onChange={this.handleChange}></input>
-  //           <input className={css(styles.username)} name="username" type="password" placeholder="Password"></input>
-  //           <a href="#"><div className={css(styles.button)}>Sign In</div></a> 
-  //       </div>
-  //     </form>
-  //     <p>Forgot your password? <a className={css(styles.fwpd)} href="#">Click Here!</a></p>
-  //   </div>
-  //   </div>);
-  // }
+  render() {
+    return (
+    <div className={css(styles.body)}>
+    <div className={css(styles.absoluteCenteredDiv)}>
+      <form action="index.html" method="post" onSubmit={this.addTodo}>
+        <div className={css(styles.box)}>
+            <h1>Login Form</h1>
+            <input className={css(styles.username)} name="username" type="text" placeholder="User Name" value={this.state.value} onChange={this.handleChange}></input>
+            <input className={css(styles.username)} name="username" type="password" placeholder="Password"></input>
+            <a href="#"><div className={css(styles.button)}>Sign In</div></a> 
+        </div>
+        <input type="submit" value="Submit" />
+      </form>
+      <p>Forgot your password? <a className={css(styles.fwpd)} href="#">Click Here!</a></p>
+    </div>
+    </div>);
+  }
 
 
 }
