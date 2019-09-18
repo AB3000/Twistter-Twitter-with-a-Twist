@@ -2,7 +2,24 @@ import React, { Component } from 'react';
 import {StyleSheet, css} from 'aphrodite';
 import './App.css'
 
+import {
+  Stitch,
+  AnonymousCredential,
+  RemoteMongoClient
+} from "mongodb-stitch-browser-sdk";
+
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      todos: [],
+      value: ""
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.displayTodos = this.displayTodos.bind(this);
+    this.addTodo = this.addTodo.bind(this);
+  }
+  
   render() {
     return (
     <div className={css(styles.body)}>
