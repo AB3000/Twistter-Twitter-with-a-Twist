@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, css} from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite';
 import './App.css'
 
 import {
@@ -13,7 +13,8 @@ class App extends Component {
     super();
     this.state = {
       todos: [],
-      value: ""
+      username: "",
+      password: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.displayTodos = this.displayTodos.bind(this);
@@ -42,11 +43,11 @@ class App extends Component {
       .find({}, { limit: 1000 })
       .asArray()
       .then(todos => {
-        this.setState({todos});
+        this.setState({ todos });
       });
-   }
+  }
 
-   displayTodosOnLoad() {
+  displayTodosOnLoad() {
     // Anonymously log in and display comments on load
     this.client.auth
       .loginWithCredential(new AnonymousCredential())
@@ -56,50 +57,52 @@ class App extends Component {
 
   addTodo(event) {
     event.preventDefault();
-    const { value } = this.state;
+    const { username } = this.state;
+    const { password } = this.state;
     // insert the todo into the remote Stitch DB
     // then re-query the DB and display the new todos
     this.db
       .collection("users")
       .insertOne({
         owner_id: this.client.auth.user.id,
-        item: value
+        item: username,
       })
       .then(this.displayTodos)
       .catch(console.error);
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
+    this.setState({ username: event.target.value });
+    this.setState({ password: event.target.value });
   }
 
 
   render() {
     return (
       <div className="App">
-        <h3>Welcome to Twistter</h3>
-        <hr />
-        <p>Log In here</p>
-        <form onSubmit={this.addTodo}>
-          <label>
-            <input
-              type="text"
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-            <input
-            type="text"
-            value={this.state.value}
-            onChange={this.handleChange}/>
-          </label>
-          <input type="submit" value="LogIn" />
-        </form>
-        <ul>
-          {/* Map over the todos from our remote DB */}
-          {this.state.todos.map(todo => {
-            return <li>{todo.item}</li>;
-          })}
-        </ul>
+        <div className={css(styles.body)}>
+          <div className={css(styles.absoluteCenteredDiv)}>
+            <h3>Welcome to Twistter</h3>
+            <form onSubmit={this.addTodo}>
+              <div className={css(styles.box)}>
+                <label>
+                  <input
+                    type="text"
+                    username={this.state.value}
+                    onChange={this.handleChange}
+                    className={css(styles.username)} 
+                  />
+                  <input
+                    type="text"
+                    password={this.state.value}
+                    onChange={this.handleChange}
+                    className={css(styles.username)}  />
+                </label>
+              </div>
+              <input type="submit" className={css(styles.button)} value="Sign In" />
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
@@ -128,75 +131,75 @@ class App extends Component {
 
 
 const styles = StyleSheet.create({
-  
-    body: {
-      fontFamily: "'Open Sans', 'sans-serif'",
-      background: "#3498db",
-      margin: "20px 0px 20px 0px",
-      width: "100%",
-      textAlign: "center"
-    },
-    p: {
-      fontSize: "12px",
-      textDecoration: "none",
-      color: "#ffffff"
-    },
-    h1: {
-      fontSize: "1.5em",
-      color: "#525252"
-    },
-    box: {
-      background: "white",
-      width: "300px",
-      borderRadius: "6px",
-      margin: "0 auto 0 auto",
-      padding: "0px 0px 70px 0px",
-      border: "#2980b9 4px solid"
-    },
-    username: {
-      background: "#ecf0f1",
-      border: "#ccc 1px solid",
-      borderBottom: "#ccc 2px solid",
-      padding: "8px",
-      width: "250px",
-      color: "#AAAAAA",
-      marginTop: "10px",
-      fontSize: "1em",
-      borderRadius: "4px"
-    },
-    button: {
-      background: "#2ecc71",
-      width: "125px",
-      paddingTop: "5px",
-      paddingBottom: "5px",
-      color: "white",
-      borderRadius: "4px",
-      border: "#27ae60 1px solid",
-      marginTop: "20px",
-      marginBottom: "20px",
-      float: "left",
-      marginLeft: "88px",
-      fontWeight: "800",
-      fontSize: "0.8em"
-    },
-    button_hover: {
-      background: "#2CC06B"
-    },
-    fpwd: {
-      color: "#f1c40f",
-      textDecoration: "underline"
-    },
-    absoluteCenteredDiv: {
-      position: "absolute",
-      top: "0",
-      bottom: "0",
-      left: "0",
-      right: "0",
-      margin: "auto",
-      width: "400px",
-      height: "300px",
-      textAlign: "center"
-    }
+
+  body: {
+    fontFamily: "'Open Sans', 'sans-serif'",
+    background: "#3498db",
+    margin: "20px 0px 20px 0px",
+    width: "100%",
+    textAlign: "center"
+  },
+  p: {
+    fontSize: "12px",
+    textDecoration: "none",
+    color: "#ffffff"
+  },
+  h1: {
+    fontSize: "1.5em",
+    color: "#525252"
+  },
+  box: {
+    background: "white",
+    width: "300px",
+    borderRadius: "6px",
+    margin: "0 auto 0 auto",
+    padding: "0px 0px 70px 0px",
+    border: "#2980b9 4px solid"
+  },
+  username: {
+    background: "#ecf0f1",
+    border: "#ccc 1px solid",
+    borderBottom: "#ccc 2px solid",
+    padding: "8px",
+    width: "250px",
+    color: "#AAAAAA",
+    marginTop: "10px",
+    fontSize: "1em",
+    borderRadius: "4px"
+  },
+  button: {
+    background: "#2ecc71",
+    width: "125px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    color: "white",
+    borderRadius: "4px",
+    border: "#27ae60 1px solid",
+    marginTop: "20px",
+    marginBottom: "20px",
+    float: "left",
+    marginLeft: "88px",
+    fontWeight: "800",
+    fontSize: "0.8em"
+  },
+  button_hover: {
+    background: "#2CC06B"
+  },
+  fpwd: {
+    color: "#f1c40f",
+    textDecoration: "underline"
+  },
+  absoluteCenteredDiv: {
+    position: "absolute",
+    top: "0",
+    bottom: "0",
+    left: "0",
+    right: "0",
+    margin: "auto",
+    width: "400px",
+    height: "300px",
+    textAlign: "center"
+  }
 })
 
 export default App;
