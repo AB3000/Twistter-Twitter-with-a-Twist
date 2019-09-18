@@ -22,7 +22,8 @@ class App extends Component {
 
   componentDidMount() {
     // Initialize the App Client
-    this.client = Stitch.initializeDefaultAppClient("mongodb+srv://Twistter:<password>@twistter-dcrea.mongodb.net/test?retryWrites=true&w=majority");
+    this.client = Stitch.initializeDefaultAppClient('twistter307-hbspf');
+    console.log("The client is ", this.client);
     // Get a MongoDB Service Client
     // This is used for logging in and communicating with Stitch
     const mongodb = this.client.getServiceClient(
@@ -30,14 +31,14 @@ class App extends Component {
       "mongodb-atlas"
     );
     // Get a reference to the todo database
-    this.db = mongodb.db("todos");
+    this.db = mongodb.db("twistter");
     this.displayTodosOnLoad();
   }
 
   displayTodos() {
     // query the remote DB and update the component state
     this.db
-      .collection("item")
+      .collection("users")
       .find({}, { limit: 1000 })
       .asArray()
       .then(todos => {
@@ -59,7 +60,7 @@ class App extends Component {
     // insert the todo into the remote Stitch DB
     // then re-query the DB and display the new todos
     this.db
-      .collection("item")
+      .collection("users")
       .insertOne({
         owner_id: this.client.auth.user.id,
         item: value
@@ -75,20 +76,48 @@ class App extends Component {
 
   render() {
     return (
-    <div className={css(styles.body)}>
-    <div className={css(styles.absoluteCenteredDiv)}>
-      <form action="index.html" method="post" onSubmit={this.addTodo}>
-        <div className={css(styles.box)}>
-            <h1>Login Form</h1>
-            <input className={css(styles.username)} name="username" type="text" placeholder="User Name" value={this.state.value} onChange={this.handleChange}></input>
-            <input className={css(styles.username)} name="username" type="password" placeholder="Password"></input>
-            <a href="#"><div className={css(styles.button)}>Sign In</div></a> 
-        </div>
-      </form>
-      <p>Forgot your password? <a className={css(styles.fwpd)} href="#">Click Here!</a></p>
-    </div>
-    </div>);
+      <div className="App">
+        <h3>This is a todo app</h3>
+        <hr />
+        <p>Add a Todo Item:</p>
+        <form onSubmit={this.addTodo}>
+          <label>
+            <input
+              type="text"
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+        <ul>
+          {/* Map over the todos from our remote DB */}
+          {this.state.todos.map(todo => {
+            return <li>{todo.item}</li>;
+          })}
+        </ul>
+      </div>
+    );
   }
+
+  // render() {
+  //   return (
+  //   <div className={css(styles.body)}>
+  //   <div className={css(styles.absoluteCenteredDiv)}>
+  //     <form action="index.html" method="post" onSubmit={this.addTodo}>
+  //       <div className={css(styles.box)}>
+  //           <h1>Login Form</h1>
+  //           <input className={css(styles.username)} name="username" type="text" placeholder="User Name" value={this.state.value} onChange={this.handleChange}></input>
+  //           <input className={css(styles.username)} name="username" type="password" placeholder="Password"></input>
+  //           <a href="#"><div className={css(styles.button)}>Sign In</div></a> 
+  //       </div>
+  //     </form>
+  //     <p>Forgot your password? <a className={css(styles.fwpd)} href="#">Click Here!</a></p>
+  //   </div>
+  //   </div>);
+  // }
+
+
 }
 
 
