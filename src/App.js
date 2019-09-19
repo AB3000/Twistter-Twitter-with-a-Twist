@@ -16,7 +16,9 @@ class App extends Component {
       username: "",
       password: "",
     };
-    this.handleChange = this.handleChange.bind(this);
+
+    this.handleUsername = this.handleUsername.bind(this);
+    this.handlePassword = this.handlePassword.bind(this);
     this.displayTodos = this.displayTodos.bind(this);
     this.addTodo = this.addTodo.bind(this);
   }
@@ -59,22 +61,34 @@ class App extends Component {
     event.preventDefault();
     const { username } = this.state;
     const { password } = this.state;
+
+    console.log("username is ", username);
+    console.log("password is ", password);
+
+    
     // insert the todo into the remote Stitch DB
     // then re-query the DB and display the new todos
     this.db
       .collection("users")
-      .insertOne({
-        owner_id: this.client.auth.user.id,
-        item: username, password
-      })
+      .insertOne(
+        {
+          owner_id: this.client.auth.user.id,
+          username: username,
+          password: password
+        })
       .then(this.displayTodos)
       .catch(console.error);
+
   }
 
-  handleChange(event) {
-    this.setState({ username: event.target.value });
+  handlePassword(event) {
     this.setState({ password: event.target.value });
   }
+
+  handleUsername(event) {
+    this.setState({ username: event.target.value });
+  }
+
 
 
   render() {
@@ -89,13 +103,13 @@ class App extends Component {
                   <input
                     type="text"
                     username={this.state.value}
-                    onChange={this.handleChange}
+                    onChange={this.handleUsername}
                     className={css(styles.username)} 
                   />
                   <input
                     type="text"
                     password={this.state.value}
-                    onChange={this.handleChange}
+                    onChange={this.handlePassword}
                     className={css(styles.password)}  />
                 </label>
               </div>
