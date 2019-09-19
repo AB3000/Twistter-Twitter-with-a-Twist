@@ -31,7 +31,7 @@ class App extends Component {
       RemoteMongoClient.factory,
       "mongodb-atlas"
     );
-    // Get a reference to the todo database
+    // Get a reference to the twistter database
     this.db = mongodb.db("twistter");
     this.displayTodosOnLoad();
   }
@@ -65,7 +65,7 @@ class App extends Component {
       .collection("users")
       .insertOne({
         owner_id: this.client.auth.user.id,
-        item: username,
+        item: username, password
       })
       .then(this.displayTodos)
       .catch(console.error);
@@ -96,7 +96,7 @@ class App extends Component {
                     type="text"
                     password={this.state.value}
                     onChange={this.handleChange}
-                    className={css(styles.username)}  />
+                    className={css(styles.password)}  />
                 </label>
               </div>
               <input type="submit" className={css(styles.button)} value="Sign In" />
@@ -157,6 +157,17 @@ const styles = StyleSheet.create({
     border: "#2980b9 4px solid"
   },
   username: {
+    background: "#ecf0f1",
+    border: "#ccc 1px solid",
+    borderBottom: "#ccc 2px solid",
+    padding: "8px",
+    width: "250px",
+    color: "#AAAAAA",
+    marginTop: "10px",
+    fontSize: "1em",
+    borderRadius: "4px"
+  },
+  password: {
     background: "#ecf0f1",
     border: "#ccc 1px solid",
     borderBottom: "#ccc 2px solid",
