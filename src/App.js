@@ -107,7 +107,7 @@ class App extends Component {
                     className={css(styles.username)} 
                   />
                   <input
-                    type="text"
+                    type="password"
                     password={this.state.value}
                     onChange={this.handlePassword}
                     className={css(styles.password)}  />
