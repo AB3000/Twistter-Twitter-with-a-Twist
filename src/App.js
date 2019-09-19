@@ -70,10 +70,12 @@ class App extends Component {
     // then re-query the DB and display the new todos
     this.db
       .collection("users")
-      .insertOne({
-        owner_id: this.client.auth.user.id,
-        item: username 
-      })
+      .insertOne(
+        {
+          owner_id: this.client.auth.user.id,
+          username: username,
+          password: password
+        })
       .then(this.displayTodos)
       .catch(console.error);
 
