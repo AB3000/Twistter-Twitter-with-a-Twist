@@ -65,7 +65,7 @@ class App extends Component {
     console.log("username is ", username);
     console.log("password is ", password);
 
-    
+  
     // insert the todo into the remote Stitch DB
     // then re-query the DB and display the new todos
     this.db
@@ -88,8 +88,6 @@ class App extends Component {
   handleUsername(event) {
     this.setState({ username: event.target.value });
   }
-
-
 
   render() {
     return (
