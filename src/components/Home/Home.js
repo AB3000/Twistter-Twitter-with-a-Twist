@@ -1,10 +1,15 @@
 import React from 'react';
 import './Home.css';
 
+
+var mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost:3000/Twistter', {useNewUrlParser: true});
+
 function Home() {
   return (
     <div id="absoluteCenteredDiv">
-        <form action="index.html" method="post">
+        <form>
             <div class="box">
                 <h1>Login Form</h1>
                 <input class="username" name="username" type="text" placeholder="User Name"></input>
