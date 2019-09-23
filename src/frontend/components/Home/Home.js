@@ -1,31 +1,38 @@
 import React, { Component } from 'react';
 import './Home.css';
 
+
+// var mongoose = require('mongoose');
+
+
+
 class Home extends Component{
 
   state = {
     data: null
   };
 
+
   componentDidMount() {
     // Call our fetch function below once the component mounts
   this.callBackendAPI()
     .then(res => this.setState(
-      { data: res.express }
+      { data: res.express}
       ))
+    // .then(res => res.text())          // convert to plain text
+    // .then(text => console.log(text))
     .catch(err => console.log(err));
 }
   // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-callBackendAPI = async () => {
-  const response = await fetch('/express_backend');
-  const body = await response.json();
-
+ callBackendAPI = async () => {
+  const response = await fetch('http://localhost:5000/express_backend', { mode: 'no-cors' });
+  const body = await response;
+  console.log("body is ", body);
 
   if (response.status !== 200) {
     throw Error(body.message) 
   }
 
-  console.log("BODY IS", body);
   return body;
 };
 

@@ -2,8 +2,26 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 
+// app.get('/express_backend', function(req, res) {
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+//   res.send([
+//   //   {
+//   //     id: 0,
+//   //     title: 'Lorem ipsum',
+//   //     content: 'Dolor sit amet',
+//   //     author: 'Marcin'
+//   //   },
+//   //   {
+//   //     id: 1,
+//   //     title: 'Vestibulum cursus',
+//   //     content: 'Dante ut sapien mattis',
+//   //     author: 'Marcin'
+//   //   }
+//   // ]);
+// });
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
 
 // create a GET route
 app.get('/express_backend', (req, res) => {
@@ -11,19 +29,35 @@ app.get('/express_backend', (req, res) => {
 });
 
 var mongoose = require('mongoose');
-console.log('HERE WOMEN');
-
 
 
 //Set up default mongoose connection
-// var mongoDB = 'mongodb://localhost:3000/Twistter';
-// mongoose.connect(mongoDB, { useNewUrlParser: true });
+var mongoDB = 'mongodb://127.0.0.1/Twistter307';
+  mongoose.connect(mongoDB, function (err) {
+      if (err) throw err;
+      console.log('Successfully connected');
+  });
 
 // //Get the default connection
-// var db = mongoose.connection;
+var db = mongoose.connection;
+console.log("DATABSE IS", db);
 
 // //Bind connection to error event (to get notification of connection errors)
-// db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+var UserModelSchema = new mongoose.Schema({
+  username: String,
+  password: String
+});
+
+// Compile model from schema
+var User = mongoose.model('Users', UserModelSchema );
+var shithead = new User({ name: 'Silence', password: 'hello'});
+
+shithead.save(function (err, shithead) {
+  if (err) return console.error(err);
+  // shithead.speak();
+});
 
 // var Schema = mongoose.Schema;
 
@@ -31,15 +65,6 @@ console.log('HERE WOMEN');
 //     a_string: String,
 //     a_date: Date
 //   });
-
-//   var Schema = mongoose.Schema;
-
-// var SomeModelSchema = new Schema({
-//   a_string: String,
-//   a_date: Date
-// });
-
-// console.log('SEX FUCK YEAH!'); 
 
 // // Compile model from schema
 // var SomeModel = mongoose.model('SomeModel', SomeModelSchema );
