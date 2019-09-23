@@ -2,7 +2,7 @@ import React from 'react';
 import './Home.css';
 
 
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:3000/Twistter', {useNewUrlParser: true});
 
