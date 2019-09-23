@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 
-function App() {
+function Posts() {
   return (
-    <div className="App">
+    <div className="Posts">
       <header className="App-header">
   
       </header>
