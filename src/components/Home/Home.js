@@ -1,11 +1,6 @@
 import React from 'react';
 import './Home.css';
 
-
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:3000/Twistter', {useNewUrlParser: true});
-
 function Home() {
   return (
     <div id="absoluteCenteredDiv">
