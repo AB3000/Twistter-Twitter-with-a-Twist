@@ -2,23 +2,12 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 
-// app.get('/express_backend', function(req, res) {
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-//   res.send([
-//   //   {
-//   //     id: 0,
-//   //     title: 'Lorem ipsum',
-//   //     content: 'Dolor sit amet',
-//   //     author: 'Marcin'
-//   //   },
-//   //   {
-//   //     id: 1,
-//   //     title: 'Vestibulum cursus',
-//   //     content: 'Dante ut sapien mattis',
-//   //     author: 'Marcin'
-//   //   }
-//   // ]);
-// });
+//allows any orgin to access the express_backend at port 5000
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
