@@ -95,7 +95,7 @@ var passportLocalMongoose = require("passport-local-mongoose");
 //var passportLocalMongoose = require("passport-local-mongoose");
 //var bcrypt = require("bcrypt");
 
-mongoose.connect('mongodb+srv://khushi:khushi@be-better-together-wmrbk.mongodb.net/test?retryWrites=true',{useNewUrlParser: true},function(error){
+mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twistter307?retryWrites=true&w=majority',{useNewUrlParser: true},function(error){
   if(error){
 console.log("Couldn't connect to database");
     } else {
