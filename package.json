@@ -1,40 +1,37 @@
 {
-  "name": "twistter",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "aphrodite": "^2.4.0",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "mongoose": "^5.7.1",
-    "morgan": "^1.9.1",
-    "node": "^12.10.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1"
+  "name": "be-better-together",
+  "description": "A social media application",
+  "version": "1.0.0",
+  "main": "app.js",
+  "engines": {
+    "node": "10.15.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start": "node ./src/backend/server.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "proxy": "http://localhost:5000/",
-  "eslintConfig": {
-    "extends": "react-app"
+  "repository": {
+    "type": "git",
+    "url": "https://shwethaumashanker.github.io/Be-better-together.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "keywords": [],
+  "author": "Shwetha and Khushi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://shwethaumashanker.github.io/Be-better-together/issues"
+  },
+  "homepage": "https://shwethaumashanker.github.io/Be-better-together#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.5.3",
+    "multer": "^1.4.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1",
+    "popups": "^1.1.3"
   }
 }
