@@ -8,5 +8,5 @@ let postSchema = new Schema({
 	img: {type: String, required: false}
 });
 // Export the model
-module.exports = mongoose.model('post', postSchema);
+module.exports = mongoose.model('posts', postSchema);
 //var Item = mongoose.model('Clothes',ItemSchema);

@@ -22,6 +22,6 @@ let userSchema = new Schema({
 }); // 'runSettersOnQuery' is used to implement the specifications in our model schema such as the 'trim' option.
 
 
-var user = mongoose.model('user', userSchema);
+var user = mongoose.model('users', userSchema);
 
 module.exports = user;
