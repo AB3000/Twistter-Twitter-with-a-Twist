@@ -171,17 +171,5 @@ catch(error){
 };
 });
 
-/*app.get('/main',function(req,res){
-post.find({},function(err,posts){
-  if(err){
-    console.log(err);
-  }
-  else{
-    for(var i in posts){
-      console.log('List of posts',posts[i].title);
-    }
-  }
-});
-});*/
 
 
