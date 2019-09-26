@@ -1,6 +1,2 @@
-# Be-better-together
-A social media platform to voice out the issues our earth is facing. You can post about what you are doing to help our earth and inspire someone else to make that commitment and help our earth become a better place.
-We will be using Heroku,NodeJS,MongoDB, HTML5, Javascript, CSS and other such technologies to implement this.
-
-
-https://be-better-together.herokuapp.com/
+# Twistter-Twitter-with-a-Twist
+In today’s world, people typically enjoy sharing exciting events and hobbies with their friends online. Currently, it is hard for people to filter out posts and people pertinent to their interests. Twistter is a social media web application, which serves as an outlet for people to make mini blogs about their daily adventures and allows like-minded people to interact with these posts. By allowing people to choose topics and people they like, Twistter tailors to a user’s specific tastes and eliminates irrelevant posts.
