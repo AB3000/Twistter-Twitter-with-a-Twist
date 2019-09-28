@@ -30,21 +30,22 @@ console.log("Couldn't connect to database");
 //Login, Logout, Signup
 app.use(express.urlencoded())
 app.post("/signup", (req, res) => {
-  console.log("SIGNUP");
-
+  //receiving form information from signup.html 
   const e = req.body.email;
   const p = req.body.password;
   res.status(200).send(e);
   res.end();
 
-  //var User = mongoose.model('users.js', user);
+  //formatting the email and password info into the user schema
   var newUser = new user({
   	email: e, 
   	password: p
   });
+
+  //saving the new user to the database
   newUser.save(function (err, e) {
   	if (err) return console.error(err);
-    console.log("shithead successfuly saved");
+    console.log("new user successfuly saved");
   })
 });
 
