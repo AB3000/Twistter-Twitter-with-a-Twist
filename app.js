@@ -21,6 +21,10 @@ app.get('/login', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/login.html'));
 });
 
+app.get('/posts', function (req, res,html) {
+  res.sendFile(path.join(__dirname+'/posts.html'));
+ });
+
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");  
@@ -67,6 +71,22 @@ app.post("/signup", (req, res) => {
     	console.log("new user successfuly saved");
 	}
   })
+});
+
+app.post("/posted", (req, res) => {
+  // console.log("POSTS");
+  var newPost = new post({
+    title: req.body.title, 
+    topic: req.body.topic,
+    description: req.body.description
+  });
+
+  console.log("newPost is", newPost);
+  newPost.save(function (err, e) {
+    if (err) return console.error(err);
+    else return console.log('succesfully saved');
+  })
+  res.status(204).send();
 });
 
 app.listen(port, () => {
