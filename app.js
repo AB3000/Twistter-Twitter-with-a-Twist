@@ -9,6 +9,8 @@ var SHA256 = require("crypto-js/sha256");
 var CryptoJS = require("crypto-js");
 console.log(CryptoJS.HmacSHA1("Message", "Key"));
 
+var nodemailer = require('nodemailer');
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'login.html'));
 });
@@ -17,10 +19,13 @@ app.get('/signup', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/signup.html'));
 });
 
+app.get('/login', function (req, res,html) {
+ res.sendFile(path.join(__dirname+'/login.html'));
+});
+
 app.get('/posts', function (req, res,html) {
   res.sendFile(path.join(__dirname+'/posts.html'));
  });
-
 
 var mongoose = require("mongoose");
 var passport = require("passport");
@@ -39,17 +44,41 @@ console.log("Couldn't connect to database");
 
 //Login, Logout, Signup
 app.use(express.urlencoded())
-app.post("/signupAfter", (req, res) => {
+app.post("/signup", (req, res) => {
   //receiving form information from signup.html 
   const e = req.body.email;
   const u = req.body.username;
   const p = req.body.password;
+
+//Sending email to new user
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'twistter307@gmail.com',
+      pass: 'CS30700!'
+    }
+  });
   
+  var mailOptions = {
+    from: 'twistter307@gmail.com',
+    to: e,
+    subject: 'Thank you for signing up with Twistter',
+    text: 'Hello, Hope you enjoy the application :)'
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
   //using CryptoJS to encrypt password
   encrypttedP = CryptoJS.SHA1(p);
   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
-  res.status(200).send(encrypttedP);
-  res.end();
+  //res.status(204).send();
+  //res.end();
 
   //formatting the email and password info into the user schema
   var newUser = new user({
@@ -64,18 +93,21 @@ app.post("/signupAfter", (req, res) => {
       if(err.errmsg.indexOf("E11000 duplicate key error collection")!== -1){
         Swal('been trying for ages');
       }
+  		res.status(200).send("Failed to Sign Up")
       return console.error(err);
-    }
+  	} else {
+  		res.sendFile(path.join(__dirname+'/login.html'));
+    	console.log("new user successfuly saved");
+	}
   })
 });
 
 app.post("/posted", (req, res) => {
-  console.log("POSTS");
-  //var User = mongoose.model('users.js', user);
-  console.log("title is", req.body.title);
+  // console.log("POSTS");
   var newPost = new post({
-  	title: req.body.title, 
-  	description: req.body.description
+    title: req.body.title, 
+    topic: req.body.topic,
+    description: req.body.description
   });
 
   console.log("newPost is", newPost);
