@@ -60,7 +60,12 @@ app.post("/signupAfter", (req, res) => {
 
   //saving the new user to the database
   newUser.save(function (err, e) {
-  	if (err) return console.error(err);
+  	if (err) {
+      if(err.errmsg.indexOf("E11000 duplicate key error collection")!== -1){
+        Swal('been trying for ages');
+      }
+      return console.error(err);
+    }
   })
 });
 
