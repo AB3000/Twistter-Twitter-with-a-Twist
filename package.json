@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/AB3000/Twistter-Twitter-with-a-Twist#readme",
   "dependencies": {
+    "crypto-js": "^3.1.9-1",
     "express": "^4.17.1",
     "mongoose": "^5.7.1",
     "passport": "^0.4.0"

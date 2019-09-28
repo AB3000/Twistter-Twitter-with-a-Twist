@@ -9,6 +9,10 @@ let userSchema = new Schema({
       unique: true,
       lowercase: true
     },
+    username: {
+      type: String,
+      required: true
+    },
     password: {
       type: String,
       required: true
