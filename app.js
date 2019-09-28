@@ -61,8 +61,24 @@ app.post("/signupAfter", (req, res) => {
   //saving the new user to the database
   newUser.save(function (err, e) {
   	if (err) return console.error(err);
-    console.log("new user successfuly saved");
   })
+});
+
+app.post("/posted", (req, res) => {
+  console.log("POSTS");
+  //var User = mongoose.model('users.js', user);
+  console.log("title is", req.body.title);
+  var newPost = new post({
+  	title: req.body.title, 
+  	description: req.body.description
+  });
+
+  console.log("newPost is", newPost);
+  newPost.save(function (err, e) {
+    if (err) return console.error(err);
+    else return console.log('succesfully saved');
+  })
+  res.status(204).send();
 });
 
 app.listen(port, () => {
