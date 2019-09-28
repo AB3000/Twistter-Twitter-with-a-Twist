@@ -19,6 +19,7 @@ app.listen(port, () => {
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");  
+var user = require("./models/user"); //reference to user schema
 
 mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twistter307?retryWrites=true&w=majority',{useNewUrlParser: true},function(error){
   if(error){
