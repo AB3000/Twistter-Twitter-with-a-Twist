@@ -10,8 +10,8 @@ app.get("/", (req, res) => {
 });
 
 //Login, Logout, Signup
-app.get('/signup', function (req, res,html) {
- res.sendFile(path.join(__dirname+'/signup.html'));
+app.post("/signup", (req, res) => {
+	console.log("SIGNUP");
 });
 
 app.listen(port, () => {
