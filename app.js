@@ -9,6 +9,11 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello World");
 });
 
+//Login, Logout, Signup
+app.get('/signup', function (req, res,html) {
+ res.sendFile(path.join(__dirname+'/signup.html'));
+});
+
 app.listen(port, () => {
   console.log(`Listening to requests on http://localhost:${port}`);
 });
