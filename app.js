@@ -22,7 +22,7 @@ var bodyParser = require("body-parser");
 var user = require("./models/user"); //reference to user schema
 var post = require("./models/post"); //reference to post schema
 
-mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twistter307?retryWrites=true&w=majority',{useNewUrlParser: true},function(error){
+mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twistter307?retryWrites=true&w=majority',{useUnifiedTopology: true}, {useNewUrlParser: true},function(error){
   if(error){
 console.log("Couldn't connect to database");
     } else {
