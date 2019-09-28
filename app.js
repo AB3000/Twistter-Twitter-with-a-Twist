@@ -6,8 +6,8 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || "5000";
 
-app.get("/", (req, res) => {
-  res.status(200).send("Hello World");
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 app.listen(port, () => {
