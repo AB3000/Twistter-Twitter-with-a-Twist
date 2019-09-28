@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let postSchema = new Schema({
-	title: {type: String, required: false},
+    title: {type: String, required: false},
+    topic: {type: String, required: false},
 	description: {type: String, required: false},
 });
 // Export the model
