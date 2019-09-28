@@ -90,8 +90,11 @@ app.post("/signup", (req, res) => {
   //saving the new user to the database
   newUser.save(function (err, e) {
   	if (err) {
+      if(err.errmsg.indexOf("E11000 duplicate key error collection")!== -1){
+        Swal('been trying for ages');
+      }
   		res.status(200).send("Failed to Sign Up")
-  		return console.error(err);
+      return console.error(err);
   	} else {
   		res.sendFile(path.join(__dirname+'/login.html'));
     	console.log("new user successfuly saved");
