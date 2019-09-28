@@ -19,10 +19,13 @@ app.get('/signup', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/signup.html'));
 });
 
+app.get('/login', function (req, res,html) {
+ res.sendFile(path.join(__dirname+'/login.html'));
+});
+
 app.get('/posts', function (req, res,html) {
   res.sendFile(path.join(__dirname+'/posts.html'));
  });
-
 
 var mongoose = require("mongoose");
 var passport = require("passport");
@@ -41,12 +44,12 @@ console.log("Couldn't connect to database");
 
 //Login, Logout, Signup
 app.use(express.urlencoded())
-app.post("/signupAfter", (req, res) => {
+app.post("/signup", (req, res) => {
   //receiving form information from signup.html 
   const e = req.body.email;
   const u = req.body.username;
   const p = req.body.password;
-  
+
 //Sending email to new user
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -70,12 +73,12 @@ app.post("/signupAfter", (req, res) => {
       console.log('Email sent: ' + info.response);
     }
   });
-  
+
   //using CryptoJS to encrypt password
   encrypttedP = CryptoJS.SHA1(p);
   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
-  res.status(200).send(encrypttedP);
-  res.end();
+  //res.status(204).send();
+  //res.end();
 
   //formatting the email and password info into the user schema
   var newUser = new user({
@@ -86,7 +89,13 @@ app.post("/signupAfter", (req, res) => {
 
   //saving the new user to the database
   newUser.save(function (err, e) {
-  	if (err) return console.error(err);
+  	if (err) {
+  		res.status(200).send("Failed to Sign Up")
+  		return console.error(err);
+  	} else {
+  		res.sendFile(path.join(__dirname+'/login.html'));
+    	console.log("new user successfuly saved");
+	}
   })
 });
 
