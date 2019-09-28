@@ -37,8 +37,8 @@ app.post("/signup", (req, res) => {
   res.status(200).send(e);
   res.end();
 
-  var User = mongoose.model('users.js', userSchema);
-  var newUser = new User({
+  //var User = mongoose.model('users.js', user);
+  var newUser = new user({
   	email: e, 
   	password: p
   });
