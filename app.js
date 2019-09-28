@@ -91,7 +91,7 @@ app.post("/signup", (req, res) => {
   newUser.save(function (err, e) {
   	if (err) {
       if(err.errmsg.indexOf("E11000 duplicate key error collection")!== -1){
-        Swal('been trying for ages');
+        //this is where need to send message to HTML so that pop up box can be displayed
       }
   		res.status(200).send("Failed to Sign Up")
       return console.error(err);
