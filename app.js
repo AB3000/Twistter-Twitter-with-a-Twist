@@ -17,6 +17,11 @@ app.get('/signup', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/signup.html'));
 });
 
+app.get('/posts', function (req, res,html) {
+  res.sendFile(path.join(__dirname+'/posts.html'));
+ });
+
+
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");  
