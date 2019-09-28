@@ -1,8 +1,6 @@
 const http = require('http');
 const path = require("path");
 const express = require("express");
-
-
 const app = express();
 const port = process.env.PORT || "5000";
 
@@ -30,9 +28,24 @@ console.log("Couldn't connect to database");
 
 
 //Login, Logout, Signup
+app.use(express.urlencoded())
 app.post("/signup", (req, res) => {
-	console.log("SIGNUP");
-  res.status(200).send("signup res");
+  console.log("SIGNUP");
+
+  const e = req.body.email;
+  const p = req.body.password;
+  res.status(200).send(e);
+  res.end();
+
+  var User = mongoose.model('users.js', userSchema);
+  var newUser = new User({
+  	email: e, 
+  	password: p
+  });
+  newUser.save(function (err, e) {
+  	if (err) return console.error(err);
+    console.log("shithead successfuly saved");
+  })
 });
 
 app.listen(port, () => {
