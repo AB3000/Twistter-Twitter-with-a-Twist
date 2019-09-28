@@ -10,6 +10,7 @@ var CryptoJS = require("crypto-js");
 console.log(CryptoJS.HmacSHA1("Message", "Key"));
 
 var nodemailer = require('nodemailer');
+var fs = require('fs') // notice this
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'login.html'));
@@ -88,13 +89,18 @@ app.post("/signup", (req, res) => {
   });
 
   //saving the new user to the database
+
   newUser.save(function (err, e) {
   	if (err) {
-      if(err.errmsg.indexOf("E11000 duplicate key error collection")!== -1){
-        //this is where need to send message to HTML so that pop up box can be displayed
-      }
-  		res.status(200).send("Failed to Sign Up")
-      return console.error(err);
+      // res.status(401).send("alert('dsa')");
+      fs.readFile('./signup.html', 'utf8', function (err,data) {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        var alert = "alert('Email already registered with account. Please try a different email.')";
+        var result = data.replace(/\<\/script>/g, alert + '</script>');
+        res.write(result);
+        res.end();
+        return console.log(err);
+     });
   	} else {
   		res.sendFile(path.join(__dirname+'/login.html'));
     	console.log("new user successfuly saved");
