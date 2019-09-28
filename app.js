@@ -93,16 +93,14 @@ app.post("/signup", (req, res) => {
   newUser.save(function (err, e) {
   	if (err) {
       // res.status(401).send("alert('dsa')");
-      console.error(err);
-      fs = require('fs')
       fs.readFile('./signup.html', 'utf8', function (err,data) {
-        if (err) {
-          return console.log(err);
-        }
-        var toPrepand = "alert('hello world')";
-        data = data.replace(/\<\/script>/g, toPrepand + '</script>');
-        console.log(data);
-      });
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        var alert = "alert('Email already registered with account. Please try a different email.')";
+        var result = data.replace(/\<\/script>/g, alert + '</script>');
+        res.write(result);
+        res.end();
+        return console.log(err);
+     });
   	} else {
   		res.sendFile(path.join(__dirname+'/login.html'));
     	console.log("new user successfuly saved");
