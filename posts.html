@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Title of the document</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<!-- bootstrap cards -->
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link rel="stylesheet" href="posts.css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-</body>
+<head>
+    <title>Title of the document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- bootstrap cards -->
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="posts.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    </body>
 </head>
 
 <body>
-<section>
-    <form method="post" action="/posted">
-    <div class="container py-3">
-      <div class="card">
-        <div class="row ">
-          <div class="col-md-4">
-              <h4>Blog about what comes to your mind!</h4>
+    <!-- <datalist id="topics">
+        <option value="Movies">
+        <option value="Outdoors">
+        <option value="Coding">
+        <option value="Art">
+        <option value="Ice Cream">
+    </datalist> -->
+    <section>
+        <form method="post" action="/posted">
+            <div class="container py-3">
+                <div class="card">
+                    <div class="row ">
+                        <div class="col-md-4">
+                            <h4>Blog about what comes to your mind!</h4>
+                        </div>
+                        <div class="col-md-8 px-3">
+                            <div class="card-block px-3">
+                                <div class="form-group">
+                                    <input type="text" class="form-control input-lg" name="title"
+                                        placeholder="Your Post Title!">
+                                    <!-- <input type="text" class="card-text" placeholder="What would you like to share today?"> -->
+                                    <textarea type="text" width="100%" name="description"
+                                        placeholder=" What would you like to share today?"></textarea>
+                                    <!-- <input list="topics" class="form-control" name = "topic"> -->
+                                    <input type="text" class="form-control" placeholder="Choose any topic for tagging your post!" name="topic">
+                                    <input class="btn btn-primary button-width" type="submit" value="Upload">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-8 px-3">
-              <div class="card-block px-3">
-                <div class="form-group">
-                <input type="text" class="form-control input-lg" name="title" placeholder="Your Post Title!">
-                <!-- <input type="text" class="card-text" placeholder="What would you like to share today?"> -->
-                <textarea type="text" width="100%" name="description" placeholder=" What would you like to share today?"></textarea>
-                <input class="btn btn-primary button-width" type="submit" value="Upload">
-              </div>
             </div>
-        </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </form>
-  </section>
+        </form>
+    </section>
 </body>
 
 </html>

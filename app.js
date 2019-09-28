@@ -91,12 +91,11 @@ app.post("/signupAfter", (req, res) => {
 });
 
 app.post("/posted", (req, res) => {
-  console.log("POSTS");
-  //var User = mongoose.model('users.js', user);
-  console.log("title is", req.body.title);
+  // console.log("POSTS");
   var newPost = new post({
-  	title: req.body.title, 
-  	description: req.body.description
+    title: req.body.title, 
+    topic: req.body.topic,
+    description: req.body.description
   });
 
   console.log("newPost is", newPost);
