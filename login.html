@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+<title>Twistter</title>
+
+<body>
+        <form method="post" action="/signin">
+            <div class="form-label-group">
+              <input type="email" id="inputEmail" class="form-control" name="email"placeholder="Email address" required autofocus>
+              <label for="inputEmail">Email address</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
+              <label for="inputPassword">Password</label>
+            </div>
+
+            <!-- <div class="custom-control custom-checkbox mb-3">
+              <input type="checkbox" class="custom-control-input" id="customCheck1">
+              <label class="custom-control-label" for="customCheck1">Remember password</label>
+            </div> 
+            <a class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" href="/main"><i></i>Sign In</a>
+            <a class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" href="/signup"><i></i>Sign Up</a>
+            <div class="text-center">
+              <a class="small" href="#">Forgot password?</a></div>-->
+             <div class="submit">
+                <input type="submit" id="submitDetails"  name="submitDetails" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" value="Sign In">
+                <a class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" href="/signup"><i></i>Sign Up</a>
+                <!-- <a class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" href="/main"><i></i>Continue</a> -->
+              </div>
+          </form>
+</body>
+
+</html>
