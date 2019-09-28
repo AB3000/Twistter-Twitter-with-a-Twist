@@ -9,6 +9,8 @@ var SHA256 = require("crypto-js/sha256");
 var CryptoJS = require("crypto-js");
 console.log(CryptoJS.HmacSHA1("Message", "Key"));
 
+var nodemailer = require('nodemailer');
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'login.html'));
 });
@@ -47,6 +49,30 @@ app.post("/signup", (req, res) => {
   const e = req.body.email;
   const u = req.body.username;
   const p = req.body.password;
+
+//Sending email to new user
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'twistter307@gmail.com',
+      pass: 'CS30700!'
+    }
+  });
+  
+  var mailOptions = {
+    from: 'twistter307@gmail.com',
+    to: e,
+    subject: 'Thank you for signing up with Twistter',
+    text: 'Hello, Hope you enjoy the application :)'
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 
   //using CryptoJS to encrypt password
   encrypttedP = CryptoJS.SHA1(p);
