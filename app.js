@@ -73,6 +73,27 @@ app.post("/signup", (req, res) => {
   })
 });
 
+//Login
+app.post("/login", (req, res) => {
+  //receiving form information from signup.html 
+  const e = req.body.email;
+  const p = req.body.password;
+  encrypttedP = CryptoJS.SHA1(p);
+  encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
+
+  //looks for a user in the database with the same email
+  user.findOne({email: e}, 'email password', (err, userData) => {
+  	console.log(userData);
+  	if (userData == null) {
+  		res.status(200).send("UserData is null")
+  	} else if (encrypttedP === userData.password) {
+  		res.status(200).send("Successful Login");
+  	} else {
+  		res.status(200).send("Failed Login");
+  	}
+  });
+})
+
 app.post("/posted", (req, res) => {
   // console.log("POSTS");
   var newPost = new post({
