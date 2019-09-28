@@ -4,29 +4,30 @@
 <title>Title of the document</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- bootstrap cards -->
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link rel="stylesheet" href="posts.css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 </body>
 </head>
 
 <body>
 <section>
-    <form>
+    <form method="post" action="/posted">
     <div class="container py-3">
       <div class="card">
         <div class="row ">
           <div class="col-md-4">
-              <img src="https://placeholdit.imgix.net/~text?txtsize=38&txt=400%C3%97400&w=400&h=400" class="w-100">
+              <h4>Blog about what comes to your mind!</h4>
             </div>
             <div class="col-md-8 px-3">
               <div class="card-block px-3">
                 <div class="form-group">
-                <input type="text" class="form-control input-lg" placeholder="Your Post Title!">
+                <input type="text" class="form-control input-lg" name="title" placeholder="Your Post Title!">
                 <!-- <input type="text" class="card-text" placeholder="What would you like to share today?"> -->
-                <textarea name="message" width="100%" placeholder=" What would you like to share today?"></textarea>
+                <textarea type="text" width="100%" name="description" placeholder=" What would you like to share today?"></textarea>
+                <input class="btn btn-primary button-width" type="submit" value="Upload">
               </div>
             </div>
         </div>
