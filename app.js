@@ -130,6 +130,7 @@ app.post("/login", (req, res) => {
   	if (userData == null) {
   		res.status(200).send("UserData is null")
   	} else if (encrypttedP === userData.password) {
+      //Redirect here!
   		res.status(200).send("Successful Login");
   	} else {
   		res.status(200).send("Failed Login");
