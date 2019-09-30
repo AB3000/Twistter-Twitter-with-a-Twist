@@ -3,6 +3,11 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const port = process.env.PORT || "5000";
+var router = express.Router();
+
+//app.use(express.static(__dirname + "/views"));
+//app.use(bodyParser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
 
 var AES = require("crypto-js/aes");
 var SHA256 = require("crypto-js/sha256");
@@ -24,16 +29,19 @@ app.get('/login', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/login.html'));
 });
 
-app.get('/posts', function (req, res,html) {
-  res.sendFile(path.join(__dirname+'/posts.html'));
- });
+// app.get('/posts', function (req, res,html) {
+//   res.sendFile(path.join(__dirname+'/posts.html'));
+//  });
 
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");  
 var user = require("./models/user"); //reference to user schema
 var post = require("./models/post"); //reference to post schema
+//var Posts = mongoose.model('Posts', postSchema);
 
+//Connection start
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twistter307?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}, function(error){
   if(error){
 console.log("Couldn't connect to database");
@@ -129,12 +137,25 @@ app.post("/login", (req, res) => {
   });
 })
 
+
+app.get("/posts", (req, res) => {
+  console.log("chicken");
+  post.find(function(err, posts) {
+      if (err) {
+          console.log(err);
+      } else {
+          res.render('display-posts', { posts: posts });
+          console.log(posts);
+      }
+  });
+});
+
 app.post("/posted", (req, res) => {
   // console.log("POSTS");
   var newPost = new post({
     title: req.body.title, 
-    topic: req.body.topic,
-    description: req.body.description
+    description: req.body.description,
+    topic: req.body.topic
   });
 
   console.log("newPost is", newPost);
@@ -143,7 +164,10 @@ app.post("/posted", (req, res) => {
     else return console.log('succesfully saved');
   })
   res.status(204).send();
+
 });
+
+module.exports = router
 
 app.listen(port, () => {
   console.log(`Listening to requests on http://localhost:${port}`);

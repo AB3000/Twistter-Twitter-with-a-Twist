@@ -1,0 +1,31 @@
+<% include /Users/diannesantos/Documents/GitHub/Twistter/posts.html %>
+<% if(posts.length>0) { %>
+
+        <% for(var i=0; i<posts.length;i++) { %>
+        <section>
+                    <div class="container py-3">
+                        <div class="card">
+                            <div class="row ">
+                                <div class="col-md-4">
+                                </div>
+                                <div class="col-md-8 px-3">
+                                    <div class="card-block px-3">
+                                        <div class="form-group">
+                                                <h1><%= posts[i].title %></hi>
+                                                <h2><%= posts[i].description %></h2>
+                                                <h3> topic: <%= posts[i].topic%></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </form>
+            </section>
+              
+              <% } %>
+        
+<% } else { %>
+        No Posts to Display!
+      <% } %>
