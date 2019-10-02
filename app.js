@@ -128,12 +128,16 @@ app.post("/login", (req, res) => {
   user.findOne({email: e}, 'email password', (err, userData) => {
   	console.log(userData);
   	if (userData == null) {
-  		res.status(200).send("UserData is null")
+      res.sendFile(path.join(__dirname+'/login.html'))
+  		//res.status(200).send("UserData is null")
   	} else if (encrypttedP === userData.password) {
       //Redirect here!
-  		res.status(200).send("Successful Login");
+      console.log("Login Successful")
+      res.sendFile(path.join(__dirname+'/posts.html'))
   	} else {
-  		res.status(200).send("Failed Login");
+      //res.status(200).send("Failed Login");
+      //res.send('Your username/password is incorrect, try again')
+      res.sendFile(path.join(__dirname+'/login.html'), 'Error your username/password is incorrect, try again')
   	}
   });
 })
