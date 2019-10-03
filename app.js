@@ -99,21 +99,31 @@ app.post("/signup", (req, res) => {
   //saving the new user to the database
 
   newUser.save(function (err, e) {
+
+    console.log(err);
+    var alert = "alert('Yikes! There's been an error. Please try again at a different type.')";
+    
   	if (err) {
-      // res.status(401).send("alert('dsa')");
+      if(err.name == 'ValidationError'){
+        if(err.message.includes('username')){
+          alert = "alert('Username already exists. Please try a different one.')";
+        } else if (err.message.includes('email')){
+          alert = "alert('Email already registered with account. Please try a different email.')" 
+        }
+      }
       fs.readFile('./signup.html', 'utf8', function (err,data) {
         res.writeHead(200, {'Content-Type': 'text/html'});
-        var alert = "alert('Email already registered with account. Please try a different email.')";
         var result = data.replace(/\<\/script>/g, alert + '</script>');
         res.write(result);
         res.end();
-        return console.log(err);
+        return;
      });
   	} else {
   		res.sendFile(path.join(__dirname+'/login.html'));
-    	console.log("new user successfuly saved");
+    	console.log("new user successfully saved");
 	}
   })
+
 });
 
 //Login
