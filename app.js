@@ -101,7 +101,7 @@ app.post("/signup", (req, res) => {
   newUser.save(function (err, e) {
 
     console.log(err);
-    var alert = "alert('Yikes! There's been an error. Please try again at a different type.')";
+    var alert = "alert('Yikes! There's been an error. Please try again at a different time.')";
     
   	if (err) {
       if(err.name == 'ValidationError'){
