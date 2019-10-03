@@ -142,8 +142,16 @@ app.post("/login", (req, res) => {
   		//res.status(200).send("UserData is null")
   	} else if (encrypttedP === userData.password) {
       //Redirect here!
+      //Redirect to main posts page
       console.log("Login Successful")
-      res.sendFile(path.join(__dirname+'/posts.html'))
+      post.find(function(err, posts) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('display-posts', { posts: posts });
+            console.log(posts);
+        }
+    });
   	} else {
       //res.status(200).send("Failed Login");
       //res.send('Your username/password is incorrect, try again')
@@ -153,17 +161,17 @@ app.post("/login", (req, res) => {
 })
 
 
-app.get("/posts", (req, res) => {
-  console.log("chicken");
-  post.find(function(err, posts) {
-      if (err) {
-          console.log(err);
-      } else {
-          res.render('display-posts', { posts: posts });
-          console.log(posts);
-      }
-  });
-});
+// app.get("/posts", (req, res) => {
+//   console.log("chicken");
+//   post.find(function(err, posts) {
+//       if (err) {
+//           console.log(err);
+//       } else {
+//           res.render('display-posts', { posts: posts });
+//           console.log(posts);
+//       }
+//   });
+// });
 
 app.post("/posted", (req, res) => {
   // console.log("POSTS");
