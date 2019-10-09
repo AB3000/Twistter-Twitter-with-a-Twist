@@ -160,19 +160,6 @@ app.post("/login", (req, res) => {
   });
 })
 
-
-// app.get("/posts", (req, res) => {
-//   console.log("chicken");
-//   post.find(function(err, posts) {
-//       if (err) {
-//           console.log(err);
-//       } else {
-//           res.render('display-posts', { posts: posts });
-//           console.log(posts);
-//       }
-//   });
-// });
-
 app.post("/posted", (req, res) => {
   // console.log("POSTS");
   var newPost = new post({
