@@ -33,6 +33,8 @@ app.get('/signup', function (req, res,html) {
 
 app.get('/login', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/login.html'));
+
+app.get('/userl') 
 });
 
 // app.get('/posts', function (req, res,html) {
@@ -158,7 +160,7 @@ app.post("/login", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render('userline', {  });
+            res.render('display-posts', { posts: posts });
             //console.log(posts);
         }
     });
