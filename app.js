@@ -36,12 +36,8 @@ app.get('/login', function (req, res,html) {
 
 });
 
-// app.get('/userline', function(req, res, ejs) {
-//  return res.redirect("/userline.ejs");
- 
-// });
-app.get('/userline', (req, res,ejs) => {
-    res.render('./views/userline.ejs');
+app.get('/userline', function(req, res, ejs) {
+  res.sendFile(path.join(__dirname+'/profile.html'));
 });
 
 // app.get('/posts', function (req, res,html) {
