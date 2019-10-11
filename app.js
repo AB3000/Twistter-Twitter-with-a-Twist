@@ -158,7 +158,7 @@ app.post("/login", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render('display-posts', { posts: posts });
+            res.render('userline', {  });
             //console.log(posts);
         }
     });
