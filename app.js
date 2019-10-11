@@ -7,6 +7,8 @@ var router = express.Router();
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
+const userline_controller = require('./controllers/userline.controller');
+const posts_controller = require('./controllers/posts.controller');
 //app.use(express.static(__dirname + "/views"));
 //app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -36,9 +38,11 @@ app.get('/login', function (req, res,html) {
 
 });
 
-app.get('/userline', function(req, res, ejs) {
-  res.sendFile(path.join(__dirname+'/profile.html'));
+app.get('/userline', function(req, res) {
+    res.render('userline');
 });
+
+app.get('/posted', navigate_to_posts
 
 // app.get('/posts', function (req, res,html) {
 //   res.sendFile(path.join(__dirname+'/posts.html'));
@@ -146,7 +150,6 @@ app.post("/login", (req, res) => {
   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
 
   //looks for a user in the database with the same email
-  
   user.findOne({email: e}, 'email username password', (err, userData) => {
   	//console.log(userData);
   	if (userData == null) {
@@ -163,7 +166,7 @@ app.post("/login", (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            res.render('display-posts', { posts: posts });
+          res.redirect('/posted');
             //console.log(posts);
         }
     });
@@ -194,6 +197,7 @@ app.post("/posted", (req, res) => {
     title: req.body.title, 
     description: req.body.description,
     topic: req.body.topic
+    userid: req.session.userID
     
   });
 

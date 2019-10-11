@@ -9,6 +9,7 @@ let postSchema = new Schema({
 	user: {type: String, required: false},  
 	likes: {type: Number, required: false}, 
 	dislikes: {type: Number, required: false}
+	 userid: {type: String, required: true}
 });
 // Export the model
 module.exports = mongoose.model('post', postSchema);
