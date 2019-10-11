@@ -34,7 +34,14 @@ app.get('/signup', function (req, res,html) {
 app.get('/login', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/login.html'));
 
-app.get('/userl') 
+});
+
+// app.get('/userline', function(req, res, ejs) {
+//  return res.redirect("/userline.ejs");
+ 
+// });
+app.get('/userline', (req, res,ejs) => {
+    res.render('./views/userline.ejs');
 });
 
 // app.get('/posts', function (req, res,html) {
