@@ -4,6 +4,8 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || "5000";
 var router = express.Router();
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 //app.use(express.static(__dirname + "/views"));
 //app.use(bodyParser.urlencoded({extended: true}));
@@ -16,6 +18,10 @@ console.log(CryptoJS.HmacSHA1("Message", "Key"));
 
 var nodemailer = require('nodemailer');
 var fs = require('fs') // notice this
+
+app.use(cookieParser());
+app.use(session({secret: 'Does this work?'}));
+
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'login.html'));
@@ -135,8 +141,9 @@ app.post("/login", (req, res) => {
   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
 
   //looks for a user in the database with the same email
-  user.findOne({email: e}, 'email password', (err, userData) => {
-  	console.log(userData);
+  
+  user.findOne({email: e}, 'email username password', (err, userData) => {
+  	//console.log(userData);
   	if (userData == null) {
       res.sendFile(path.join(__dirname+'/login.html'))
   		//res.status(200).send("UserData is null")
@@ -144,12 +151,15 @@ app.post("/login", (req, res) => {
       //Redirect here!
       //Redirect to main posts page
       console.log("Login Successful")
+      req.session.userID = userData.username;
+      console.log(userData.username);
+      console.log(req.session.userID);
       post.find(function(err, posts) {
         if (err) {
             console.log(err);
         } else {
             res.render('display-posts', { posts: posts });
-            console.log(posts);
+            //console.log(posts);
         }
     });
   	} else {
@@ -179,6 +189,7 @@ app.post("/posted", (req, res) => {
     title: req.body.title, 
     description: req.body.description,
     topic: req.body.topic
+    
   });
 
   console.log("newPost is", newPost);
