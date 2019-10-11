@@ -39,10 +39,20 @@ app.get('/login', function (req, res,html) {
 });
 
 app.get('/userline', function(req, res) {
-    res.render('userline');
+   res.render('userline', { email: req.session.email, username: req.session.username});
 });
 
-app.get('/posted', navigate_to_posts
+app.get('/posted', function(req, res) {
+    post.find(function(err, posts) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render('display-posts', { posts: posts });
+            //console.log(posts);
+        }
+    });
+});
+
 
 // app.get('/posts', function (req, res,html) {
 //   res.sendFile(path.join(__dirname+'/posts.html'));
@@ -159,17 +169,13 @@ app.post("/login", (req, res) => {
       //Redirect here!
       //Redirect to main posts page
       console.log("Login Successful")
-      req.session.userID = userData.username;
+      req.session.email=req.body.email;
+      req.session.userID = userData._id;
+      req.session.username= userData.username;
+      req.session.posts= userData.posts;
       console.log(userData.username);
       console.log(req.session.userID);
-      post.find(function(err, posts) {
-        if (err) {
-            console.log(err);
-        } else {
-          res.redirect('/posted');
-            //console.log(posts);
-        }
-    });
+      res.redirect('/posted');
   	} else {
       //res.status(200).send("Failed Login");
       //res.send('Your username/password is incorrect, try again')
@@ -196,9 +202,9 @@ app.post("/posted", (req, res) => {
   var newPost = new post({
     title: req.body.title, 
     description: req.body.description,
-    topic: req.body.topic
+    topic: req.body.topic,
+    username: req.session.username,
     userid: req.session.userID
-    
   });
 
   console.log("newPost is", newPost);
