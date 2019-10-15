@@ -179,6 +179,19 @@ app.post("/posted", (req, res) => {
     
   });
 
+
+app.get('/discover', function(req, res) {
+  user.find(function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('/views/discovery_page', { users: users });
+      console.log(users);
+    }
+}); 
+});
+
+
   console.log("newPost is", newPost);
   newPost.save(function (err, e) {
     if (err) return console.error(err);

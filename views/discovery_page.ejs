@@ -1,0 +1,23 @@
+<% include ../discovery_page.html%>
+<% if(users.length>0) { %>
+ <section>
+        <div class="row">
+    <% for(var i=0; i<users.length;i++) { %>
+   
+            <div class="column" style="background-color:#aaa;">
+                <div id="circle">
+                        <div id="text"><%= users[i].username.substring(0,1).toUpperCase() %>
+                        </div>
+                </div>
+                <div></div>
+                <h1 style="text-align:center;"><%= users[i].username %></h1>
+                <h1 style="text-align:center;"><%= users[i].email %></h1>
+            </div>
+      
+          
+          <% } %>
+      </div>
+     </section>
+<% } else { %>
+    No Users to Display!
+  <% } %>
