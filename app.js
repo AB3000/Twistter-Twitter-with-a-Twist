@@ -42,6 +42,18 @@ app.get('/profile', function (req, res,html) {
 //   res.sendFile(path.join(__dirname+'/posts.html'));
 //  });
 
+
+app.get('/display_personal', function(req, res) {
+  post.find(function(err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('display-personal-posts', { posts: posts });
+      console.log(posts);
+    }
+}); 
+});
+
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");  
