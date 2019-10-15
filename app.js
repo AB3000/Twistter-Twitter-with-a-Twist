@@ -35,6 +35,19 @@ app.get('/login', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/login.html'));
 });
 
+
+
+app.get('/discover', function(req, res) {
+  user.find(function(err, users) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('discovery_page', { users: users });
+      console.log(users);
+    }
+}); 
+});
+
 // app.get('/posts', function (req, res,html) {
 //   res.sendFile(path.join(__dirname+'/posts.html'));
 //  });
@@ -178,18 +191,6 @@ app.post("/posted", (req, res) => {
     topic: req.body.topic
     
   });
-
-
-app.get('/discover', function(req, res) {
-  user.find(function(err, users) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('/views/discovery_page', { users: users });
-      console.log(users);
-    }
-}); 
-});
 
 
   console.log("newPost is", newPost);
