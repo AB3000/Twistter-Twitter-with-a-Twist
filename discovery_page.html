@@ -12,7 +12,7 @@
         <form method="get" action="">
           <div class="tb">
             <div class="td">
-              <input id="search" type="text" placeholder="Search" name="search" required>
+              <input id="search" type="text" placeholder="Search" name="search">
             </div>
             <div class="td" id="s-cover">
               <button type="submit">
@@ -26,9 +26,10 @@
 
       <script>
         $("#search").keyup(function (e) {
+          e.preventDefault();
           console.log("text is ", $("#search").val());
           $.ajax({
-            url: "/app.js",
+            url: "/discover",
             type: "get",
             data: {
               search: $("#search").val()
@@ -39,9 +40,7 @@
             error: function (jqXHR, textStatus, err) {
               console.log('text status ' + textStatus + ', err ' + err)
             }
-
           });
-          // e.preventDefault();
         });
 
 

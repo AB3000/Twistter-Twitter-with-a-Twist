@@ -37,31 +37,47 @@ app.get('/login', function (req, res, html) {
 });
 
 
+// var matchDiscoverQueryString = function (req, res, next) {
+//   return next(req.query.search ? null : 'route');
+// };
+
+console.log("entering backend");
 
 app.get('/discover', function (req, res) {
-  console.log("req search is ", req.query.search);
-
+  console.log("in here");
   user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
     if (err) {
       console.log(err);
     } else {
+      console.log("users are", users);
       res.render('discovery_page', { users: users });
     }
   });
-
-  // user.find(function (err, users) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     res.render('discovery_page', { users: users });
-  //     // console.log({ users: users });
-  //   }
-  // });
 });
 
-// app.get('/posts', function (req, res,html) {
-//   res.sendFile(path.join(__dirname+'/posts.html'));
-//  });
+// //discover has a query string, filter searches for user
+// app.get('/discover', matchDiscoverQueryString, function (req, res) {
+//   user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.render('discovery_page', { users: users });
+//     }
+//   });
+// });
+
+// //discover does not have a query string, show everything
+// app.get('/discover', function (req, res) {
+//   user.find(function (err, users) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.render('discovery_page', { users: users });
+//       // console.log({ users: users });
+//     }
+//   });
+// });
+
 
 var mongoose = require("mongoose");
 var passport = require("passport");
