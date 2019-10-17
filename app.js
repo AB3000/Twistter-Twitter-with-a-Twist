@@ -21,33 +21,38 @@ var nodemailer = require('nodemailer');
 var fs = require('fs') // notice this
 
 app.use(cookieParser());
-app.use(session({secret: 'Does this work?'}));
+app.use(session({ secret: 'Does this work?' }));
 
 
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'login.html'));  
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-app.get('/signup', function (req, res,html) {
- res.sendFile(path.join(__dirname+'/signup.html'));
+app.get('/signup', function (req, res, html) {
+  res.sendFile(path.join(__dirname + '/signup.html'));
 });
 
-app.get('/login', function (req, res,html) {
- res.sendFile(path.join(__dirname+'/login.html'));
+app.get('/login', function (req, res, html) {
+  res.sendFile(path.join(__dirname + '/login.html'));
 });
 
 
 
-app.get('/discover', function(req, res) {
-  // console.log("body:", req.body);
-  console.log("req search is ", req.param('search'));
-  user.find(function(err, users) {
+app.get('/discover', function (req, res) {
+  console.log("req search is ", req.query.search);
+
+  user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, result) {
+    console.log({result: result})
+  });
+
+  user.find(function (err, users) {
     if (err) {
       console.log(err);
     } else {
       res.render('discovery_page', { users: users });
+      // console.log({ users: users });
     }
-}); 
+  });
   // user.find({ users: { $regex : ".*"+ req.query.search +".*", $options:'i' } }, function(err, result){
   //   return res.status(200).json({result: result})
   // });
@@ -59,19 +64,19 @@ app.get('/discover', function(req, res) {
 
 var mongoose = require("mongoose");
 var passport = require("passport");
-var bodyParser = require("body-parser");  
+var bodyParser = require("body-parser");
 var user = require("./models/user"); //reference to user schema
 var post = require("./models/post"); //reference to post schema
 //var Posts = mongoose.model('Posts', postSchema);
 
 //Connection start
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twistter307?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true}, function(error){
-  if(error){
-console.log("Couldn't connect to database");
-    } else {
-      console.log("Connected To Database");
-    }
+mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twistter307?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }, function (error) {
+  if (error) {
+    console.log("Couldn't connect to database");
+  } else {
+    console.log("Connected To Database");
+  }
 });
 
 
@@ -83,7 +88,7 @@ app.post("/signup", (req, res) => {
   const u = req.body.username;
   const p = req.body.password;
 
-//Sending email to new user
+  //Sending email to new user
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -91,15 +96,15 @@ app.post("/signup", (req, res) => {
       pass: 'CS30700!'
     }
   });
-  
+
   var mailOptions = {
     from: 'twistter307@gmail.com',
     to: e,
     subject: 'Thank you for signing up with Twistter',
     text: 'Hello, Hope you enjoy the application :)'
   };
-  
-  transporter.sendMail(mailOptions, function(error, info){
+
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
     } else {
@@ -115,9 +120,9 @@ app.post("/signup", (req, res) => {
 
   //formatting the email and password info into the user schema
   var newUser = new user({
-  	email: e,
-  	username: u,  
-  	password: encrypttedP
+    email: e,
+    username: u,
+    password: encrypttedP
   });
 
   //saving the new user to the database
@@ -126,26 +131,26 @@ app.post("/signup", (req, res) => {
 
     console.log(err);
     var alert = "alert('Yikes! There's been an error. Please try again at a different time.')";
-    
-  	if (err) {
-      if(err.name == 'ValidationError'){
-        if(err.message.includes('username')){
+
+    if (err) {
+      if (err.name == 'ValidationError') {
+        if (err.message.includes('username')) {
           alert = "alert('Username already exists. Please try a different one.')";
-        } else if (err.message.includes('email')){
-          alert = "alert('Email already registered with account. Please try a different email.')" 
+        } else if (err.message.includes('email')) {
+          alert = "alert('Email already registered with account. Please try a different email.')"
         }
       }
-      fs.readFile('./signup.html', 'utf8', function (err,data) {
-        res.writeHead(200, {'Content-Type': 'text/html'});
+      fs.readFile('./signup.html', 'utf8', function (err, data) {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
         var result = data.replace(/\<\/script>/g, alert + '</script>');
         res.write(result);
         res.end();
         return;
-     });
-  	} else {
-  		res.sendFile(path.join(__dirname+'/login.html'));
-    	console.log("new user successfully saved");
-	}
+      });
+    } else {
+      res.sendFile(path.join(__dirname + '/login.html'));
+      console.log("new user successfully saved");
+    }
   })
 
 });
@@ -160,42 +165,42 @@ app.post("/login", (req, res) => {
   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
 
   //looks for a user in the database with the same email
-  
-  user.findOne({email: e}, 'email username password', (err, userData) => {
-  	//console.log(userData);
-  	if (userData == null) {
-      res.sendFile(path.join(__dirname+'/login.html'))
-  		//res.status(200).send("UserData is null")
-  	} else if (encrypttedP === userData.password) {
+
+  user.findOne({ email: e }, 'email username password', (err, userData) => {
+    //console.log(userData);
+    if (userData == null) {
+      res.sendFile(path.join(__dirname + '/login.html'))
+      //res.status(200).send("UserData is null")
+    } else if (encrypttedP === userData.password) {
       //Redirect here!
       //Redirect to main posts page
       console.log("Login Successful")
       req.session.userID = userData.username;
       console.log(userData.username);
       console.log(req.session.userID);
-      post.find(function(err, posts) {
+      post.find(function (err, posts) {
         if (err) {
-            console.log(err);
+          console.log(err);
         } else {
-            res.render('display-posts', { posts: posts });
-            //console.log(posts);
+          res.render('display-posts', { posts: posts });
+          //console.log(posts);
         }
-    });
-  	} else {
+      });
+    } else {
       //res.status(200).send("Failed Login");
       //res.send('Your username/password is incorrect, try again')
-      res.sendFile(path.join(__dirname+'/login.html'), 'Error your username/password is incorrect, try again')
-  	}
+      res.sendFile(path.join(__dirname + '/login.html'), 'Error your username/password is incorrect, try again')
+    }
   });
 })
 
 app.post("/posted", (req, res) => {
   // console.log("POSTS");
   var newPost = new post({
-    title: req.body.title, 
+    title: req.body.title,
     description: req.body.description,
     topic: req.body.topic
-    
+
   });
 
 
