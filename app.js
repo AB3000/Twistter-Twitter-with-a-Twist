@@ -39,13 +39,13 @@ app.get('/login', function (req, res,html) {
 
 
 app.get('/discover', function(req, res) {
-  console.log("res is", res);
+  // console.log("body:", req.body);
+  console.log("req search is ", req.param('search'));
   user.find(function(err, users) {
     if (err) {
       console.log(err);
     } else {
       res.render('discovery_page', { users: users });
-      // console.log(users);
     }
 }); 
   // user.find({ users: { $regex : ".*"+ req.query.search +".*", $options:'i' } }, function(err, result){

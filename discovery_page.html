@@ -12,7 +12,7 @@
         <form method="get" action="">
           <div class="tb">
             <div class="td">
-              <input id="search" type="text" placeholder="Search" required>
+              <input id="search" type="text" placeholder="Search" name="search" required>
             </div>
             <div class="td" id="s-cover">
               <button type="submit">
@@ -26,15 +26,25 @@
 
       <script>
         $("#search").keyup(function (e) {
-          // alert("pressed");
-          var code = (e.keyCode ? e.keyCode : e.which);
-          console.log("code is ", code);
           console.log("text is ", $("#search").val());
-          if (code == 13) {     //for "go" key
-            alert($(this).val());
-            $(this).trigger("keyup");
-          }
+          $.ajax({
+            url: "/app.js",
+            type: "get",
+            data: {
+              search: $("#search").val()
+            },
+            success: function (data) {
+              console.log("success!");
+            },
+            error: function (jqXHR, textStatus, err) {
+              console.log('text status ' + textStatus + ', err ' + err)
+            }
+
+          });
+          e.preventDefault();
         });
+
+
       </script>
 
   <!-- <script>
