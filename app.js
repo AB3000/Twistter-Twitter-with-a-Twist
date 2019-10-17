@@ -41,20 +41,21 @@ app.get('/login', function (req, res, html) {
 app.get('/discover', function (req, res) {
   console.log("req search is ", req.query.search);
 
-  user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, result) {
-    console.log({result: result})
-  });
-
-  user.find(function (err, users) {
+  user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
     if (err) {
       console.log(err);
     } else {
       res.render('discovery_page', { users: users });
-      // console.log({ users: users });
     }
   });
-  // user.find({ users: { $regex : ".*"+ req.query.search +".*", $options:'i' } }, function(err, result){
-  //   return res.status(200).json({result: result})
+
+  // user.find(function (err, users) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     res.render('discovery_page', { users: users });
+  //     // console.log({ users: users });
+  //   }
   // });
 });
 
