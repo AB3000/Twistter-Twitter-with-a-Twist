@@ -10,6 +10,7 @@ var session = require('express-session');
 //app.use(express.static(__dirname + "/views"));
 //app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, 'public')));
 
 var AES = require("crypto-js/aes");
 var SHA256 = require("crypto-js/sha256");
@@ -24,7 +25,7 @@ app.use(session({secret: 'Does this work?'}));
 
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'login.html'));
+  res.sendFile(path.join(__dirname, 'login.html'));  
 });
 
 app.get('/signup', function (req, res,html) {
@@ -144,6 +145,7 @@ app.post("/signup", (req, res) => {
   })
 
 });
+
 
 //Login
 app.post("/login", (req, res) => {
