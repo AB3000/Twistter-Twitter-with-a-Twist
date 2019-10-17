@@ -36,15 +36,9 @@ app.get('/login', function (req, res, html) {
   res.sendFile(path.join(__dirname + '/login.html'));
 });
 
-
-// var matchDiscoverQueryString = function (req, res, next) {
-//   return next(req.query.search ? null : 'route');
-// };
-
 console.log("entering backend");
 
 app.get('/discover', function (req, res) {
-  console.log("in here");
   user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
     if (err) {
       console.log(err);
@@ -54,29 +48,6 @@ app.get('/discover', function (req, res) {
     }
   });
 });
-
-// //discover has a query string, filter searches for user
-// app.get('/discover', matchDiscoverQueryString, function (req, res) {
-//   user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.render('discovery_page', { users: users });
-//     }
-//   });
-// });
-
-// //discover does not have a query string, show everything
-// app.get('/discover', function (req, res) {
-//   user.find(function (err, users) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.render('discovery_page', { users: users });
-//       // console.log({ users: users });
-//     }
-//   });
-// });
 
 
 var mongoose = require("mongoose");
