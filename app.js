@@ -39,14 +39,18 @@ app.get('/login', function (req, res,html) {
 
 
 app.get('/discover', function(req, res) {
+  console.log("res is", res);
   user.find(function(err, users) {
     if (err) {
       console.log(err);
     } else {
       res.render('discovery_page', { users: users });
-      console.log(users);
+      // console.log(users);
     }
 }); 
+  // user.find({ users: { $regex : ".*"+ req.query.search +".*", $options:'i' } }, function(err, result){
+  //   return res.status(200).json({result: result})
+  // });
 });
 
 // app.get('/posts', function (req, res,html) {

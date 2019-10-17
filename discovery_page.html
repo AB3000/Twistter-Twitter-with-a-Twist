@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel ="stylesheet" type="text/css" href="./discovery_page.css" >
-</head>
-<body>
- 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="./discovery_page.css">
+  <script src=https://code.jquery.com/jquery-latest.min.js> </script> </head> <body>
+
 <h2 style="text-align:center;">Discover People</h2>
  
 <div id="cover">
         <form method="get" action="">
           <div class="tb">
-            <div class="td"><input type="text" placeholder="Search" required></div>
+            <div class="td">
+              <input id="search" type="text" placeholder="Search" required>
+            </div>
             <div class="td" id="s-cover">
               <button type="submit">
                 <div id="s-circle"></div>
@@ -22,7 +24,20 @@
         </form>
       </div>
 
-     <!-- <script>
+      <script>
+        $("#search").keyup(function (e) {
+          // alert("pressed");
+          var code = (e.keyCode ? e.keyCode : e.which);
+          console.log("code is ", code);
+          console.log("text is ", $("#search").val());
+          if (code == 13) {     //for "go" key
+            alert($(this).val());
+            $(this).trigger("keyup");
+          }
+        });
+      </script>
+
+  <!-- <script>
         $(document).ready(function() {
           var username = $('#username');
           username.keyup(function() {
@@ -35,5 +50,6 @@
           // treat result here
       });
     </script>  -->
-</body>
+  </body>
+
 </html>
