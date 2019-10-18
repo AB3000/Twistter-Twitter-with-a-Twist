@@ -1,12 +1,7 @@
-<% include ../posts.html%>
-<%console.log("Hello World");%>
-<%console.log(req.session.userID);%>
+<% include ../profile.html%>
 <% if(posts.length>0) { %>
-
         <% for(var i=0; i<posts.length;i++) { %>
-            <%console.log(posts[i].user)%>
-           
-            <% if(posts[i].user === req.session.userID) { %>
+            <% if(posts[i].user === userIDejs) { %>
                 <section>
                         <div class="container py-3">
                             <div class="card">

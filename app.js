@@ -35,15 +35,13 @@ app.get('/login', function (req, res,html) {
  res.sendFile(path.join(__dirname+'/login.html'));
 });
 
-app.get('/profile', function (req, res,html) {
-  res.sendFile(path.join(__dirname+'/profile.html'));
- });
 // app.get('/posts', function (req, res,html) {
 //   res.sendFile(path.join(__dirname+'/posts.html'));
 //  });
 
 
 app.get('/display_personal', function(req, res) {
+  app.locals.userIDejs = req.session.userID;
   post.find(function(err, posts) {
     if (err) {
       console.log(err);
@@ -51,7 +49,7 @@ app.get('/display_personal', function(req, res) {
       res.render('display-personal-posts', { posts: posts });
       console.log(posts);
     }
-}); 
+  }); 
 });
 
 var mongoose = require("mongoose");
