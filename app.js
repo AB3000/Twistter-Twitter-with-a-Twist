@@ -6,6 +6,8 @@ const port = process.env.PORT || "5000";
 var router = express.Router();
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+const util = require('util');
+var ejs = require('ejs');
 
 //app.use(express.static(__dirname + "/views"));
 //app.use(bodyParser.urlencoded({extended: true}));
@@ -19,6 +21,9 @@ console.log(CryptoJS.HmacSHA1("Message", "Key"));
 
 var nodemailer = require('nodemailer');
 var fs = require('fs') // notice this
+const { promisify } = require('util');
+const readFile = promisify(fs.readFile);
+
 
 app.use(cookieParser());
 app.use(session({ secret: 'Does this work?' }));
@@ -38,16 +43,80 @@ app.get('/login', function (req, res, html) {
 
 console.log("entering backend");
 
+//PHASE 1
+// app.get('/discover', function (req, res) {
+//   user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log("users are", users);
+//       res.render('discovery_page', { users: users });
+//     }
+//   });
+// });
+
+
+//PHASE 2
 app.get('/discover', function (req, res) {
-  user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("users are", users);
+  if (Object.keys(req.query).length == 0) {
+    user.find(function (err, users) {
+      console.log("SEARCH NOT IN RES");
       res.render('discovery_page', { users: users });
-    }
-  });
+    });
+  } else {
+    console.log("SEARCH IN RES");
+    user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log({ users: users });
+        // res.send({ users: users });
+        res.render('discovery_page', { users: users });
+      }
+    });
+  }
 });
+
+//PHASE 3
+// app.get('/discover', async function (req, res) {
+//   if (Object.keys(req.query).length == 0) { //there is no query string
+//     user.find(function (err, users) {
+//       res.render('discovery_page', { users: users });
+//     });
+//   } else { //there is a query string
+//     try {
+//       user_template = fs.readFileSync('views/discovery_page.ejs', 'utf-8');
+//       res.render('discovery_page', user_template);
+//     } catch (err) {
+
+//     }
+//   }
+// });
+
+//PHASE 4
+
+// app.get('/discover', async function (req, res) {
+//   try {
+//     const file = await readFile('./views/discovery_page.ejs');
+//     var user_template = ejs.renderFile(file, { client: true });
+//     console.log("user template is", user_template);
+//     user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         // console.log("in here");
+//         // var html = user_template({ users: users});
+//         console.log({ users: users });
+//         res.send({ users: users});
+//       }
+//     });
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).send({ error: 'Something failed!' })
+//   }
+// });
+
+
 
 
 var mongoose = require("mongoose");
