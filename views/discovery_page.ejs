@@ -2,21 +2,22 @@
 <% if(users.length>0) { %>
 <!-- for debugging -->
 <% console.log('ejs is called') %> 
+
  <section>
         <div class="row">
-    <% for(var i=0; i<users.length;i++) { %>
+    <% users.forEach((user) => { %>
    
             <div class="column" style="background-color:#aaa;">
                 <div id="circle">
-                        <div id="text"><%= users[i].username.substring(0,1).toUpperCase() %>
+                        <div id="text"><%= user.username.substring(0,1).toUpperCase() %>
                         </div>
                 </div>
                 <div></div>
-                <h1 style="text-align:center;"><%= users[i].username %></h1>
-                <h1 style="text-align:center;"><%= users[i].email %></h1>
+                <h1 style="text-align:center;"><%= user.username %></h1>
+                <h1 style="text-align:center;"><%= user.email %></h1>
             </div>
      
-          <% } %>
+          <% }) %>
       </div>
      </section>
 <% } else { %>
