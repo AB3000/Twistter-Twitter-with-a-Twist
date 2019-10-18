@@ -1,5 +1,7 @@
 <% include ../discovery_page.html%>
 <% if(users.length>0) { %>
+<!-- for debugging -->
+<% console.log('ejs is called') %> 
  <section>
         <div class="row">
     <% for(var i=0; i<users.length;i++) { %>
@@ -13,8 +15,7 @@
                 <h1 style="text-align:center;"><%= users[i].username %></h1>
                 <h1 style="text-align:center;"><%= users[i].email %></h1>
             </div>
-      
-          
+     
           <% } %>
       </div>
      </section>
