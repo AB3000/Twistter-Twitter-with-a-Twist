@@ -44,12 +44,12 @@ app.get('/login', function (req, res, html) {
 app.get('/discover', function (req, res) {
   if (Object.keys(req.query).length == 0) {
     user.find(function (err, users) {
-      console.log("SEARCH NOT IN RES");
+      //render all users
       res.render('discovery_page', { users: users });
     });
   } else {
-    console.log("SEARCH IN RES");
-    user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
+    //render only users matching what user typed in
+    user.find({ username: { $regex: "^" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
       if (err) {
         console.log(err);
       } else {
