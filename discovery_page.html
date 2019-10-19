@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="./discovery_page.css">
+  <script src=https://code.jquery.com/jquery-latest.min.js> </script> </head> <body>
+
+<h2 style="text-align:center;">Discover People</h2>
+ 
+<div id="cover">
+        <form method="get" action="">
+          <div class="tb">
+            <div class="td">
+              <input id="search" type="text" placeholder="Search" name="search">
+            </div>
+            <div class="td" id="s-cover">
+              <button type="submit">
+                <div id="s-circle"></div>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <script>
+        //timer delay to see when user has stopped typing for a while
+        var delay = (function () {
+          var timer = 0;
+          return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+          };
+        })();
+
+        //only once user stopped typing will a request be sent
+        $("#search").keyup(function (e) {
+          e.preventDefault();
+          delay(function () {
+            console.log("text is ", $("#search").val());
+            $.ajax({
+              url: "/discover",
+              type: "get",
+              data: {
+                search: $("#search").val()
+              },
+              success: function (data) {
+                console.log("success!");
+                $("#current_users").html(data);
+                $("#current_users #cover").remove(); //removes extra search bar generated
+              },
+              error: function (jqXHR, textStatus, err) {
+                console.log('text status ' + textStatus + ', err ' + err)
+              }
+            });
+          }, 1000);
+        });
+      </script>
+  </body>
+
+</html>
