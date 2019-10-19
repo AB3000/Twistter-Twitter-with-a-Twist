@@ -72,6 +72,7 @@ app.get('/discover', function (req, res) {
         console.log({ users: users });
         // res.send({ users: users });
         res.render('discovery_page', { users: users });
+        // res.end();
       }
     });
   }
