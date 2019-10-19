@@ -62,6 +62,19 @@ app.get('/discover', function (req, res) {
 
 
 
+
+app.get('/display_personal', function(req, res) {
+  app.locals.userIDejs = req.session.userID;
+  post.find(function(err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('display-personal-posts', { posts: posts });
+      console.log(posts);
+    }
+  }); 
+});
+
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");
@@ -176,9 +189,9 @@ app.post("/login", (req, res) => {
       //Redirect to main posts page
       console.log("Login Successful")
       req.session.userID = userData.username;
-      console.log(userData.username);
-      console.log(req.session.userID);
-      post.find(function (err, posts) {
+      //console.log(userData.username);
+      //console.log(req.session.userID);
+      post.find(function(err, posts) {
         if (err) {
           console.log(err);
         } else {
@@ -196,11 +209,15 @@ app.post("/login", (req, res) => {
 
 app.post("/posted", (req, res) => {
   // console.log("POSTS");
+  var currDate = new Date();
   var newPost = new post({
     title: req.body.title,
     description: req.body.description,
-    topic: req.body.topic
-
+    topic: req.body.topic,
+    date: currDate,
+    user: req.session.userID,
+    likes: 0,
+    dislikes: 0
   });
 
 
