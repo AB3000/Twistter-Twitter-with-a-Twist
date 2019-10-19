@@ -41,22 +41,6 @@ app.get('/login', function (req, res, html) {
   res.sendFile(path.join(__dirname + '/login.html'));
 });
 
-console.log("entering backend");
-
-//PHASE 1
-// app.get('/discover', function (req, res) {
-//   user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log("users are", users);
-//       res.render('discovery_page', { users: users });
-//     }
-//   });
-// });
-
-
-//PHASE 2
 app.get('/discover', function (req, res) {
   if (Object.keys(req.query).length == 0) {
     user.find(function (err, users) {
@@ -69,53 +53,11 @@ app.get('/discover', function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        console.log({ users: users });
-        // res.send({ users: users });
         res.render('discovery_page', { users: users });
-        // res.end();
       }
     });
   }
 });
-
-//PHASE 3
-// app.get('/discover', async function (req, res) {
-//   if (Object.keys(req.query).length == 0) { //there is no query string
-//     user.find(function (err, users) {
-//       res.render('discovery_page', { users: users });
-//     });
-//   } else { //there is a query string
-//     try {
-//       user_template = fs.readFileSync('views/discovery_page.ejs', 'utf-8');
-//       res.render('discovery_page', user_template);
-//     } catch (err) {
-
-//     }
-//   }
-// });
-
-//PHASE 4
-
-// app.get('/discover', async function (req, res) {
-//   try {
-//     const file = await readFile('./views/discovery_page.ejs');
-//     var user_template = ejs.renderFile(file, { client: true });
-//     console.log("user template is", user_template);
-//     user.find({ username: { $regex: ".*" + req.query.search + ".*", $options: 'i' } }, function (err, users) {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         // console.log("in here");
-//         // var html = user_template({ users: users});
-//         console.log({ users: users });
-//         res.send({ users: users});
-//       }
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).send({ error: 'Something failed!' })
-//   }
-// });
 
 
 
