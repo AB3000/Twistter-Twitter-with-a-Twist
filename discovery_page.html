@@ -25,6 +25,7 @@
       </div>
 
       <script>
+        //timer delay to see when user has stopped typing for a while
         var delay = (function () {
           var timer = 0;
           return function (callback, ms) {
@@ -33,6 +34,7 @@
           };
         })();
 
+        //only once user stopped typing will a request be sent
         $("#search").keyup(function (e) {
           e.preventDefault();
           delay(function () {
@@ -46,7 +48,7 @@
               success: function (data) {
                 console.log("success!");
                 $("#current_users").html(data);
-                console.log(data.users);
+                $("#current_users #cover").remove(); //removes extra search bar generated
               },
               error: function (jqXHR, textStatus, err) {
                 console.log('text status ' + textStatus + ', err ' + err)
