@@ -1,4 +1,6 @@
 <% include ../profile.html%>
+<h3><%=username %></h3>
+<h2><%=email %></h2>
 <% if(posts.length>0) { %>
         <% for(var i=0; i<posts.length;i++) { %>
             <% if(posts[i].user === userIDejs) { %>
@@ -11,7 +13,7 @@
                                     <div class="col-md-8 px-3">
                                         <div class="card-block px-3">
                                             <div class="form-group">
-                                                    <h1><%= posts[i].title %></hi>
+                                                    <h1><%= posts[i].title %></h1>
                                                     <h2><%= posts[i].description %></h2>
                                                     <h3> topic: <%= posts[i].topic%></h3>
                                             </div>
@@ -24,9 +26,9 @@
                     </form>
                 </section>
            <% } %>
-              
+
               <% } %>
-        
+
 <% } else { %>
         No Posts to Display!
       <% } %>

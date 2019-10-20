@@ -59,7 +59,16 @@ app.get('/discover', function (req, res) {
   }
 });
 
-
+app.get('/posted', function(req, res) {
+  post.find(function(err, posts) {
+      if (err) {
+          console.log(err);
+      } else {
+          res.render('display-posts', { posts: posts });
+          //console.log(posts);
+      }
+  });
+  });
 
 
 
@@ -69,10 +78,10 @@ app.get('/display_personal', function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render('display-personal-posts', { posts: posts });
+      res.render('display-personal-posts', { posts: posts,email: req.session.email, username: req.session.username });
       console.log(posts);
     }
-  }); 
+  });
 });
 
 var mongoose = require("mongoose");
@@ -96,7 +105,7 @@ mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twi
 //Login, Logout, Signup
 app.use(express.urlencoded())
 app.post("/signup", (req, res) => {
-  //receiving form information from signup.html 
+  //receiving form information from signup.html
   const e = req.body.email;
   const u = req.body.username;
   const p = req.body.password;
@@ -171,7 +180,7 @@ app.post("/signup", (req, res) => {
 
 //Login
 app.post("/login", (req, res) => {
-  //receiving form information from signup.html 
+  //receiving form information from signup.html
   const e = req.body.email;
   const p = req.body.password;
   encrypttedP = CryptoJS.SHA1(p);
@@ -188,17 +197,13 @@ app.post("/login", (req, res) => {
       //Redirect here!
       //Redirect to main posts page
       console.log("Login Successful")
-      req.session.userID = userData.username;
+      req.session.email=req.body.email;
+      req.session.userID = userData._id;
+      req.session.username= userData.username;
+      req.session.posts= userData.posts;
       //console.log(userData.username);
       //console.log(req.session.userID);
-      post.find(function(err, posts) {
-        if (err) {
-          console.log(err);
-        } else {
-          res.render('display-posts', { posts: posts });
-          //console.log(posts);
-        }
-      });
+      res.redirect('/posted');
     } else {
       //res.status(200).send("Failed Login");
       //res.send('Your username/password is incorrect, try again')
