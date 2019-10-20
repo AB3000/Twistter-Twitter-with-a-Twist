@@ -1,6 +1,10 @@
 <% include ../profile.html%>
-<h3><%=username %></h3>
-<h2><%=email %></h2>
+<section>
+    <div class="container py-3">
+      <p class="container-text"><%="Hi " %><%=username %><%="! " %></p>
+      <p class="container-text"><%="Your email id is: " %><%=email %></p>
+  </div>
+  </section>
 <% if(posts.length>0) { %>
         <% for(var i=0; i<posts.length;i++) { %>
             <% if(posts[i].user === userIDejs) { %>
