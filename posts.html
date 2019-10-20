@@ -21,38 +21,68 @@
         <option value="Art">
         <option value="Ice Cream">
     </datalist> -->
+    <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Twistter</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+           <a class="nav-link" href="/posted">Timeline</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/display_personal">Userline</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/discover">Discover Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <form>
+<br><br><br><br>
+</form>
     <section>
-        <form method="post" action="/login">
-            <input class="btn" type="submit" value="Log Out">
-        </form>
-        <form method="get" action="/display_personal">
-            <input class="btn" type="submit" value="You"><!--Change this later on-->
-        </form>
         <form method="post" action="/posted">
             <div class="container py-3">
-                <div class="card">
+                <h4>Blog about what comes to your mind!</h4>
+                <div class="card card-body mb-2" style="width: 52rem;">
                     <div class="row ">
-                        <div class="col-md-4">
-                            <h4>Blog about what comes to your mind!</h4>
-                        </div>
                         <div class="col-md-8 px-3">
                             <div class="card-block px-3">
                                 <div class="form-group">
-                                    <input type="text" class="form-control input-lg" name="title"
-                                        placeholder="Your Post Title!">
-                                    <!-- <input type="text" class="card-text" placeholder="What would you like to share today?"> -->
-                                    <textarea type="text" width="100%" name="description"
-                                        placeholder=" What would you like to share today?"></textarea>
-                                    <!-- <input list="topics" class="form-control" name = "topic"> -->
-                                    <input type="text" class="form-control" placeholder="Choose any topic for tagging your post!" name="topic">
-                                    <input class="btn btn-primary button-width" type="submit" value="Upload">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text" id="basic-addon1">Title</span>
+                                    </div>
+                                    <input type="text" class="form-control input-lg" placeholder="Your Post Title!"  aria-describedby="basic-addon1" name="title">
+                                  </div>
+                                  <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Post</span>
+                                  </div>
+                                  <textarea type="text" class="form-control input-lg" placeholder="What would you like to share today?"  aria-describedby="basic-addon1" name="description"></textarea>
+                                </div>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Topic</span>
+                                  </div>
+                                  <input type="text" class="form-control input-lg" placeholder="Choose any topic for tagging your post!" aria-describedby="basic-addon1" name="topic">
+                                  </div>
+                                 <input class="btn btn-primary button-width" type="submit" value="Upload">
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            </div>
+                  </div>
+              </div>
         </form>
     </section>
 </body>
