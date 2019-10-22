@@ -18,6 +18,7 @@
     margin: 0.5%;
     border: #3C5671;
     border-radius: 10px;
+    font-family:'Carrois Gothic', sans-serif;
   }
    
   /* Clear floats after the columns */
@@ -25,6 +26,7 @@
     content: "";
     display: table;
     clear: both;
+    font-family:'Carrois Gothic', sans-serif;
   }
    
   /* For circle with initial */
