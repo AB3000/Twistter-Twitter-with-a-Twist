@@ -4,9 +4,10 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="./discovery_page.css">
+  <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic&display=swap" rel="stylesheet">
   <script src=https://code.jquery.com/jquery-latest.min.js> </script> </head> <body>
 
-<h2 style="text-align:center;">Discover People</h2>
+<h2 id="title" style="text-align:center;">Discover People</h2>
  
 <div id="cover">
         <form method="get" action="">
@@ -49,6 +50,7 @@
                 console.log("success!");
                 $("#current_users").html(data);
                 $("#current_users #cover").remove(); //removes extra search bar generated
+                $("#current_users #title").remove();
               },
               error: function (jqXHR, textStatus, err) {
                 console.log('text status ' + textStatus + ', err ' + err)
