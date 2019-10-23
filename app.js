@@ -74,7 +74,7 @@ app.get('/posted', function(req, res) {
 
 
 app.get('/display_personal', function(req, res) {
-  app.locals.userIDejs = req.session.userID;
+  app.locals.userIDejs = req.session.username;
   post.find(function(err, posts) {
     if (err) {
       console.log(err);
@@ -145,7 +145,8 @@ app.post("/signup", (req, res) => {
   var newUser = new user({
     email: e,
     username: u,
-    password: encrypttedP
+    password: encrypttedP, 
+    topics: []
   });
 
   //saving the new user to the database
@@ -221,11 +222,27 @@ app.post("/posted", (req, res) => {
     description: req.body.description,
     topic: req.body.topic,
     date: currDate,
-    user: req.session.userID,
+    user: req.session.username,
     likes: 0,
     dislikes: 0
   });
 
+  console.log(req.session.username);
+  console.log(req.body.topic);
+  console.log(user);
+  //user.updateOne({ username: req.session.username }, { $push: { topics: req.body.topic } });]
+  var tempUser = user.findOne({username: req.session.username});
+  console.log("-----------------------------------------------------------------------");
+
+  console.log(tempUser.username);
+  console.log("-----------------------------------------------------------------------");
+  tempUser.topics.push({topics: req.body.topic});
+  console.log("-----------------------------------------------------------------------");
+
+  console.log(tempUser);
+  console.log("-----------------------------------------------------------------------");
+  tempUser.save();
+  //user.update({username: req.session.username}, {$addToSet: {topics: req.body.topic}});
 
   console.log("newPost is", newPost);
   newPost.save(function (err, e) {
