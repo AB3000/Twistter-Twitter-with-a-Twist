@@ -66,7 +66,7 @@ app.get('/posted', function(req, res) {
           console.log(err);
       } else {
           res.render('display-posts', { posts: posts });
-          //console.log(posts);
+          console.log('posts are ', posts);
       }
   });
   });
