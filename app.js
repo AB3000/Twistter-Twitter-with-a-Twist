@@ -236,7 +236,17 @@ app.post("/posted", (req, res) => {
     user: req.session.userID,
     likes: 0,
     dislikes: 0
-  });
+});
+
+// app.post("/settings", (req, res) => {
+//   encrypttedP = CryptoJS.SHA1(req.body.password);
+//   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
+//   var editedUser = new user({
+//     email: req.body.email,
+//     username: req.body.username,
+//     password: encrypttedP,
+//   });
+// });
 
 
   console.log("newPost is", newPost);
