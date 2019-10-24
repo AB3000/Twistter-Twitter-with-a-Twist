@@ -64,19 +64,31 @@ app.get('/discover', function (req, res) {
   }
 });
 
+app.get('/id', function(req, res) {
+  var user_clicked_id = ""
+  var user_clicked = user.findOne({username: req.query.username}, function(err, document){
+      user_clicked_id = document._id;
+      app.locals.userlineID = user_clicked_id;
+  });
+  
+  post.find(function(err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('display-others-posts', { posts: posts});
+    }
+  });
+});
+
 app.get('/posted', function(req, res) {
   post.find(function(err, posts) {
       if (err) {
           console.log(err);
       } else {
           res.render('display-posts', { posts: posts });
-          console.log('posts are ', posts);
+          // console.log('posts are ', posts);
       }
   });
-  });
-
-  app.get('/id', function(req, res) {
-      console.log("in here");
   });
 
 
@@ -87,7 +99,7 @@ app.get('/display_personal', function(req, res) {
       console.log(err);
     } else {
       res.render('display-personal-posts', { posts: posts,email: req.session.email, username: req.session.username });
-      console.log(posts);
+      // console.log(posts);
     }
   });
 });
