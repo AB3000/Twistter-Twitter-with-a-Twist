@@ -86,12 +86,12 @@ app.get('/display_personal', function(req, res) {
 });
 
 app.get('/settings', function(req, res) {
-    post.find(function(err, posts) {
+    user.find(function(err, users) {
       if (err) {
           console.log(err);
       } else {
           res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password });
-          console.log(posts);
+          console.log(user);
       }
   });
   });
@@ -213,6 +213,7 @@ app.post("/login", (req, res) => {
       req.session.userID = userData._id;
       req.session.username= userData.username;
       req.session.posts= userData.posts;
+      req.session.password = p;
       //console.log(userData.username);
       //console.log(req.session.userID);
       res.redirect('/posted');
