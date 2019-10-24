@@ -85,6 +85,17 @@ app.get('/display_personal', function(req, res) {
   });
 });
 
+app.get('/settings', function(req, res) {
+    post.find(function(err, posts) {
+      if (err) {
+          console.log(err);
+      } else {
+          res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password });
+          console.log(posts);
+      }
+  });
+  });
+
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");
