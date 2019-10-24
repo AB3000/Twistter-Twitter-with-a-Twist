@@ -5,60 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="./discovery_page.css">
   <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic&display=swap" rel="stylesheet">
-  <script src=https://code.jquery.com/jquery-latest.min.js> </script> </head> <body>
-
-<h2 id="title" style="text-align:center;">Discover People</h2>
- 
-<div id="cover">
-        <form method="get" action="">
-          <div class="tb">
-            <div class="td">
-              <input id="search" type="text" placeholder="Search" name="search">
-            </div>
-            <div class="td" id="s-cover">
-              <button type="submit">
-                <div id="s-circle"></div>
-                <span></span>
-              </button>
-            </div>
-          </div>
-        </form>
+  <!-- bootstrap cards -->
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src=https://code.jquery.com/jquery-latest.min.js> </script> 
+</head> 
+  
+  <body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Twistter</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/posted">Timeline</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/display_personal">Userline</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/discover">Discover Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Logout</a>
+          </li>
+        </ul>
       </div>
+    </div>
+  </nav>
 
-      <script>
-        //timer delay to see when user has stopped typing for a while
-        var delay = (function () {
-          var timer = 0;
-          return function (callback, ms) {
-            clearTimeout(timer);
-            timer = setTimeout(callback, ms);
-          };
-        })();
+  <h2 id="title" style="text-align:center;">Discover People</h2>
 
-        //only once user stopped typing will a request be sent
-        $("#search").keyup(function (e) {
-          e.preventDefault();
-          delay(function () {
-            console.log("text is ", $("#search").val());
-            $.ajax({
-              url: "/discover",
-              type: "get",
-              data: {
-                search: $("#search").val()
-              },
-              success: function (data) {
-                console.log("success!");
-                $("#current_users").html(data);
-                $("#current_users #cover").remove(); //removes extra search bar generated
-                $("#current_users #title").remove();
-              },
-              error: function (jqXHR, textStatus, err) {
-                console.log('text status ' + textStatus + ', err ' + err)
-              }
-            });
-          }, 1000);
+  <div id="cover">
+    <form method="get" action="">
+      <div class="tb">
+        <div class="td">
+          <input id="search" type="text" placeholder="Search" name="search">
+        </div>
+        <div class="td" id="s-cover">
+          <button type="submit">
+            <div id="s-circle"></div>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    //timer delay to see when user has stopped typing for a while
+    var delay = (function () {
+      var timer = 0;
+      return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+
+    //only once user stopped typing will a request be sent
+    $("#search").keyup(function (e) {
+      e.preventDefault();
+      delay(function () {
+        console.log("text is ", $("#search").val());
+        $.ajax({
+          url: "/discover",
+          type: "get",
+          data: {
+            search: $("#search").val()
+          },
+          success: function (data) {
+            console.log("success!");
+            $("#current_users").html(data);
+            $("#current_users #cover").remove(); //removes extra search bar generated
+            $("#current_users #title").remove();
+          },
+          error: function (jqXHR, textStatus, err) {
+            console.log('text status ' + textStatus + ', err ' + err)
+          }
         });
-      </script>
+      }, 1000);
+    });
+  </script>
   </body>
 
 </html>
