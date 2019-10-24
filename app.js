@@ -74,7 +74,7 @@ app.get('/posted', function(req, res) {
 
 
 app.get('/display_personal', function(req, res) {
-  app.locals.userIDejs = req.session.userID;
+  app.locals.userIDejs = req.session.username;
   post.find(function(err, posts) {
     if (err) {
       console.log(err);
@@ -145,9 +145,9 @@ app.post("/signup", (req, res) => {
   var newUser = new user({
     email: e,
     username: u,
-    password: encrypttedP
+    password: encrypttedP, 
+    topics: []
   });
-
   //saving the new user to the database
 
   newUser.save(function (err, e) {
@@ -175,7 +175,6 @@ app.post("/signup", (req, res) => {
       console.log("new user successfully saved");
     }
   })
-
 });
 
 
@@ -221,13 +220,19 @@ app.post("/posted", (req, res) => {
     description: req.body.description,
     topic: req.body.topic,
     date: currDate,
-    user: req.session.userID,
+    user: req.session.username,
     likes: 0,
     dislikes: 0
   });
 
+  user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
+  	if (!userData.topics.includes(req.body.topic)) {
+  		userData.topics.push(req.body.topic);
+    	userData.save();
+  	}
+  });
 
-  console.log("newPost is", newPost);
+  //console.log("newPost is", newPost);
   newPost.save(function (err, e) {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
