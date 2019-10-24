@@ -1,13 +1,23 @@
 * {
     box-sizing: border-box;
   }
-   
+  /* Title */ 
+  #title {
+    margin-top: 5%;
+    font-family:'Carrois Gothic', sans-serif;
+    font-display: bold;
+    font-size: 50pt;
+    color: #3C5671;
+  }
+
   /* Create three equal columns that floats next to each other */
   .column {
     float: left;
     width: 32.3%;
     padding: 10px;
     margin: 0.5%;
+    border-radius: 10px;
+    font-family:'Carrois Gothic', sans-serif;
   }
    
   /* Clear floats after the columns */
@@ -15,12 +25,13 @@
     content: "";
     display: table;
     clear: both;
+    font-family:'Carrois Gothic', sans-serif;
   }
    
   /* For circle with initial */
   #circle {
     position: relative;
-    background-color: #AEEDEF;
+    background-color: #3C5671;
     margin: 10px auto;
     width: 100px;
     height: 100px;
@@ -53,7 +64,7 @@
   body
   {
       margin: 0;
-      background-color: #3C5671;
+      background-color: white;
   }
    
   .tb
@@ -70,8 +81,8 @@
    
   input, button
   {
-      color: #fff;
-      font-family: Nunito;
+      color: #e16868;
+      font-family: 'Carrois Gothic', sans-serif;
       padding: 0;
       margin: 0;
       border: 0;
@@ -81,14 +92,14 @@
   #cover
   {
       position: relative;
-      top: 5%;
+      top: 2%;
       left: 0;
       right: 0;
-      width: 650px;
-      padding: 35px;
-      margin: -25px auto;
+      width: 1200px;
+      padding: 8px;
+      margin: -20px auto;
       margin-bottom: 70px;
-      background-color: #ff7575;
+      background-color: white;
       border-radius: 20px;
       box-shadow: 0 10px 40px #ff7c7c, 0 0 0 20px #ffffffeb;
       transform: scale(0.6);
@@ -103,8 +114,9 @@
   {
       width: 100%;
       height: 96px;
-      font-size: 60px;
+      font-size: 40px;
       line-height: 1;
+      padding-left: 25px;
   }
    
   input[type="text"]::placeholder
@@ -136,7 +148,7 @@
       height: 43px;
       margin-top: 0;
       border-width: 15px;
-      border: 15px solid #fff;
+      border: 15px solid #ff7575;
       background-color: transparent;
       border-radius: 50%;
       transition: 0.5s ease all;
@@ -164,7 +176,7 @@
       right: 0;
       width: 45px;
       height: 15px;
-      background-color: #fff;
+      background-color: #ff7575;
       border-radius: 10px;
       transform: rotateZ(0);
       transition: 0.5s ease all;
@@ -176,7 +188,7 @@
       width: 67px;
       height: 15px;
       border-width: 0;
-      background-color: #fff;
+      background-color: #ff7575;
       border-radius: 20px;
   }
    
@@ -204,7 +216,7 @@
   {
       right: -6px;
       width: 40px;
-      background-color: #fff;
+      background-color: #ff7575;
   }
    
   /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
