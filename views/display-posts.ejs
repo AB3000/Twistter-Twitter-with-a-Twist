@@ -2,30 +2,25 @@
 <% if(posts.length>0) { %>
 
         <% for(var i=0; i<posts.length;i++) { %>
-        <section>
-                    <div class="container py-3">
-                        <div class="card">
-                            <div class="row ">
-                                <div class="col-md-4">
-                                </div>
-                                <div class="col-md-8 px-3">
-                                    <div class="card-block px-3">
-                                        <div class="form-group">
-                                                <h1><%= posts[i].title %></hi>
-                                                <h2><%= posts[i].description %></h2>
-                                                <h3> topic: <%= posts[i].topic%></h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </form>
-            </section>
-              
+    <section>
+  <div class="container py-3">
+    <div class="card w-75">
+  <div class="card-body mb-2">
+    <div class="form-group">
+    <h5 class="card-header"><%= posts[i].title %></h5>
+    <br>
+    <p class="card-text"><%= posts[i].description %></p>
+    <p class="card-title">topic: <%= posts[i].topic%></p>
+    <a href="#" class="btn btn-primary">Like</a>
+    <a href="#" class="btn btn-primary">Dislike</a>
+  </div>
+  </div>
+</div>
+</div>
+</section>
+
               <% } %>
-        
+
 <% } else { %>
         No Posts to Display!
       <% } %>

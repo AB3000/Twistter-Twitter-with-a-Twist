@@ -9,17 +9,38 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="posts.css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-    </body>
 </head>
 
 <body>
-    <section>
-        <form method="post" action="/login">
-            <input class="btn" type="submit" value="Log Out">
-        </form>
-        
-    </section>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Twistter</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+         <a class="nav-link" href="/posted">Timeline</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/display_personal">Userline</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/discover">Discover Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/login">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </nav>
+  <form>
+<br><br><br><br>
+</form>
+
 </body>
 <script href = "/views/display-personal-posts.ejs"></script>
 
