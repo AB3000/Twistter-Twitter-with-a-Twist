@@ -21,7 +21,8 @@ let userSchema = new Schema({
       required: true
     }, 
     topics: {
-      type: [{topic: String}], 
+      type: [String], 
+      default: [], 
       required: true
     }
 });
