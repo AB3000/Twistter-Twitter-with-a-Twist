@@ -8,6 +8,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 const util = require('util');
 var ejs = require('ejs');
+var bodyParser = require('body-parser');
+
 
 //app.use(express.static(__dirname + "/views"));
 //app.use(bodyParser.urlencoded({extended: true}));
@@ -28,6 +30,8 @@ const readFile = promisify(fs.readFile);
 
 app.use(cookieParser());
 app.use(session({ secret: 'Does this work?' }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 
 app.get('/', function (req, res) {
@@ -71,6 +75,9 @@ app.get('/posted', function(req, res) {
   });
   });
 
+  app.get('/id', function(req, res) {
+      console.log("in here");
+  });
 
 
 app.get('/display_personal', function(req, res) {
