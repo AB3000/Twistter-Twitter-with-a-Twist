@@ -1,33 +1,33 @@
 <% include ../profile.html%>
 <section>
-    <div class="container py-3">
-      <p class="container-text"><%="Hi " %><%=username %><%="! " %></p>
-      <p class="container-text"><%="Your email id is: " %><%=email %></p>
+  <div class="container py-3">
+    <p class="container-text"><%="Hi " %><%=username %><%="! " %></p>
+    <p class="container-text"><%="Your email id is: " %><%=email %></p>
   </div>
-  </section>
+</section>
 <% if(posts.length>0) { %>
-        <% for(var i=posts.length-1; i>=0;i--) { %>
-            <% if(posts[i].user === userIDejs) { %>
-              <section>
-            <div class="container py-3">
-              <div class="card w-75">
-            <div class="card-body mb-2">
-              <div class="form-group">
-              <h5 class="card-header"><%= posts[i].title %></h5>
-              <br>
-              <p class="card-text"><%= posts[i].description %></p>
-              <p class="card-title">topic: <%= posts[i].topic%></p>
-              <a href="#" class="btn btn-primary">Like</a>
-              <a href="#" class="btn btn-primary">Dislike</a>
-            </div>
-            </div>
-          </div>
-          </div>
-          </section>
-           <% } %>
+<% for(var i=posts.length-1; i>=0;i--) { %>
+<% if(posts[i].user === userIDejs) { %>
+<section>
+  <div class="container py-3">
+    <div class="card w-75">
+      <div class="card-body mb-2">
+        <div class="form-group">
+          <h5 class="card-header"><%= posts[i].title %></h5>
+          <br>
+          <p class="card-text"><%= posts[i].description %></p>
+          <p class="card-title">topic: <%= posts[i].topic%></p>
+          <a href="#" class="btn btn-primary">Like</a>
+          <a href="#" class="btn btn-primary">Dislike</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% } %>
 
-              <% } %>
+<% } %>
 
 <% } else { %>
-        No Posts to Display!
-      <% } %>
+No Posts to Display!
+<% } %>
