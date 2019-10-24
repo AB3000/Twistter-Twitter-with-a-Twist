@@ -226,8 +226,10 @@ app.post("/posted", (req, res) => {
   });
 
   user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
-    userData.topics.push(req.body.topic);
-    userData.save();
+  	if (!userData.topics.includes(req.body.topic)) {
+  		userData.topics.push(req.body.topic);
+    	userData.save();
+  	}
   });
 
   //console.log("newPost is", newPost);
