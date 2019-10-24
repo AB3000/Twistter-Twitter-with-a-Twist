@@ -19,6 +19,11 @@ let userSchema = new Schema({
     password: {
       type: String,
       required: true
+    }, 
+    topics: {
+      type: [String], 
+      default: [], 
+      required: true
     }
 });
 

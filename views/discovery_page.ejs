@@ -1,25 +1,30 @@
 <% include ../discovery_page.html%>
 <% if(users.length>0) { %>
 <!-- for debugging -->
-<% console.log('ejs is called') %> 
+<!-- <% console.log('ejs is called') %> -->
 
- <section>
-        <div class="row" id="current_users">
-    <% users.forEach((user) => { %>
-   
-            <div class="column" style="background-color:#aaa;">
-                <div id="circle">
-                        <div id="text"><%= user.username.substring(0,1).toUpperCase() %>
-                        </div>
+<section>
+    <div class="row" id="current_users">
+        <% users.forEach((user) => { %>
+
+        <div class="column" style="background-color:#aaa;">
+            <div id="circle">
+                <div id="text"><%= user.username.substring(0,1).toUpperCase() %>
                 </div>
-                <div></div>
-                <h1 style="text-align:center;"><%= user.username %></h1>
-                <h1 style="text-align:center;"><%= user.email %></h1>
             </div>
-     
-          <% }) %>
-      </div>
-     </section>
+            <div></div>
+            <form action="/id" method="get">
+                <h1 style="text-align:center;">
+                        <button><%= user.username %></button>
+                    <!-- <button type="submit" name="username" id="username"><%= user.username %></button> -->
+                    <input type="hidden" type="submit" name="username" value="<%= user.username %>">
+                </h1>
+            </form>
+        </div>
+
+        <% }) %>
+    </div>
+</section>
 <% } else { %>
-    No Users to Display!
-  <% } %>
+No Users to Display!
+<% } %>

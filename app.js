@@ -8,6 +8,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 const util = require('util');
 var ejs = require('ejs');
+var bodyParser = require('body-parser');
+
 
 //app.use(express.static(__dirname + "/views"));
 //app.use(bodyParser.urlencoded({extended: true}));
@@ -28,6 +30,8 @@ const readFile = promisify(fs.readFile);
 
 app.use(cookieParser());
 app.use(session({ secret: 'Does this work?' }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 
 app.get('/', function (req, res) {
@@ -60,27 +64,42 @@ app.get('/discover', function (req, res) {
   }
 });
 
+app.get('/id', function(req, res) {
+  var user_clicked_id = ""
+  var user_clicked = user.findOne({username: req.query.username}, function(err, document){
+      user_clicked_id = document._id;
+      app.locals.userlineID = user_clicked_id;
+  });
+  
+  post.find(function(err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('display-others-posts', { posts: posts});
+    }
+  });
+});
+
 app.get('/posted', function(req, res) {
   post.find(function(err, posts) {
       if (err) {
           console.log(err);
       } else {
           res.render('display-posts', { posts: posts });
-          //console.log(posts);
+          // console.log('posts are ', posts);
       }
   });
   });
 
 
-
 app.get('/display_personal', function(req, res) {
-  app.locals.userIDejs = req.session.userID;
+  app.locals.userIDejs = req.session.username;
   post.find(function(err, posts) {
     if (err) {
       console.log(err);
     } else {
       res.render('display-personal-posts', { posts: posts,email: req.session.email, username: req.session.username });
-      console.log(posts);
+      // console.log(posts);
     }
   });
 });
@@ -172,9 +191,9 @@ app.post("/signup", (req, res) => {
   var newUser = new user({
     email: e,
     username: u,
-    password: encrypttedP
+    password: encrypttedP, 
+    topics: []
   });
-
   //saving the new user to the database
 
   newUser.save(function (err, e) {
@@ -202,7 +221,6 @@ app.post("/signup", (req, res) => {
       console.log("new user successfully saved");
     }
   })
-
 });
 
 
@@ -249,7 +267,7 @@ app.post("/posted", (req, res) => {
     description: req.body.description,
     topic: req.body.topic,
     date: currDate,
-    user: req.session.userID,
+    user: req.session.username,
     likes: 0,
     dislikes: 0
 });
@@ -264,8 +282,14 @@ app.post("/posted", (req, res) => {
 //   });
 // });
 
+  user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
+  	if (!userData.topics.includes(req.body.topic)) {
+  		userData.topics.push(req.body.topic);
+    	userData.save();
+  	}
+  });
 
-  console.log("newPost is", newPost);
+  //console.log("newPost is", newPost);
   newPost.save(function (err, e) {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
