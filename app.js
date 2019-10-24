@@ -148,7 +148,6 @@ app.post("/signup", (req, res) => {
     password: encrypttedP, 
     topics: []
   });
-
   //saving the new user to the database
 
   newUser.save(function (err, e) {
@@ -176,7 +175,6 @@ app.post("/signup", (req, res) => {
       console.log("new user successfully saved");
     }
   })
-
 });
 
 
@@ -227,24 +225,12 @@ app.post("/posted", (req, res) => {
     dislikes: 0
   });
 
-  console.log(req.session.username);
-  console.log(req.body.topic);
-  console.log(user);
-  //user.updateOne({ username: req.session.username }, { $push: { topics: req.body.topic } });]
-  var tempUser = user.findOne({username: req.session.username});
-  console.log("-----------------------------------------------------------------------");
+  user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
+    userData.topics.push(req.body.topic);
+    userData.save();
+  });
 
-  console.log(tempUser.username);
-  console.log("-----------------------------------------------------------------------");
-  tempUser.topics.push({topics: req.body.topic});
-  console.log("-----------------------------------------------------------------------");
-
-  console.log(tempUser);
-  console.log("-----------------------------------------------------------------------");
-  tempUser.save();
-  //user.update({username: req.session.username}, {$addToSet: {topics: req.body.topic}});
-
-  console.log("newPost is", newPost);
+  //console.log("newPost is", newPost);
   newPost.save(function (err, e) {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
