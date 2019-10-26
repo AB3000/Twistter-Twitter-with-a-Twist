@@ -115,15 +115,6 @@ app.get('/settings', function(req, res) {
   });
   });
 
-  user.find(function(err, users) {
-    if (err) {
-        console.log(err);
-    } else {
-        res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password });
-        console.log(user);
-    }
-});
-});
 
 app.get('/deleteUser', function(req, res) {
   try {
