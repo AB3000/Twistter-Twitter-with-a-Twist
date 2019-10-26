@@ -62,18 +62,22 @@
                                 </form>
                                   <div class="input-group mb-3">
                                   <div class="input-group-prepend">
+                                        <form method="post" action="/editEmail">
                                     <span class="input-group-text" id="basic-addon1">Email</span>
                                   </div>
-                                  <input type="text" class="form-control input-lg" placeholder="<%=email %>"  aria-describedby="basic-addon1" name="title">
-                                  <input class="btn btn-primary button-width" type="submit" method="post" action="/editEmail" value="Edit">
+                                  <input type="text" class="form-control input-lg" placeholder="<%=email %>"  aria-describedby="basic-addon1" name="email">
+                                  <input class="btn btn-primary button-width" type="submit" value="Edit">
                                 </div>
+                            </form>
                                 <div class="input-group mb-3">
                                   <div class="input-group-prepend">
+                                        <form method="post" action="/editPw">
                                     <span class="input-group-text" id="basic-addon1">Password</span>
                                   </div>
-                                  <input type="text" class="form-control input-lg" placeholder="<%=password %>" aria-describedby="basic-addon1" name="topic">
-                                  <input class="btn btn-primary button-width" type="submit" href="/editPw" value="Edit">
+                                  <input type="text" class="form-control input-lg" placeholder="<%=password %>" aria-describedby="basic-addon1" name="pw">
+                                  <input class="btn btn-primary button-width" type="submit" value="Edit">
                                   </div>
+                                </form>
                                   <button type="button" class="btn btn-primary button-width">
                                       <a style="color:white;" href="/deleteUser">Delete account</a>
                               </button>

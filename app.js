@@ -141,8 +141,25 @@ app.post('/editName', function(req, res){
       res.redirect('/settings');
     }
      });
-     
+
   });
+
+app.post('/editEmail', function(req, res){
+
+  console.log(req.body.email);
+  user.findByIdAndUpdate(req.session.userID, 
+    {$set: {email:req.body.email}}, function(err){
+      if(err){
+        console.log(err);
+      }
+      else 
+      {
+        req.session.email=req.body.email;
+        res.redirect('/settings');
+      }
+  });
+       
+});
 
 
 var mongoose = require("mongoose");
