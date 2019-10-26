@@ -43,7 +43,7 @@
 <br><br><br><br>
 </form>
     <section>
-        <form method="post" action="/settings">
+        <form action="/settings">
             <div class="container py-3">
                 <h4>Account details!</h4>
                 <div class="card card-body mb-2" style="width: 52rem;">
@@ -72,7 +72,9 @@
                                   <input type="text" class="form-control input-lg" placeholder=<%=password %> aria-describedby="basic-addon1" name="topic">
                                   <input class="btn btn-primary button-width" type="submit" value="Edit">
                                   </div>
-                                 <input class="btn btn-primary button-width" type="submit" href="/deleteUser" value="Delete account">
+                                  <button type="button" class="btn btn-primary button-width">
+                                    <a href="/deleteUser">Delete account</a>
+                                  </button>
                                 </div>
                             </div>
                         </div>

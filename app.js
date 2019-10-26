@@ -117,19 +117,15 @@ app.get('/settings', function(req, res) {
 
 
   app.get('/deleteUser', function(req, res) {
-  try {
-    user.findByIdAndRemove(req.params.studentid, function (err) {
+    console.log(req.session.userID);
+    user.findByIdAndRemove(req.session.userID, function (err) {
         if (err) {
             console.log(err);
         } else {
-        res.redirect('/classPage');
+        res.redirect('/login');
         }
     })
-} catch(err) {
-    console.log(err);
-    res.render('./error');
-}    
-});  
+} );  
 
 var mongoose = require("mongoose");
 var passport = require("passport");
