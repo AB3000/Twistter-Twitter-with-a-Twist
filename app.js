@@ -117,14 +117,34 @@ app.get('/settings', function(req, res) {
 
 
 app.get('/deleteUser', function(req, res) {
-    user.findByIdAndRemove(req.session.userID, function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-        res.redirect('/login');
-        }
-    })
-} );  
+  post.find(function(err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(posts);
+      for(var i=0 ;i<posts.length; i++)
+    {
+      if(posts[i].user == req.session.username)
+      {
+        console.log(posts[i]);
+     post.findByIdAndRemove(posts[i]._id, function (err) {
+      if (err) {
+          console.log(err);
+      }
+    });
+  }
+    }
+  }
+});
+
+user.findByIdAndRemove(req.session.userID, function (err) {
+  if (err) {
+      console.log(err);
+  } else {
+  res.redirect('/login');
+  }
+});
+});  
 
 app.post('/editName', function(req, res){
 
