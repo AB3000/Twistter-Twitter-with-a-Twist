@@ -115,8 +115,17 @@ app.get('/settings', function(req, res) {
   });
   });
 
+  user.find(function(err, users) {
+    if (err) {
+        console.log(err);
+    } else {
+        res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password });
+        console.log(user);
+    }
+});
+});
 
-  app.get('/deleteUser', function(req, res) {
+app.get('/deleteUser', function(req, res) {
   try {
     user.findByIdAndRemove(req.params.studentid, function (err) {
         if (err) {
@@ -129,7 +138,20 @@ app.get('/settings', function(req, res) {
     console.log(err);
     res.render('./error');
 }    
-});  
+});
+
+app.get('/editName', function(req, res){
+  User.findByIdAndUpdate(req.params.studentid, 
+    {$set: {username:req.body.username}}, 
+    function(err, result){
+    if(err){
+        console.log(err);
+    }
+    console.log("RESULT: " + result);
+  });
+});
+
+
 
 var mongoose = require("mongoose");
 var passport = require("passport");
