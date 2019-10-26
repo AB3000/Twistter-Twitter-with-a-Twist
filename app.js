@@ -126,17 +126,24 @@ app.get('/deleteUser', function(req, res) {
     })
 } );  
 
-app.get('/editName', function(req, res){
+app.post('/editName', function(req, res){
+
+  console.log(req.body.uname);
   user.findByIdAndUpdate(req.session.userID, 
     {$set: {username:req.body.uname}}, 
     function(err){
     if(err){
         console.log(err);
     }
-    console.log(req.body.username);
-    
+    else 
+    {
+      req.session.username=req.body.uname;
+      res.redirect('/settings');
+    }
+     });
+
+
   });
-});
 
 
 var mongoose = require("mongoose");
