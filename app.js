@@ -116,9 +116,8 @@ app.get('/settings', function(req, res) {
   });
 
 
-  app.get('/deleteUser', function(req, res) {
-    console.log(req.session.userID);
-    user.findByIdAndRemove(req.session.userID, function (err) {
+app.get('/deleteUser', function(req, res) {
+    user.findByIdAndRemove(req.params.studentid, function (err) {
         if (err) {
             console.log(err);
         } else {
@@ -126,6 +125,18 @@ app.get('/settings', function(req, res) {
         }
     })
 } );  
+
+app.get('/editName', function(req, res){
+  User.findByIdAndUpdate(req.params.studentid, 
+    {$set: {username:req.body.username}}, 
+    function(err, result){
+    if(err){
+        console.log(err);
+    }
+    console.log("RESULT: " + result);
+  });
+});
+
 
 var mongoose = require("mongoose");
 var passport = require("passport");
