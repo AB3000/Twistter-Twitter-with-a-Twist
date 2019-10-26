@@ -117,7 +117,7 @@ app.get('/settings', function(req, res) {
 
 
 app.get('/deleteUser', function(req, res) {
-    user.findByIdAndRemove(req.params.studentid, function (err) {
+    user.findByIdAndRemove(req.session.userID, function (err) {
         if (err) {
             console.log(err);
         } else {
@@ -127,13 +127,14 @@ app.get('/deleteUser', function(req, res) {
 } );  
 
 app.get('/editName', function(req, res){
-  User.findByIdAndUpdate(req.params.studentid, 
-    {$set: {username:req.body.username}}, 
-    function(err, result){
+  user.findByIdAndUpdate(req.session.userID, 
+    {$set: {username:req.body.uname}}, 
+    function(err){
     if(err){
         console.log(err);
     }
-    console.log("RESULT: " + result);
+    console.log(req.body.username);
+    
   });
 });
 
@@ -154,6 +155,7 @@ mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twi
     console.log("Connected To Database");
   }
 });
+mongoose.set('useFindAndModify', false);
 
 
 //Login, Logout, Signup
