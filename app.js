@@ -141,8 +141,7 @@ app.post('/editName', function(req, res){
       res.redirect('/settings');
     }
      });
-
-
+     
   });
 
 
