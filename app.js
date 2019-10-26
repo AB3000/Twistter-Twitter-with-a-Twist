@@ -161,6 +161,26 @@ app.post('/editEmail', function(req, res){
        
 });
 
+app.post('/editPw', function(req, res){
+
+  console.log(req.body.pw);
+  //encrypting the password for storing in DB
+  encrypttedP = CryptoJS.SHA1(req.body.pw);
+  console.log(encrypttedP);
+  encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
+  user.findByIdAndUpdate(req.session.userID, 
+    {$set: {password:encrypttedP}}, function(err){
+      if(err){
+        console.log(err);
+      }
+      else 
+      {
+        req.session.password=req.body.pw; //displaying unencrypted password
+        res.redirect('/settings');
+      }
+  });
+       
+});
 
 var mongoose = require("mongoose");
 var passport = require("passport");
@@ -303,16 +323,6 @@ app.post("/posted", (req, res) => {
     likes: 0,
     dislikes: 0
 });
-
-// app.post("/settings", (req, res) => {
-//   encrypttedP = CryptoJS.SHA1(req.body.password);
-//   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
-//   var editedUser = new user({
-//     email: req.body.email,
-//     username: req.body.username,
-//     password: encrypttedP,
-//   });
-// });
 
   user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
   	if (!userData.topics.includes(req.body.topic)) {
