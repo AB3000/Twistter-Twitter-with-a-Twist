@@ -5,11 +5,11 @@ form {
     font-size: 15px;
   }
   
-  .radiobtn {
+  .checkbx {
     position: relative;
     display: block;
   }
-  .radiobtn label {
+  .checkbx label {
     display: block;
     background: #fee8c3;
     color: #444;
@@ -19,7 +19,7 @@ form {
     margin-bottom: 5px;
     cursor: pointer;
   }
-  .radiobtn label:after, .radiobtn label:before {
+  .checkbx label:after, .checkbx label:before {
     content: "";
     position: absolute;
     right: 11px;
@@ -29,7 +29,7 @@ form {
     border-radius: 3px;
     background: #fdcb77;
   }
-  .radiobtn label:before {
+  .checkbx label:before {
     background: transparent;
     transition: 0.1s width cubic-bezier(0.075, 0.82, 0.165, 1) 0s, 0.3s height cubic-bezier(0.075, 0.82, 0.165, 2) 0.1s;
     z-index: 2;
@@ -41,7 +41,7 @@ form {
     height: 0;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+);
   }
-  .radiobtn input[type="radio"] {
+  .checkbx input[type="checkbox"] {
     display: none;
     position: absolute;
     width: 100%;
@@ -49,7 +49,7 @@ form {
        -moz-appearance: none;
             appearance: none;
   }
-  .radiobtn input[type="radio"]:checked + label {
+  .checkbx input[type="checkbox"]:checked + label {
     background: #fdcb77;
     -webkit-animation-name: blink;
             animation-name: blink;
@@ -57,10 +57,10 @@ form {
             animation-duration: 1s;
     border-color: #fcae2c;
   }
-  .radiobtn input[type="radio"]:checked + label:after {
+  .checkbx input[type="checkbox"]:checked + label:after {
     background: #fcae2c;
   }
-  .radiobtn input[type="radio"]:checked + label:before {
+  .checkbx input[type="checkbox"]:checked + label:before {
     width: 20px;
     height: 20px;
   }
