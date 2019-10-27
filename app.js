@@ -94,6 +94,19 @@ app.get('/posted', function(req, res) {
 
 app.get('/display_personal', function(req, res) {
   app.locals.userIDejs = req.session.username;
+  var userTopics = ""
+  user.findOne({ username: req.session.username }, 'username topics', (err, document) => {
+    console.log(document);
+    if (document.topics===null) {
+      console.log("THIS IS NULL");
+        userTopics = "No topics to display"
+    } else {
+      console.log("NOT NULL");
+      userTopics = document.topics;
+    }
+      app.locals.finalUserTopics = userTopics;
+  });
+
   post.find(function(err, posts) {
     if (err) {
       console.log(err);

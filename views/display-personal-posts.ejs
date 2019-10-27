@@ -1,8 +1,26 @@
 <% include ../profile.html%>
+
+<link rel="stylesheet" href="../topics.css">
 <section>
   <div class="container py-3">
     <p class="container-text"><%="Hi " %><%=username %><%="! " %></p>
     <p class="container-text"><%="Your email id is: " %><%=email %></p>
+  </div>
+  <div>
+      <% if(finalUserTopics == "No topics to display") { %>
+        User has no topics.
+        
+        <% } else { %>
+      <form>
+          <% for(var i=finalUserTopics.length-1; i>=0;i--) { %>
+          <div class="radiobtn">
+            <input type="radio" id="huey"
+                   name="action"  />
+            <label for="huey"><%= finalUserTopics[i] %></label>
+          </div>   
+          <% } %>
+        </form>
+        <% } %>
   </div>
 </section>
 <% if(posts.length>0) { %>
