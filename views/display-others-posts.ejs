@@ -3,8 +3,10 @@
   <div class="container py-3">
   </div>
 </section>
+<% console.log("ejs called") %>
 <% if(posts.length>0) { %>
 <% for(var i=posts.length-1; i>=0;i--) { %>
+  <% console.log("posts[i] user is ", posts[i].user, 'userlineID is', userlineID) %>
 <% if(posts[i].user == userlineID) { %>
 <section>
   <div class="container py-3">

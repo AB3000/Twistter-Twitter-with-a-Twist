@@ -71,15 +71,15 @@ app.get('/id', function(req, res) {
       user_clicked_id = document.username;
       app.locals.userlineID = user_clicked_id;
       console.log('user_clicked_id is', app.locals.userlineID);
+      post.find(function(err, posts) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.render('display-others-posts', { posts: posts});
+        }
+      });
   });
   
-  post.find(function(err, posts) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('display-others-posts', { posts: posts});
-    }
-  });
 });
 
 app.get('/posted', function(req, res) {
