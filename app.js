@@ -67,8 +67,10 @@ app.get('/discover', function (req, res) {
 app.get('/id', function(req, res) {
   var user_clicked_id = ""
   var user_clicked = user.findOne({username: req.query.username}, function(err, document){
-      user_clicked_id = document._id;
+      // user_clicked_id = document._id;
+      user_clicked_id = document.username;
       app.locals.userlineID = user_clicked_id;
+      console.log('user_clicked_id is', app.locals.userlineID);
   });
   
   post.find(function(err, posts) {
