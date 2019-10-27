@@ -64,56 +64,56 @@ app.get('/discover', function (req, res) {
   }
 });
 
-app.get('/id', function(req, res) {
+app.get('/id', function (req, res) {
   var user_clicked_id = ""
-  var user_clicked = user.findOne({username: req.query.username}, function(err, document){
-      // user_clicked_id = document._id;
-      user_clicked_id = document.username;
-      app.locals.userlineID = user_clicked_id;
-      console.log('user_clicked_id is', app.locals.userlineID);
-      post.find(function(err, posts) {
-        if (err) {
-          console.log(err);
-        } else {
-          res.render('display-others-posts', { posts: posts});
-        }
-      });
+  var user_clicked = user.findOne({ username: req.query.username }, function (err, document) {
+    // user_clicked_id = document._id;
+    user_clicked_id = document.username;
+    app.locals.userlineID = user_clicked_id;
+    console.log('user_clicked_id is', app.locals.userlineID);
+    post.find(function (err, posts) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render('display-others-posts', { posts: posts });
+      }
+    });
   });
-  
+
 });
 
-app.get('/posted', function(req, res) {
-  post.find(function(err, posts) {
-      if (err) {
-          console.log(err);
-      } else {
-          res.render('display-posts', { posts: posts });
-          // console.log('posts are ', posts);
-      }
+app.get('/posted', function (req, res) {
+  post.find(function (err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('display-posts', { posts: posts });
+      // console.log('posts are ', posts);
+    }
   });
-  });
+});
 
 
-app.get('/display_personal', function(req, res) {
+app.get('/display_personal', function (req, res) {
   app.locals.userIDejs = req.session.username;
   var userTopics = ""
   user.findOne({ username: req.session.username }, 'username topics', (err, document) => {
     console.log(document);
-    if (document.topics===null) {
+    if (document.topics === null) {
       console.log("THIS IS NULL");
-        userTopics = "No topics to display"
+      userTopics = "No topics to display"
     } else {
       console.log("NOT NULL");
       userTopics = document.topics;
     }
-      app.locals.finalUserTopics = userTopics;
+    app.locals.finalUserTopics = userTopics;
   });
 
-  post.find(function(err, posts) {
+  post.find(function (err, posts) {
     if (err) {
       console.log(err);
     } else {
-      res.render('display-personal-posts', { posts: posts,email: req.session.email, username: req.session.username });
+      res.render('display-personal-posts', { posts: posts, email: req.session.email, username: req.session.username });
       // console.log(posts);
     }
   });
@@ -179,7 +179,7 @@ app.post("/signup", (req, res) => {
   var newUser = new user({
     email: e,
     username: u,
-    password: encrypttedP, 
+    password: encrypttedP,
     topics: []
   });
   //saving the new user to the database
@@ -231,10 +231,10 @@ app.post("/login", (req, res) => {
       //Redirect here!
       //Redirect to main posts page
       console.log("Login Successful")
-      req.session.email=req.body.email;
+      req.session.email = req.body.email;
       req.session.userID = userData._id;
-      req.session.username= userData.username;
-      req.session.posts= userData.posts;
+      req.session.username = userData.username;
+      req.session.posts = userData.posts;
       //console.log(userData.username);
       //console.log(req.session.userID);
       res.redirect('/posted');
@@ -260,10 +260,10 @@ app.post("/posted", (req, res) => {
   });
 
   user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
-  	if (!userData.topics.includes(req.body.topic)) {
-  		userData.topics.push(req.body.topic);
-    	userData.save();
-  	}
+    if (!userData.topics.includes(req.body.topic)) {
+      userData.topics.push(req.body.topic);
+      userData.save();
+    }
   });
 
   //console.log("newPost is", newPost);
