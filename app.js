@@ -108,9 +108,13 @@ app.get('/id', function (req, res) {
 
 app.get('/display_personal', function (req, res) {
   app.locals.userIDejs = req.session.username;
+  //THERE IS SOMETIMES AN ISSUE HERE WHERE THE DOCUMENT IS NULL
+  //IF IT IS NULL, THEN WE CAN RENDER A PAGE WHERE WE PROMPT THE USER TO LOGIN
+  //THIS HAPPENS WHEN I REFRESH THE PAGE
+  console.log("THE USER IS", app.locals.userIDejs);
   var userTopics = ""
   user.findOne({ username: req.session.username }, 'username topics', (err, document) => {
-    //THERE IS AN ISSUE HERE WHERE THE DOCUMENT IS NULL
+
     if (document.topics == null) {
       console.log("THIS IS NULL");
       userTopics = "No topics to display"
