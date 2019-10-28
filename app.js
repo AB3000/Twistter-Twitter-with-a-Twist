@@ -273,15 +273,15 @@ app.post("/like", (req, res) => {
     userData.interactions.forEach(function (post) {
       if (post.postID === req.body.id.toString()) {
         if (!post.disliked) {
-          console.log("CANT LIKE-------------------------------------------------");
-          console.log(post);
+          //console.log("CANT LIKE-------------------------------------------------");
+          //console.log(post);
           beenDisliked = post.disliked;
           alreadyInteracted = true;
         } else {
           //undo a dislike and like instead
           beenDisliked = post.disliked;
           alreadyInteracted = false;
-          console.log(post);
+          //console.log(post);
         }
         
       }
@@ -299,7 +299,7 @@ app.post("/like", (req, res) => {
         }
 
         postData.save();
-        console.log("LIKED----------------------------------");
+        //console.log("LIKED----------------------------------");
       });
     }
   });
@@ -318,14 +318,14 @@ app.post("/dislike", (req, res) => {
     userData.interactions.forEach(function (post) {
       if (post.postID === req.body.id.toString()) {
         if (!post.liked) {
-          console.log("CANT DISLIKE-------------------------------------------------");
-          console.log("TEST@: " + post);
+          //console.log("CANT DISLIKE-------------------------------------------------");
+          //console.log("TEST@: " + post);
           alreadyInteracted = true;
         } else {
           //undo a dislike and like instead
           beenLiked = post.liked;
           alreadyInteracted = false;
-          console.log("TEST: " + post);
+          //console.log("TEST: " + post);
         }
       }
     })
@@ -343,7 +343,7 @@ app.post("/dislike", (req, res) => {
         }
 
         postData.save();
-        console.log("DISLIKED---------------------------------");
+        //console.log("DISLIKED---------------------------------");
       });
     }
   });
