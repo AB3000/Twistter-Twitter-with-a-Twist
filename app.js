@@ -275,10 +275,12 @@ app.post("/like", (req, res) => {
         if (!post.disliked) {
           console.log("CANT LIKE-------------------------------------------------");
           console.log(post);
+          beenDisliked = post.disliked;
           alreadyInteracted = true;
         } else {
           //undo a dislike and like instead
           beenDisliked = post.disliked;
+          alreadyInteracted = false;
           console.log(post);
         }
         
@@ -288,7 +290,6 @@ app.post("/like", (req, res) => {
       //update user's liked posts
       userData.interactions.push(newInteraction);
       userData.save();
-
       //update the like count on the post
       post.findOne({ _id: req.body.id }, 'likes dislikes', (err, postData) => {
         postData.likes += 1;
@@ -323,6 +324,7 @@ app.post("/dislike", (req, res) => {
         } else {
           //undo a dislike and like instead
           beenLiked = post.liked;
+          alreadyInteracted = false;
           console.log("TEST: " + post);
         }
       }
