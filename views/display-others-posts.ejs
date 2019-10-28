@@ -1,6 +1,22 @@
 <% include ../profile.html%>
+<link rel="stylesheet" href="../topics.css">
 <section>
   <div class="container py-3">
+  </div>
+  <div>
+      <% if(userTopics == "No topics to display") { %>
+        User has no topics.
+        <% } else { %>
+      <form>
+          <% for(var i=userTopics.length-1; i>=0;i--) { %>
+          <div class="checkbx">
+            <input type="checkbox" id="huey_<%= i %>"
+                   name="action"  />
+            <label for="huey_<%= i %>"><%= userTopics[i] %></label>
+          </div>   
+          <% } %>
+        </form>
+        <% } %>
   </div>
 </section>
 <% console.log("ejs called") %>
