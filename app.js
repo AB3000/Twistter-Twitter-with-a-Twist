@@ -260,6 +260,95 @@ app.post("/posted", (req, res) => {
 
 });
 
+app.post("/like", (req, res) => {
+  user.findOne({ username: req.session.username }, 'interactions', (err, userData) => {
+    var newInteraction = {
+      postID: req.body.id.toString(), 
+      liked: true,
+      disliked: false
+    };
+    //check to see if user has already liked this post
+    var alreadyInteracted = false;
+    var beenDisliked = false;
+    userData.interactions.forEach(function (post) {
+      if (post.postID === req.body.id.toString()) {
+        if (!post.disliked) {
+          console.log("CANT LIKE-------------------------------------------------");
+          console.log(post);
+          beenDisliked = post.disliked;
+          alreadyInteracted = true;
+        } else {
+          //undo a dislike and like instead
+          beenDisliked = post.disliked;
+          alreadyInteracted = false;
+          console.log(post);
+        }
+        
+      }
+    })
+    if (!alreadyInteracted) {
+      //update user's liked posts
+      userData.interactions.push(newInteraction);
+      userData.save();
+      //update the like count on the post
+      post.findOne({ _id: req.body.id }, 'likes dislikes', (err, postData) => {
+        postData.likes += 1;
+        //if has been disliked, switch to a like
+        if (beenDisliked) {
+          postData.dislikes -= 1;
+        }
+
+        postData.save();
+        console.log("LIKED----------------------------------");
+      });
+    }
+  });
+});
+
+app.post("/dislike", (req, res) => {
+  user.findOne({ username: req.session.username }, 'interactions', (err, userData) => {
+    var newInteraction = {
+      postID: req.body.id.toString(), 
+      liked: false,
+      disliked: true
+    };
+    //check to see if user has already liked this post
+    var alreadyInteracted = false;
+    var beenLiked = false;
+    userData.interactions.forEach(function (post) {
+      if (post.postID === req.body.id.toString()) {
+        if (!post.liked) {
+          console.log("CANT DISLIKE-------------------------------------------------");
+          console.log("TEST@: " + post);
+          alreadyInteracted = true;
+        } else {
+          //undo a dislike and like instead
+          beenLiked = post.liked;
+          alreadyInteracted = false;
+          console.log("TEST: " + post);
+        }
+      }
+    })
+    if (!alreadyInteracted) {
+      //update user's liked posts
+      userData.interactions.push(newInteraction);
+      userData.save();
+
+      //update the like count on the post
+      post.findOne({ _id: req.body.id }, 'likes dislikes', (err, postData) => {
+        postData.dislikes += 1;
+        //if has been disliked, switch to a like
+        if (beenLiked) {
+          postData.likes -= 1;
+        }
+
+        postData.save();
+        console.log("DISLIKED---------------------------------");
+      });
+    }
+  });
+});
+
 module.exports = router
 
 app.listen(port, () => {
