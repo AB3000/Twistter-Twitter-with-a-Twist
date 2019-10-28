@@ -64,23 +64,7 @@ app.get('/discover', function (req, res) {
   }
 });
 
-app.get('/id', function (req, res) {
-  var user_clicked_id = ""
-  var user_clicked = user.findOne({ username: req.query.username }, function (err, document) {
-    // user_clicked_id = document._id;
-    user_clicked_id = document.username;
-    app.locals.userlineID = user_clicked_id;
-    console.log('user_clicked_id is', app.locals.userlineID);
-    post.find(function (err, posts) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.render('display-others-posts', { posts: posts });
-      }
-    });
-  });
 
-});
 
 app.get('/posted', function (req, res) {
   post.find(function (err, posts) {
@@ -94,12 +78,40 @@ app.get('/posted', function (req, res) {
 });
 
 
+app.get('/id', function (req, res) {
+  var user_clicked_id = ""
+  var userTopics = ""
+  var user_clicked = user.findOne({ username: req.query.username }, function (err, document) {
+    // user_clicked_id = document._id;
+    user_clicked_id = document.username;
+    app.locals.userlineID = user_clicked_id;
+    console.log('user_clicked_id is', app.locals.userlineID);
+    post.find(function (err, posts) {
+      if (err) {
+        console.log(err);
+      } else {
+        //get the user topics
+        if (document.topics === null) {
+          // console.log("THIS IS NULL");
+          userTopics = "No topics to display"
+        } else {
+          // console.log("NOT NULL");
+          userTopics = document.topics;
+          app.locals.userTopics = userTopics;
+        }
+        //pass in the user's posts and topics
+        res.render('display-others-posts', { posts: posts });
+      }
+    });
+  });
+});
+
 app.get('/display_personal', function (req, res) {
   app.locals.userIDejs = req.session.username;
   var userTopics = ""
   user.findOne({ username: req.session.username }, 'username topics', (err, document) => {
-    console.log(document);
-    if (document.topics === null) {
+    //THERE IS AN ISSUE HERE WHERE THE DOCUMENT IS NULL
+    if (document.topics == null) {
       console.log("THIS IS NULL");
       userTopics = "No topics to display"
     } else {
