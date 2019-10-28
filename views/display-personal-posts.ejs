@@ -7,8 +7,8 @@
     <p class="container-text"><%="Your email id is: " %><%=email %></p>
   </div>
   <div>
-      <% if(finalUserTopics == "No topics to display") { %>
-        User has no topics.
+      <% if(finalUserTopics.length == 0) { %>
+        <h1>User has no topics.</h1>
         <% } else { %>
       <form>
           <% for(var i=finalUserTopics.length-1; i>=0;i--) { %>

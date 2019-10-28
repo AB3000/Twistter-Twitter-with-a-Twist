@@ -92,10 +92,8 @@ app.get('/id', function (req, res) {
       } else {
         //get the user topics
         if (document.topics === null) {
-          // console.log("THIS IS NULL");
-          userTopics = "No topics to display"
+          userTopics = "";
         } else {
-          // console.log("NOT NULL");
           userTopics = document.topics;
           app.locals.userTopics = userTopics;
         }
@@ -117,7 +115,7 @@ app.get('/display_personal', function (req, res) {
 
     if (document.topics == null) {
       console.log("THIS IS NULL");
-      userTopics = "No topics to display"
+      userTopics = ""
     } else {
       console.log("NOT NULL");
       userTopics = document.topics;
