@@ -4,27 +4,23 @@
   <div class="container py-3">
   </div>
   <div>
-      <% console.log("userTopics is ", userTopics); %>
-      <% if(userTopics.length == 0) { %>
-        <% console.log("NO TOPICS HERE"); %>
-            <h1>User has no topics.</h1>
-        <% } else { %>
-      <form>
-          <% for(var i=userTopics.length-1; i>=0;i--) { %>
-          <div class="checkbx">
-            <input type="checkbox" id="huey_<%= i %>"
-                   name="action"  />
-            <label for="huey_<%= i %>"><%= userTopics[i] %></label>
-          </div>   
-          <% } %>
-        </form>
-        <% } %>
+    <% if(userTopics.length == 0) { %>
+    <h1>This user has no topics.</h1>
+    <% } else { %>
+    <form action="/user-followed" method="get">
+      <% for(var i=userTopics.length-1; i>=0;i--) { %>
+      <div class="checkbx">
+        <input type="checkbox" id="huey_<%= i %>" name="action" />
+        <label for="huey_<%= i %>"><%= userTopics[i] %></label>
+      </div>
+      <% } %>
+      <input type="submit" value="Follow This User" />
+    </form>
+    <% } %>
   </div>
 </section>
-<% console.log("ejs called") %>
 <% if(posts.length>0) { %>
 <% for(var i=posts.length-1; i>=0;i--) { %>
-  <% console.log("posts[i] user is ", posts[i].user, 'userlineID is', userlineID) %>
 <% if(posts[i].user == userlineID) { %>
 <section>
   <div class="container py-3">

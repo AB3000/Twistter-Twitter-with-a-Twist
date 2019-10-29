@@ -104,6 +104,11 @@ app.get('/id', function (req, res) {
   });
 });
 
+app.get('/user-followed', function (req, res) {
+  console.log("user followed successfully");
+  
+});
+
 app.get('/display_personal', function (req, res) {
   app.locals.userIDejs = req.session.username;
   //THERE IS SOMETIMES AN ISSUE HERE WHERE THE DOCUMENT IS NULL
