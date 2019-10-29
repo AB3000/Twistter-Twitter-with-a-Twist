@@ -24,6 +24,14 @@ let userSchema = new Schema({
       type: [String], 
       default: [], 
       required: true
+    }, 
+    following: {
+      type: [{
+        username: String,
+        topics: [String]
+      }], 
+      default: [], 
+      required: true
     }
 });
 
