@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 //added to also make username unique
 const uniqueValidator = require('mongoose-unique-validator');
+var ObjectId = mongoose.Schema.Types.ObjectId;
 const Schema = mongoose.Schema;
 
 //creating the user schema
@@ -32,6 +33,13 @@ let userSchema = new Schema({
       }], 
       default: [], 
       required: true
+    },
+    interactions: {
+      type: [{
+        postID: String, 
+        liked: Boolean,
+        disliked: Boolean
+      }]
     }
 });
 
