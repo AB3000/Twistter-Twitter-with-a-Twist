@@ -2,24 +2,16 @@
 <html>
 
 <head>
-    <title>Title of the document</title>
+    <title>Twistter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- bootstrap cards -->
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link rel="stylesheet" href="posts.css">
+    <!-- <link rel="stylesheet" href="posts.css"> -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <!-- <datalist id="topics">
-        <option value="Movies">
-        <option value="Outdoors">
-        <option value="Coding">
-        <option value="Art">
-        <option value="Ice Cream">
-    </datalist> -->
-    <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Twistter</a>
@@ -38,8 +30,8 @@
             <a class="nav-link" href="/discover">Discover Users</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="/settings">Settings</a>
-          </li>
+                <a class="nav-link" href="/settings">Settings</a>
+            </li>
           <li class="nav-item">
             <a class="nav-link" href="/login">Logout</a>
           </li>
@@ -51,9 +43,9 @@
 <br><br><br><br>
 </form>
     <section>
-        <form method="post" action="/posted">
+    
             <div class="container py-3">
-                <h4>Blog about what comes to your mind!</h4>
+                <h4>Account details!</h4>
                 <div class="card card-body mb-2" style="width: 52rem;">
                     <div class="row ">
                         <div class="col-md-8 px-3">
@@ -61,32 +53,42 @@
                                 <div class="form-group">
                                   <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1">Title</span>
+                                        <form method="post" action="/editName">
+                                      <span class="input-group-text" id="basic-addon1">Username</span>
                                     </div>
-                                    <input type="text" class="form-control input-lg" placeholder="Your Post Title!"  aria-describedby="basic-addon1" name="title">
+                                    <input type="text" class="form-control input-lg" aria-describedby="basic-addon1" name="uname" placeholder="<%=username %>">
+                                    <input class="btn btn-primary button-width" type="submit" value="Edit">
                                   </div>
+                                </form>
                                   <div class="input-group mb-3">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Post</span>
+                                        <form method="post" action="/editEmail">
+                                    <span class="input-group-text" id="basic-addon1">Email</span>
                                   </div>
-                                  <textarea type="text" class="form-control input-lg" placeholder="What would you like to share today?"  aria-describedby="basic-addon1" name="description"></textarea>
+                                  <input type="email" class="form-control input-lg" placeholder="<%=email %>"  aria-describedby="basic-addon1" name="email">
+                                  <input class="btn btn-primary button-width" type="submit" value="Edit">
                                 </div>
+                            </form>
                                 <div class="input-group mb-3">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Topic</span>
+                                        <form method="post" action="/editPw">
+                                    <span class="input-group-text" id="basic-addon1">Password</span>
                                   </div>
-                                  <input type="text" class="form-control input-lg" placeholder="Choose any topic for tagging your post!" aria-describedby="basic-addon1" name="topic">
+                                  <input type="password" class="form-control input-lg" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" aria-describedby="basic-addon1" name="pw">
+                                  <input class="btn btn-primary button-width" type="submit" value="Edit">
                                   </div>
-                                 <input class="btn btn-primary button-width" type="submit" value="Upload">
+                                </form>
+                                  <button type="button" class="btn btn-primary button-width">
+                                      <a style="color:white;" href="/deleteUser">Delete account</a>
+                              </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                   </div>
               </div>
-        </form>
     </section>
 </body>
-<script href = "/views/display-posts.ejs"></script>
+<script href = "/views/settings.ejs"></script>
 
 </html>

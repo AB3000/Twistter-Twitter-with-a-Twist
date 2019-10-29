@@ -104,6 +104,104 @@ app.get('/display_personal', function(req, res) {
   });
 });
 
+app.get('/settings', function(req, res) {
+    user.find(function(err, users) {
+      if (err) {
+          console.log(err);
+      } else {
+          res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password });
+          console.log(user);
+      }
+  });
+  });
+
+
+app.get('/deleteUser', function(req, res) {
+  post.find(function(err, posts) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(posts);
+      for(var i=0 ;i<posts.length; i++)
+    {
+      if(posts[i].user == req.session.username)
+      {
+        console.log(posts[i]);
+     post.findByIdAndRemove(posts[i]._id, function (err) {
+      if (err) {
+          console.log(err);
+      }
+    });
+  }
+    }
+  }
+});
+
+user.findByIdAndRemove(req.session.userID, function (err) {
+  if (err) {
+      console.log(err);
+  } else {
+  res.redirect('/login');
+  }
+});
+});  
+
+app.post('/editName', function(req, res){
+
+  console.log(req.body.uname);
+  user.findByIdAndUpdate(req.session.userID, 
+    {$set: {username:req.body.uname}}, 
+    function(err){
+    if(err){
+        console.log(err);
+    }
+    else 
+    {
+      req.session.username=req.body.uname;
+      res.redirect('/settings');
+    }
+     });
+
+  });
+
+app.post('/editEmail', function(req, res){
+
+  console.log(req.body.email);
+  user.findByIdAndUpdate(req.session.userID, 
+    {$set: {email:req.body.email}}, function(err){
+      if(err){
+        console.log(err);
+      }
+      else 
+      {
+        req.session.email=req.body.email;
+        res.redirect('/settings');
+      }
+  });
+       
+});
+
+app.post('/editPw', function(req, res){
+
+  console.log(req.body.pw);
+  //encrypting the password for storing in DB
+  encrypttedP = CryptoJS.SHA1(req.body.pw);
+  console.log(encrypttedP);
+  encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
+  user.findByIdAndUpdate(req.session.userID, 
+    {$set: {password:encrypttedP}}, function(err){
+      if(err){
+        console.log(err);
+      }
+      else 
+      {
+        req.session.password=req.body.pw; //displaying unencrypted password
+        res.redirect('/settings');
+      }
+  });
+       
+});
+
 var mongoose = require("mongoose");
 var passport = require("passport");
 var bodyParser = require("body-parser");
@@ -120,6 +218,7 @@ mongoose.connect('mongodb+srv://Twistter:CS30700!@twistter-dcrea.mongodb.net/Twi
     console.log("Connected To Database");
   }
 });
+mongoose.set('useFindAndModify', false);
 
 
 //Login, Logout, Signup
@@ -220,6 +319,7 @@ app.post("/login", (req, res) => {
       req.session.userID = userData._id;
       req.session.username= userData.username;
       req.session.posts= userData.posts;
+      req.session.password = p;
       //console.log(userData.username);
       //console.log(req.session.userID);
       res.redirect('/posted');
@@ -242,7 +342,7 @@ app.post("/posted", (req, res) => {
     user: req.session.username,
     likes: 0,
     dislikes: 0
-  });
+});
 
   user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
   	if (!userData.topics.includes(req.body.topic)) {
