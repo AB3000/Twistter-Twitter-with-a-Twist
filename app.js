@@ -105,8 +105,42 @@ app.get('/id', function (req, res) {
 });
 
 app.get('/user-followed', function (req, res) {
-  console.log("user followed successfully");
-  
+  // console.log('req is', req);
+  // console.log('req topics are ', req.query.topics);
+  // console.log('req username is ', req.query.user_followed);
+  user.findOne({ username: req.session.username }, 'following', (err, userData) => {
+
+    var userExists = false;
+    //check if person is already following user
+    userData.following.forEach(function (following_person) {
+        if(following_person.username == req.query.user_followed){
+          userExists = true;
+          console.log("person already follows user");
+          return
+        }
+    });
+
+    //if person is not following user, add them
+    if(!userExists){
+      var newFollowing = {
+        username: req.query.user_followed,
+        topics: req.query.topics,
+      };
+      userData.following.push(newFollowing);
+      userData.save();
+      console.log("user added successfully");
+    } else {
+      //check if person followed new topics from this user 
+      
+      //if yes, then add/remove topics
+
+      //otherwise, don't do anything 
+    }
+
+  });
+
+
+
 });
 
 app.get('/display_personal', function (req, res) {
@@ -297,7 +331,7 @@ app.post("/posted", (req, res) => {
 app.post("/like", (req, res) => {
   user.findOne({ username: req.session.username }, 'interactions', (err, userData) => {
     var newInteraction = {
-      postID: req.body.id.toString(), 
+      postID: req.body.id.toString(),
       liked: true,
       disliked: false
     };
@@ -317,7 +351,7 @@ app.post("/like", (req, res) => {
           alreadyInteracted = false;
           //console.log(post);
         }
-        
+
       }
     })
     if (!alreadyInteracted) {
@@ -342,7 +376,7 @@ app.post("/like", (req, res) => {
 app.post("/dislike", (req, res) => {
   user.findOne({ username: req.session.username }, 'interactions', (err, userData) => {
     var newInteraction = {
-      postID: req.body.id.toString(), 
+      postID: req.body.id.toString(),
       liked: false,
       disliked: true
     };
