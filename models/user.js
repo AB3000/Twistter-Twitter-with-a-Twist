@@ -26,20 +26,19 @@ let userSchema = new Schema({
       default: [], 
       required: true
     }, 
-    following: {
-      type: [{
-        username: String,
-        topics: [String]
-      }], 
-      default: [], 
-      required: true
-    },
     interactions: {
       type: [{
         postID: String, 
         liked: Boolean,
         disliked: Boolean
       }]
+    }, 
+    following: {
+      type: [{
+        username: String,
+        topics: [String]
+      }], 
+      default: [] 
     }
 });
 
