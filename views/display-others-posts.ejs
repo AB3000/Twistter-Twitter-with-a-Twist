@@ -9,6 +9,7 @@
     <% if(userTopics.length == 0) { %>
     <h1>This user has no topics.</h1>
     <% } else { %>
+      <h3>Choose topics you would like to follow from this user:</h3>
     <form action="/user-followed" method="get">
       <input type="hidden" name="user_followed" value="<%= userlineID %>" />
       <% userTopics.forEach(topic => {  %>
