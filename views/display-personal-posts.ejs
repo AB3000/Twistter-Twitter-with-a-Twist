@@ -5,6 +5,7 @@
   <div class="container py-3">
     <p class="container-text"><%="Hi " %><%=username %><%="! " %></p>
     <p class="container-text"><%="Your email id is: " %><%=email %></p>
+    <p class="container-text"><%="Head to the settings page if you would like to change your username, email or password!"%></p>
   </div>
   <div>
       <% if(finalUserTopics.length == 0) { %>
@@ -34,8 +35,17 @@
           <br>
           <p class="card-text"><%= posts[i].description %></p>
           <p class="card-title">topic: <%= posts[i].topic%></p>
-          <a href="#" class="btn btn-primary">Like</a>
-          <a href="#" class="btn btn-primary">Dislike</a>
+          <p class="card-title">likes: <%= posts[i].likes%></p>
+          <p class="card-title">dislikes: <%= posts[i].dislikes%></p>
+          <form method="post" action="/like">
+            <input type="hidden" name="id" value=<%= posts[i]._id%>>
+            <input class="btn btn-primary button-width" type="submit" value="Like">
+          </form>
+
+          <form method="post" action="/dislike">
+            <input type="hidden" name="id" value=<%= posts[i]._id%>>
+            <input class="btn btn-primary button-width" type="submit" value="Dislike">
+          </form>
         </div>
       </div>
     </div>
