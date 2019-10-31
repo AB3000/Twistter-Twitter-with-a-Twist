@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="../topics.css">
 <section>
   <div class="container py-3">
-      <p class="container-text"><%=userlineID %><%="'s Profile" %></p>
   </div>
   <div>
     <% if(userTopics.length == 0) { %>
@@ -17,10 +16,19 @@
       <% } %> -->
       <input type="hidden" name="user_followed" value="<%= userlineID %>"/>
       <% userTopics.forEach(topic => { %>
+        <% if(currUserTopicFollows.includes(topic)) { %>
         <div class="checkbx">
-          <input type="checkbox" id="huey_<%= topic %>" name="topics" value="<%= topic %>"/>
+          <input type="checkbox" id="huey_<%= topic %>" name="topics" value="<%= topic %>" checked
+          />
            <label for="huey_<%= topic %>"><%= topic%></label>
       </div>
+      <% } else { %>
+        <div class="checkbx">
+          <input type="checkbox" id="huey_<%= topic %>" name="topics" value="<%= topic %>"
+          />
+           <label for="huey_<%= topic %>"><%= topic%></label>
+      </div>
+        <% } %>
       <% }); %>
       <input type="submit" value="Follow This User"/>
     </form>
