@@ -592,6 +592,7 @@ app.post("/like", (req, res) => {
         //console.log("LIKED----------------------------------");
       });
     }
+    res.redirect('/posted');
   });
 });
 
@@ -636,6 +637,7 @@ app.post("/dislike", (req, res) => {
         //console.log("DISLIKED---------------------------------");
       });
     }
+    res.redirect('/posted');
   });
 });
 
