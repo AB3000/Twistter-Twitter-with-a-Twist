@@ -9,12 +9,6 @@
     <h1>This user has no topics.</h1>
     <% } else { %>
     <form action="/user-followed" method="get">
-      <!-- <% for(var i=userTopics.length-1; i>=0;i--) { %>
-      <div class="checkbx">
-        <input type="checkbox" id="huey_<%= i %>" name="action" />
-        <label for="huey_<%= i %>"><%= userTopics[i] %></label>
-      </div>
-      <% } %> -->
       <input type="hidden" name="user_followed" value="<%= userlineID %>"/>
       <% userTopics.forEach(topic => { %>
         <div class="checkbx">

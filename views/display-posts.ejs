@@ -13,6 +13,8 @@
               <p class="card-title">topic: <%= posts[i].topic%></p>
               <p class="card-title">likes: <%= posts[i].likes%></p>
               <p class="card-title">dislikes: <%= posts[i].dislikes%></p>
+              <p class="card-title">date: <%= posts[i].date%></p>
+              <p class="card-title">username: <%= posts[i].user%></p>
 
               <form method="post" action="/like">
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>

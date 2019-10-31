@@ -80,35 +80,47 @@ app.get('/posted', function (req, res) {
       user.findOne({ username: req.session.username }, 'following', (err, userData) => {
         console.log("following array of logged in user ", userData.following);
         filtering_criteria = userData.following;
-      });
-
-      post.find(function (err, posts) {
-        //for the user...
-        console.log('first part is ', filtering_criteria[0].username);
-        var users = filtering_criteria.map(function (value) {
-          return value.username;
-        });
-        console.log("all users are ", users);
-
-        for (var i = 0; i < posts.length; i++) {
-          //see if posts username matches and one of the topics match for each post
-          var index = -1;
-          if (users.indexOf(posts[i].user) !== -1) {
-            index = users.indexOf(posts[i].user);
-            if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
-              console.log("here, post found");
-              filtered_posts.push(posts[i]);
+        post.find(function (err, posts) {
+          //for the user...
+          console.log('first part is ', filtering_criteria[0].username);
+          var users = filtering_criteria.map(function (value) {
+            return value.username;
+          });
+          console.log("all users are ", users);
+  
+          for (var i = 0; i < posts.length; i++) {
+            //see if posts username matches and one of the topics match for each post
+            var index = -1;
+            if (users.indexOf(posts[i].user) !== -1) {
+              index = users.indexOf(posts[i].user);
+              if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
+                console.log("here, post found");
+                filtered_posts.push(posts[i]);
+              }
             }
+  
           }
-
-        }
-
-        console.log('posts are ', filtered_posts);
-        res.render('display-posts', { posts: filtered_posts });
-
+          
+          
+          // const ordered_filtered_posts = {};
+          // Object.keys(filtered_posts).sort().forEach(function(key) {
+          //   ordered[key] = unordered[key];
+          // });
+          filtered_posts.sort(function(a, b){
+            var keyA = new Date(a.date),
+                keyB = new Date(b.date);
+            // Compare the 2 dates
+            if(keyA < keyB) return -1;
+            if(keyA > keyB) return 1;
+            return 0;
+          });
+          console.log('posts are ', filtered_posts);
+          res.render('display-posts', { posts: filtered_posts });
+  
+        });
       });
 
-      // console.log('posts are ', posts);
+
     }
   });
 });
