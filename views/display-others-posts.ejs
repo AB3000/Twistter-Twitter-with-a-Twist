@@ -12,7 +12,7 @@
       <input type="hidden" name="user_followed" value="<%= userlineID %>"/>
       <% userTopics.forEach(topic => { %>
         <div class="checkbx">
-          <input type="checkbox" id="huey_<%= topic %>" name="topics" value="<%= topic %>"/>
+          <input type="checkbox" id="huey_<%= topic %>" name="topics" value="<%= topic %>" checked=true/>
            <label for="huey_<%= topic %>"><%= topic%></label>
       </div>
       <% }); %>
