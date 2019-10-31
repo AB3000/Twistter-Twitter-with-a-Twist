@@ -64,41 +64,169 @@ app.get('/discover', function (req, res) {
   }
 });
 
-app.get('/id', function(req, res) {
-  var user_clicked_id = ""
-  var user_clicked = user.findOne({username: req.query.username}, function(err, document){
-      user_clicked_id = document._id;
-      app.locals.userlineID = user_clicked_id;
-  });
-  
-  post.find(function(err, posts) {
+
+
+app.get('/posted', function (req, res) {
+  post.find(function (err, posts) {
     if (err) {
       console.log(err);
     } else {
-      res.render('display-others-posts', { posts: posts});
+      res.render('display-posts', { posts: posts });
+      // console.log('posts are ', posts);
     }
   });
 });
 
-app.get('/posted', function(req, res) {
-  post.find(function(err, posts) {
+
+app.get('/id', function (req, res) {
+  var user_clicked_id = ""
+  var userTopics = ""
+  var followedTopics = "";
+  var user_clicked = user.findOne({ username: req.query.username }, function (err, document) {
+    // user_clicked_id = document._id;
+    user_clicked_id = document.username;
+    app.locals.userlineID = user_clicked_id;
+    console.log('user_clicked_id is', app.locals.userlineID);
+   
+    // //will find current user's topic list for the selected user (req.qeury.username)
+    // user.findOne({ username: req.session.username }, 'following', (err, document) => {
+    //     var followIndex = "";
+
+    //     if (document.following == null) {
+    //       followedTopics = ""
+    //     } else {
+    //     for (var m = 0; m < document.following.length; m++) {
+    //       console.log(document.following[m].username);
+    //       console.log(req.query.username);
+    //       if (document.following[m].username == req.query.username) {
+    //         followIndex = m;
+    //         break;
+    //       }
+    //     }
+    //     if (document.following[m].topics == null) {
+    //       followedTopics = "";
+    //     } else {
+    //     followedTopics = document.following[m].topics;
+    //     }
+    // }
+    //   app.locals.currUserTopicFollows = followedTopics;
+    // }); //end of finding topic list
+
+    post.find(function (err, posts) {
       if (err) {
-          console.log(err);
+        console.log(err);
       } else {
-          res.render('display-posts', { posts: posts });
-          // console.log('posts are ', posts);
+        //get the user topics
+        if (document.topics === null) {
+          userTopics = "";
+        } else {
+          userTopics = document.topics;
+          app.locals.userTopics = userTopics;
+        }
+        
+
+        //pass in the user's posts and topics
+        res.render('display-others-posts', { posts: posts });
       }
+    });
   });
+});
+
+app.get('/user-followed', function (req, res) {
+  // console.log('req is', req);
+  // console.log('req topics are ', req.query.topics);
+  // console.log('req username is ', req.query.user_followed);
+  user.findOne({ username: req.session.username }, 'following', (err, userData) => {
+
+    var userExists = false;
+    //check if person is already following user
+    userData.following.forEach(function (following_person) {
+        if(following_person.username == req.query.user_followed){
+          userExists = true;
+          console.log("person already follows user");
+
+            //clears whole user-topic list for specified user and updates with new followed topics
+            var j, k, l;
+            //loop for finding user in user-topic
+            for (j = 0; j < userData.following.length; j++) {
+              //once user is found, delete all topics from list
+              if (userData.following[j].username == req.query.user_followed) {
+
+                if (req.query.topics == null) {
+                  if (j > -1) {
+                    userData.following.splice(j, 1);
+                    console.log('SPLICING');
+                  }
+                } else {
+                    console.log(userData.following[j].username + '=' + req.query.user_followed);
+                    console.log(j);
+                    var topicSize = userData.following[j].topics.length
+                    for (k = 0 ; k < topicSize; k++) {
+                    userData.following[j].topics.pop();
+                 }
+                 break;
+                }//end else
+              }
+            }
+               /* req.query.topics is a String if only one topic is selected
+                  for following. Else, it is of type Array */
+              if (req.query.topics != null) {
+              if (Object.getPrototypeOf(req.query.topics) === String.prototype) {
+                  userData.following[j].topics.push(req.query.topics);
+              } else {
+                for (l = 0; l < req.query.topics.length; l++) {
+                  userData.following[j].topics.push(req.query.topics[l]);
+                }
+              }
+             // console.log(userData.following[j].topics);
+            }
+              userData.save();
+        }
+    });
+
+    //if person is not following user, add them
+    if(!userExists){
+      var newFollowing = {
+        username: req.query.user_followed,
+        topics: req.query.topics,
+      };
+      userData.following.push(newFollowing);
+      userData.save();
+      console.log("user added successfully");
+    } 
+
+    res.redirect(req.get('referer'));
+
   });
 
 
-app.get('/display_personal', function(req, res) {
+
+});
+
+app.get('/display_personal', function (req, res) {
   app.locals.userIDejs = req.session.username;
-  post.find(function(err, posts) {
+  //THERE IS SOMETIMES AN ISSUE HERE WHERE THE DOCUMENT IS NULL
+  //IF IT IS NULL, THEN WE CAN RENDER A PAGE WHERE WE PROMPT THE USER TO LOGIN
+  //THIS HAPPENS WHEN I REFRESH THE PAGE
+  console.log("THE USER IS", app.locals.userIDejs);
+  var userTopics = ""
+  user.findOne({ username: req.session.username }, 'username topics', (err, document) => {
+console.log()
+    if (document.topics == null) {
+      console.log("THIS IS NULL");
+      userTopics = ""
+    } else {
+      console.log("NOT NULL");
+      userTopics = document.topics;
+    }
+    app.locals.finalUserTopics = userTopics;
+  });
+
+  post.find(function (err, posts) {
     if (err) {
       console.log(err);
     } else {
-      res.render('display-personal-posts', { posts: posts,email: req.session.email, username: req.session.username });
+      res.render('display-personal-posts', { posts: posts, email: req.session.email, username: req.session.username });
       // console.log(posts);
     }
   });
@@ -263,7 +391,7 @@ app.post("/signup", (req, res) => {
   var newUser = new user({
     email: e,
     username: u,
-    password: encrypttedP, 
+    password: encrypttedP,
     topics: []
   });
   //saving the new user to the database
@@ -315,7 +443,7 @@ app.post("/login", (req, res) => {
       //Redirect here!
       //Redirect to main posts page
       console.log("Login Successful")
-      req.session.email=req.body.email;
+      req.session.email = req.body.email;
       req.session.userID = userData._id;
       req.session.username= userData.username;
       req.session.posts= userData.posts;
@@ -345,10 +473,10 @@ app.post("/posted", (req, res) => {
 });
 
   user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
-  	if (!userData.topics.includes(req.body.topic)) {
-  		userData.topics.push(req.body.topic);
-    	userData.save();
-  	}
+    if (!userData.topics.includes(req.body.topic)) {
+      userData.topics.push(req.body.topic);
+      userData.save();
+    }
   });
 
   //console.log("newPost is", newPost);
@@ -363,7 +491,7 @@ app.post("/posted", (req, res) => {
 app.post("/like", (req, res) => {
   user.findOne({ username: req.session.username }, 'interactions', (err, userData) => {
     var newInteraction = {
-      postID: req.body.id.toString(), 
+      postID: req.body.id.toString(),
       liked: true,
       disliked: false
     };
@@ -385,7 +513,7 @@ app.post("/like", (req, res) => {
           //res.redirect('/posted');
           //console.log(post);
         }
-        
+
       }
     })
     if (!alreadyInteracted) {
@@ -412,7 +540,7 @@ app.post("/like", (req, res) => {
 app.post("/dislike", (req, res) => {
   user.findOne({ username: req.session.username }, 'interactions', (err, userData) => {
     var newInteraction = {
-      postID: req.body.id.toString(), 
+      postID: req.body.id.toString(),
       liked: false,
       disliked: true
     };

@@ -32,6 +32,13 @@ let userSchema = new Schema({
         liked: Boolean,
         disliked: Boolean
       }]
+    }, 
+    following: {
+      type: [{
+        username: String,
+        topics: [String]
+      }], 
+      default: [] 
     }
 });
 
