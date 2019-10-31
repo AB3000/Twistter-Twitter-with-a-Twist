@@ -484,6 +484,9 @@ app.post("/posted", (req, res) => {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
   })
+
+  //send the filtered version of posts to ejs 
+  
   res.status(204).send();
 
 });
