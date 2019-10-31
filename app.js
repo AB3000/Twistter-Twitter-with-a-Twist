@@ -136,30 +136,6 @@ app.get('/id', function (req, res) {
     app.locals.userlineID = user_clicked_id;
     console.log('user_clicked_id is', app.locals.userlineID);
 
-    // //will find current user's topic list for the selected user (req.qeury.username)
-    // user.findOne({ username: req.session.username }, 'following', (err, document) => {
-    //     var followIndex = "";
-
-    //     if (document.following == null) {
-    //       followedTopics = ""
-    //     } else {
-    //     for (var m = 0; m < document.following.length; m++) {
-    //       console.log(document.following[m].username);
-    //       console.log(req.query.username);
-    //       if (document.following[m].username == req.query.username) {
-    //         followIndex = m;
-    //         break;
-    //       }
-    //     }
-    //     if (document.following[m].topics == null) {
-    //       followedTopics = "";
-    //     } else {
-    //     followedTopics = document.following[m].topics;
-    //     }
-    // }
-    //   app.locals.currUserTopicFollows = followedTopics;
-    // }); //end of finding topic list
-
     post.find(function (err, posts) {
       if (err) {
         console.log(err);
