@@ -81,11 +81,37 @@ app.get('/posted', function (req, res) {
 app.get('/id', function (req, res) {
   var user_clicked_id = ""
   var userTopics = ""
+  var followedTopics = "";
   var user_clicked = user.findOne({ username: req.query.username }, function (err, document) {
     // user_clicked_id = document._id;
     user_clicked_id = document.username;
     app.locals.userlineID = user_clicked_id;
     console.log('user_clicked_id is', app.locals.userlineID);
+   
+    // //will find current user's topic list for the selected user (req.qeury.username)
+    // user.findOne({ username: req.session.username }, 'following', (err, document) => {
+    //     var followIndex = "";
+
+    //     if (document.following == null) {
+    //       followedTopics = ""
+    //     } else {
+    //     for (var m = 0; m < document.following.length; m++) {
+    //       console.log(document.following[m].username);
+    //       console.log(req.query.username);
+    //       if (document.following[m].username == req.query.username) {
+    //         followIndex = m;
+    //         break;
+    //       }
+    //     }
+    //     if (document.following[m].topics == null) {
+    //       followedTopics = "";
+    //     } else {
+    //     followedTopics = document.following[m].topics;
+    //     }
+    // }
+    //   app.locals.currUserTopicFollows = followedTopics;
+    // }); //end of finding topic list
+
     post.find(function (err, posts) {
       if (err) {
         console.log(err);
@@ -97,6 +123,8 @@ app.get('/id', function (req, res) {
           userTopics = document.topics;
           app.locals.userTopics = userTopics;
         }
+        
+
         //pass in the user's posts and topics
         res.render('display-others-posts', { posts: posts });
       }
@@ -116,7 +144,43 @@ app.get('/user-followed', function (req, res) {
         if(following_person.username == req.query.user_followed){
           userExists = true;
           console.log("person already follows user");
-          return
+
+            //clears whole user-topic list for specified user and updates with new followed topics
+            var j, k, l;
+            //loop for finding user in user-topic
+            for (j = 0; j < userData.following.length; j++) {
+              //once user is found, delete all topics from list
+              if (userData.following[j].username == req.query.user_followed) {
+
+                if (req.query.topics == null) {
+                  if (j > -1) {
+                    userData.following.splice(j, 1);
+                    console.log('SPLICING');
+                  }
+                } else {
+                    console.log(userData.following[j].username + '=' + req.query.user_followed);
+                    console.log(j);
+                    var topicSize = userData.following[j].topics.length
+                    for (k = 0 ; k < topicSize; k++) {
+                    userData.following[j].topics.pop();
+                 }
+                 break;
+                }//end else
+              }
+            }
+               /* req.query.topics is a String if only one topic is selected
+                  for following. Else, it is of type Array */
+              if (req.query.topics != null) {
+              if (Object.getPrototypeOf(req.query.topics) === String.prototype) {
+                  userData.following[j].topics.push(req.query.topics);
+              } else {
+                for (l = 0; l < req.query.topics.length; l++) {
+                  userData.following[j].topics.push(req.query.topics[l]);
+                }
+              }
+             // console.log(userData.following[j].topics);
+            }
+              userData.save();
         }
     });
 
@@ -129,13 +193,9 @@ app.get('/user-followed', function (req, res) {
       userData.following.push(newFollowing);
       userData.save();
       console.log("user added successfully");
-    } else {
-      //check if person followed new topics from this user 
-      
-      //if yes, then add/remove topics
+    } 
 
-      //otherwise, don't do anything 
-    }
+    res.redirect(req.get('referer'));
 
   });
 
@@ -151,7 +211,7 @@ app.get('/display_personal', function (req, res) {
   console.log("THE USER IS", app.locals.userIDejs);
   var userTopics = ""
   user.findOne({ username: req.session.username }, 'username topics', (err, document) => {
-
+console.log()
     if (document.topics == null) {
       console.log("THIS IS NULL");
       userTopics = ""
