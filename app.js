@@ -80,79 +80,51 @@ app.get('/posted', function (req, res) {
       user.findOne({ username: req.session.username }, 'following', (err, userData) => {
         console.log("following array of logged in user ", userData.following);
         filtering_criteria = userData.following;
-        post.find(function (err, posts) {
-          //for the user...
-          console.log('first part is ', filtering_criteria[0].username);
-          var users = filtering_criteria.map(function (value) {
-            return value.username;
-          });
-          console.log("all users are ", users);
-  
-          for (var i = 0; i < posts.length; i++) {
-            //see if posts username matches and one of the topics match for each post
-            var index = -1;
-            if (users.indexOf(posts[i].user) !== -1) {
-              index = users.indexOf(posts[i].user);
-              if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
-                console.log("here, post found");
-                filtered_posts.push(posts[i]);
+
+        if (userData.following.length == 0) {
+          res.render('display-posts', { posts: [] });
+        } else {
+          post.find(function (err, posts) {
+            //for the user...
+            console.log('first part is ', filtering_criteria[0].username);
+            var users = filtering_criteria.map(function (value) {
+              return value.username;
+            });
+            console.log("all users are ", users);
+
+            for (var i = 0; i < posts.length; i++) {
+              //see if posts username matches and one of the topics match for each post
+              var index = -1;
+              if (users.indexOf(posts[i].user) !== -1) {
+                index = users.indexOf(posts[i].user);
+                if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
+                  console.log("here, post found");
+                  filtered_posts.push(posts[i]);
+                }
               }
+
             }
-  
-          }
-          
-          
-          // const ordered_filtered_posts = {};
-          // Object.keys(filtered_posts).sort().forEach(function(key) {
-          //   ordered[key] = unordered[key];
-          // });
-          filtered_posts.sort(function(a, b){
-            var keyA = new Date(a.date),
+
+
+            filtered_posts.sort(function (a, b) {
+              var keyA = new Date(a.date),
                 keyB = new Date(b.date);
-            // Compare the 2 dates
-            if(keyA < keyB) return -1;
-            if(keyA > keyB) return 1;
-            return 0;
+              // Compare the 2 dates
+              if (keyA < keyB) return -1;
+              if (keyA > keyB) return 1;
+              return 0;
+            });
+            console.log('posts are ', filtered_posts);
+            res.render('display-posts', { posts: filtered_posts });
+
           });
-          console.log('posts are ', filtered_posts);
-          res.render('display-posts', { posts: filtered_posts });
-  
-        });
+        }
       });
 
 
+
+
     }
-  });
-});
-
-
-app.get('/id', function (req, res) {
-  var user_clicked_id = ""
-  var userTopics = ""
-  var followedTopics = "";
-  var user_clicked = user.findOne({ username: req.query.username }, function (err, document) {
-    // user_clicked_id = document._id;
-    user_clicked_id = document.username;
-    app.locals.userlineID = user_clicked_id;
-    console.log('user_clicked_id is', app.locals.userlineID);
-
-    post.find(function (err, posts) {
-      if (err) {
-        console.log(err);
-      } else {
-        //get the user topics
-        if (document.topics === null) {
-          userTopics = "";
-        } else {
-          userTopics = document.topics;
-          app.locals.userTopics = userTopics;
-        }
-
-
-        //pass in the user's posts and topics
-        res.render('display-others-posts', { posts: posts });
-      }
-    });
   });
 });
 
@@ -219,13 +191,81 @@ app.get('/user-followed', function (req, res) {
       console.log("user added successfully");
     }
 
-    res.redirect(req.get('referer'));
+    //redirect them to the timeline instead
+    res.redirect('/posted');
 
   });
 
-
-
 });
+
+app.get('/id', function (req, res) {
+  var user_clicked_id = ""
+  var userTopics = ""
+  var followedTopics = "";
+
+  //represents the current topics the logged-in user is following from the viewed user 
+  var checked = []
+
+  var user_clicked = user.findOne({ username: req.query.username }, function (err, document) {
+    // user_clicked_id = document._id;
+    user_clicked_id = document.username;
+    app.locals.userlineID = user_clicked_id;
+    console.log('user_clicked_id is', app.locals.userlineID);
+
+    //get all the users
+    user.findOne({ username: req.session.username }, 'following', (err, userData) => {
+      var following_users = userData.following.map(function (value) {
+        return value.username;
+      });
+      var index = following_users.indexOf(user_clicked_id);
+
+      //get array of topics user follows from viewed user
+      var following_topics_user = userData.following.map(function (value) {
+        return value.topics;
+      });
+
+      console.log("following_topics_user is", following_topics_user);
+
+      topic_followed = [];
+      if (index != -1) { //logged-in user follows no topics from viewed user
+
+        for (var i = 0; i < document.topics.length; i++) {
+          if (following_topics_user[index].indexOf(document.topics[i]) != -1) { //user follows topic
+            topic_followed[i] = true;
+          } else { //user does not follow topic
+            topic_followed[i] = false;
+          }
+        }
+      } else { //user follows no topics from viewed user
+        console.log("IN HERE, DON'T FOLLOW ANYTHING"); 
+        var arraySize = document.topics.length;
+        while(arraySize--) 
+        topic_followed.push(false);
+      }
+
+      app.locals.topic_followed = topic_followed;
+      post.find(function (err, posts) {
+        if (err) {
+          console.log(err);
+        } else {
+          //get the user topics
+          if (document.topics === null) {
+            userTopics = "";
+          } else {
+            userTopics = document.topics;
+            app.locals.userTopics = userTopics;
+          }
+          //pass in the user's posts and topics
+          res.render('display-others-posts', { posts: posts});
+        }
+      });
+    });
+
+
+  });
+});
+
+
 
 app.get('/display_personal', function (req, res) {
   app.locals.userIDejs = req.session.username;
@@ -244,16 +284,17 @@ app.get('/display_personal', function (req, res) {
       userTopics = document.topics;
     }
     app.locals.finalUserTopics = userTopics;
+    post.find(function (err, posts) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render('display-personal-posts', { posts: posts, email: req.session.email, username: req.session.username });
+        // console.log(posts);
+      }
+    });
   });
 
-  post.find(function (err, posts) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('display-personal-posts', { posts: posts, email: req.session.email, username: req.session.username });
-      // console.log(posts);
-    }
-  });
+
 });
 
 app.get('/settings', function (req, res) {
