@@ -71,6 +71,7 @@ app.get('/posted', function (req, res) {
     if (err) {
       console.log(err);
     } else {
+        //send the filtered version of posts to ejs 
       res.render('display-posts', { posts: posts });
       // console.log('posts are ', posts);
     }
@@ -484,6 +485,8 @@ app.post("/posted", (req, res) => {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
   })
+
+
   res.status(204).send();
 
 });
