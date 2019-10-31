@@ -2,27 +2,28 @@
 <link rel="stylesheet" href="../topics.css">
 <section>
   <div class="container py-3">
-      <p class="container-text"><%=userlineID %><%="'s Profile" %></p>
+    <p class="container-text"><%=userlineID %><%="'s Profile" %></p>
   </div>
   <div>
+    <% var count = 0%>
     <% if(userTopics.length == 0) { %>
     <h1>This user has no topics.</h1>
     <% } else { %>
+      <h3>Choose topics you would like to follow from this user:</h3>
     <form action="/user-followed" method="get">
-      <!-- <% for(var i=userTopics.length-1; i>=0;i--) { %>
+      <input type="hidden" name="user_followed" value="<%= userlineID %>" />
+      <% userTopics.forEach(topic => {  %>
       <div class="checkbx">
-        <input type="checkbox" id="huey_<%= i %>" name="action" />
-        <label for="huey_<%= i %>"><%= userTopics[i] %></label>
-      </div>
-      <% } %> -->
-      <input type="hidden" name="user_followed" value="<%= userlineID %>"/>
-      <% userTopics.forEach(topic => { %>
-        <div class="checkbx">
+        <% if(topic_followed[count] == false){ %>
           <input type="checkbox" id="huey_<%= topic %>" name="topics" value="<%= topic %>"/>
-           <label for="huey_<%= topic %>"><%= topic%></label>
+        <% } else {  %>
+          <input type="checkbox" id="huey_<%= topic %>" name="topics" value="<%= topic %>" checked />
+        <% } %>
+        <label for="huey_<%= topic %>"><%= topic%></label>
+        <% count++; %>
       </div>
       <% }); %>
-      <input type="submit" value="Follow This User"/>
+      <input type="submit" value="Follow This User" />
     </form>
     <% } %>
   </div>
