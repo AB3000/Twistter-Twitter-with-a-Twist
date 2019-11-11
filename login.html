@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<title>Login Page</title>
-
+	<!--for mobile friendly-->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Description" content="Login page - login to view functionality of Twistter!">
 	<!--Bootsrap 4 CDN-->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
@@ -21,19 +23,22 @@
 			</div>
 			<div class="card-body">
 				  <form method="post" action="/login">
+					<label style="font-size: 4px;"for="first">Email
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" name="email" class="form-control" placeholder="email">
-
+							<input type="text" name="email" class="form-control" placeholder="email">
 					</div>
+				</label>
+				<label style="font-size: 4px;" for="first">Password
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
 						<input name="password" type="password" class="form-control" placeholder="password">
 					</div>
+				</label>
 					<div class="form-group">
             <input type="submit" value="Login">
 					</div>
@@ -41,7 +46,7 @@
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					Don't have an account?<a href="/signup">Sign Up</a>
+					Don't have an account?<a style ="color:#33ccff" href="/signup">Sign Up</a>
 				</div>
 			</div>
 		</div>
