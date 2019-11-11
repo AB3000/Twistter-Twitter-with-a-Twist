@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Twistter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="Description" content="Settings page - view user information and modify if wanted!">
     <!-- bootstrap cards -->
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -55,9 +56,12 @@
                                     <div class="input-group-prepend">
                                         <form method="post" action="/editName">
                                       <span class="input-group-text" id="basic-addon1">Username</span>
+                                          </label>
                                     </div>
+                                    <label style="font-size: 4px; color: white" for="first">username
                                     <input type="text" class="form-control input-lg" aria-describedby="basic-addon1" name="uname" placeholder="<%=username %>">
                                     <input class="btn btn-primary button-width" type="submit" value="Edit">
+                                    </label>
                                   </div>
                                 </form>
                                   <div class="input-group mb-3">
@@ -65,8 +69,10 @@
                                         <form method="post" action="/editEmail">
                                     <span class="input-group-text" id="basic-addon1">Email</span>
                                   </div>
+                                  <label style="font-size: 4px; color: white" for="first">email
                                   <input type="email" class="form-control input-lg" placeholder="<%=email %>"  aria-describedby="basic-addon1" name="email">
                                   <input class="btn btn-primary button-width" type="submit" value="Edit">
+                                  </label>
                                 </div>
                             </form>
                                 <div class="input-group mb-3">
@@ -74,8 +80,10 @@
                                         <form method="post" action="/editPw">
                                     <span class="input-group-text" id="basic-addon1">Password</span>
                                   </div>
+                                  <label style="font-size: 4px; color: white" for="first">pw
                                   <input type="password" class="form-control input-lg" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" aria-describedby="basic-addon1" name="pw">
                                   <input class="btn btn-primary button-width" type="submit" value="Edit">
+                                  </label>
                                   </div>
                                 </form>
                                   <button type="button" class="btn btn-primary button-width">
