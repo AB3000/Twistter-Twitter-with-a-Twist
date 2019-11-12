@@ -39,6 +39,11 @@ let userSchema = new Schema({
         topics: [String]
       }], 
       default: [] 
+    },
+    newtopics: {
+      type:[String],
+      default:[],
+      required: true
     }
 });
 
