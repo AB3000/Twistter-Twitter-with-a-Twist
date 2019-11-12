@@ -452,7 +452,8 @@ app.post("/signup", (req, res) => {
     email: e,
     username: u,
     password: encrypttedP,
-    topics: []
+    topics: [],
+    newtopics: []
   });
   //saving the new user to the database
 
@@ -532,10 +533,14 @@ app.post("/posted", (req, res) => {
     dislikes: 0
   });
 
-  user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
-    if (!userData.topics.includes(req.body.topic)) {
+  user.findOne({ username: req.session.username }, 'username topics newtopics', (err, userData) => {
+    if (!userData.topics.includes(req.body.topic)) {//Save this to the topics list and remove it once it is done.
       userData.topics.push(req.body.topic);
       userData.save();
+      userData.newtopics.push(req.body.topic);
+      userData.save();
+    }else{
+      userData.newtopics.pull(req.body.topic);
     }
   });
 
@@ -544,9 +549,7 @@ app.post("/posted", (req, res) => {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
   })
-
-
-  res.status(204).send();
+  res.redirect('/posted');
 });
 
 app.post("/like", (req, res) => {
