@@ -7,21 +7,6 @@
     <p class="container-text"><%="Your email id is: " %><%=email %></p>
     <p class="container-text"><%="Head to the settings page if you would like to change your username, email or password!"%></p>
   </div>
-  <div>
-      <% if(finalUserTopics.length == 0) { %>
-        <h1>You have no topics. Make your first post on your timeline!</h1>
-        <% } else { %>
-      <form>
-          <% for(var i=finalUserTopics.length-1; i>=0;i--) { %>
-          <div class="checkbx">
-            <input type="checkbox" id="huey_<%= i %>"
-                   name="action"  />
-            <label for="huey_<%= i %>"><%= finalUserTopics[i] %></label>
-          </div>   
-          <% } %>
-        </form>
-        <% } %>
-  </div>
 </section>
 <% if(posts.length>0) { %>
 <% for(var i=posts.length-1; i>=0;i--) { %>
@@ -37,15 +22,6 @@
           <p class="card-title">topic: <%= posts[i].topic%></p>
           <p class="card-title">likes: <%= posts[i].likes%></p>
           <p class="card-title">dislikes: <%= posts[i].dislikes%></p>
-          <form method="post" action="/like">
-            <input type="hidden" name="id" value=<%= posts[i]._id%>>
-            <input class="btn btn-primary button-width" type="submit" value="Like">
-          </form>
-
-          <form method="post" action="/dislike">
-            <input type="hidden" name="id" value=<%= posts[i]._id%>>
-            <input class="btn btn-primary button-width" type="submit" value="Dislike">
-          </form>
         </div>
       </div>
     </div>
