@@ -540,10 +540,7 @@ app.post("/posted", (req, res) => {
       userData.newtopics.push(req.body.topic);
       userData.save();
     }else{
-      for(var i = 0; i < userData.newtopics.length; i++){
-        userData.newtopics.pop();
-        console.log(i);
-      }
+      userData.newtopics.pull(req.body.topic);
     }
   });
 
