@@ -544,12 +544,8 @@ app.post("/posted", (req, res) => {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
   })
-<<<<<<< HEAD
-  //res.redirect('/posted');
-=======
 
 
->>>>>>> 0e76e445d59bf457573a85155f034d21518d085f
   res.status(204).send();
 });
 
