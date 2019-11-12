@@ -529,7 +529,8 @@ app.post("/posted", (req, res) => {
     date: currDate,
     user: req.session.username,
     likes: 0,
-    dislikes: 0
+    dislikes: 0,
+    quote: false
   });
 
   user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
@@ -549,6 +550,49 @@ app.post("/posted", (req, res) => {
   res.status(204).send();
 
 });
+
+/*
+ * Saves new posts when someone quotes another user 
+*/
+app.post("/quote", (req, res) => {
+  console.log("QUOTES");
+  //console.log("hereisreq ", req.body.id.toString());
+  post.findOne({ _id: req.body.id }, 'title description topic date user likes dislikes', (err, postData) => {
+    //console.log(postData);
+
+    var currDate = new Date();
+    var newPost = new post({
+    title: postData.title,
+    description: postData.description,
+    topic: postData.topic,
+    date: currDate,
+    user: req.session.username,
+    likes: 0,
+    dislikes: 0,
+    quote: true,
+    originalAuthor: postData.user
+
+  });
+
+  //NEED TO SEE IF WE SHOULD SAVE RETWEETED TOPICS TO QUOTERS??
+  user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
+    console.log("TESTING TOPICS ", userData.topics)
+    if (!userData.topics.includes(postData.topic)) {
+      userData.topics.push(postData.topic);
+      userData.save();
+    }
+  });
+
+  newPost.save(function (err, e) {
+    if (err) return console.error(err);
+    else return console.log('succesfully saved');
+  })
+
+  });
+
+  res.redirect('/posted');
+
+}); //end of quote
 
 app.post("/like", (req, res) => {
   user.findOne({ username: req.session.username }, 'interactions', (err, userData) => {

@@ -7,6 +7,9 @@
         <div class="card w-75">
           <div class="card-body mb-2">
             <div class="form-group">
+              <% if(posts[i].quote==true) { %>
+                <p class="card-text"><%= posts[i].user %><%=" quoted " %><%= posts[i].originalAuthor %></p>
+              <% } %>
               <h5 class="card-header"><%= posts[i].title %></h5>
               <br>
               <p class="card-text"><%= posts[i].description %></p>
@@ -21,6 +24,15 @@
                 <input class="btn btn-primary button-width" type="submit" value="Like">
               </form>
 
+  
+              
+              <form method="post" action="/quote">
+                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input class="btn btn-primary button-width" type="submit" value="Quote" style="float: right;">
+              </form>
+            
+              
+              
               <form method="post" action="/dislike">
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>
                 <input class="btn btn-primary button-width" type="submit" value="Dislike">
