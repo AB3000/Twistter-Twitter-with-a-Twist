@@ -184,11 +184,27 @@ app.get('/user-followed', function (req, res) {
     if (!userExists) {
       var newFollowing = {
         username: req.query.user_followed,
-        topics: req.query.topics,
+        topics: req.query.topics
       };
       userData.following.push(newFollowing);
       userData.save();
       console.log("user added successfully");
+      var duplicateUser = false;
+      user.findOne({ username: req.query.user_followed }, 'username followingMeList', (err, posterData) => {
+        posterData.followingMeList.forEach(function (other_followers) {
+          if(other_followers.username == req.session.username){
+            duplicateUser = true;
+            //break;
+          }
+
+        })
+        if(!duplicateUser){
+          
+          posterData.followingMeList.push(req.session.userID);
+          posterData.save();
+        }
+      });
+
     }
 
     //redirect them to the timeline instead
@@ -509,6 +525,7 @@ app.post("/login", (req, res) => {
       req.session.username = userData.username;
       req.session.posts = userData.posts;
       req.session.password = p;
+      req.session.selfReference = userData;
       //console.log(userData.username);
       //console.log(req.session.userID);
       res.redirect('/posted');

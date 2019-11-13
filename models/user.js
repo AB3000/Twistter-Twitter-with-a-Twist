@@ -44,6 +44,16 @@ let userSchema = new Schema({
       type: [String], 
       default: [], 
       required: true
+    },
+    followingMeList: {
+      type: [ObjectId],
+      default:[],
+      required: false
+    },
+    newPostsList: {
+      type: [ObjectId],
+      default: [],
+      required: false
     }
 });
 
