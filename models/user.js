@@ -40,21 +40,17 @@ let userSchema = new Schema({
       }], 
       default: [] 
     },
-    newtopics: {
-      type: [String], 
-      default: [], 
-      required: true
-    },
     followingMeList: {
       type: [ObjectId],
       default:[],
       required: false
     },
-    newPostsList: {
-      type: [ObjectId],
+    newUserTopicList: {
+      type: [String], 
       default: [],
       required: false
     }
+    
 });
 
 userSchema.plugin(uniqueValidator);

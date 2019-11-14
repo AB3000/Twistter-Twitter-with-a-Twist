@@ -1,5 +1,5 @@
 <% include ../posts.html%>
-
+<% console.log(posts.length) %>
 <% if(posts.length>0) { %>
   <% for(var i=posts.length-1; i>=0;i--) { %>
     <section>
@@ -7,14 +7,14 @@
         <div class="card w-75">
           <div class="card-body mb-2">
             <div class="form-group">
-              <h5 class="card-header"><%= posts[i].title %></h5>
+              <h5 class="card-header"><%= posts[i].post.title %></h5>
               <br>
-              <p class="card-text"><%= posts[i].description %></p>
-              <p class="card-title">topic: <%= posts[i].topic%></p>
-              <p class="card-title">likes: <%= posts[i].likes%></p>
-              <p class="card-title">dislikes: <%= posts[i].dislikes%></p>
-              <p class="card-title">date: <%= posts[i].date%></p>
-              <p class="card-title">username: <%= posts[i].user%></p>
+              <p class="card-text"><%= posts[i].post.description %></p>
+              <p class="card-title">topic: <%= posts[i].post.topic%></p>
+              <p class="card-title">likes: <%= posts[i].post.likes%></p>
+              <p class="card-title">dislikes: <%= posts[i].post.dislikes%></p>
+              <p class="card-title">date: <%= posts[i].post.date%></p>
+              <p class="card-title">username: <%= posts[i].post.user%></p>
 
               <form method="post" action="/like">
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>
@@ -34,3 +34,4 @@
 <% } else { %>
   No Posts to Display!
 <% } %>
+

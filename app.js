@@ -69,6 +69,7 @@ app.get('/discover', function (req, res) {
 app.get('/posted', function (req, res) {
   post.find(function (err, posts) {
     var filtered_posts = [];
+    
     if (err) {
       console.log(err);
     } else {
@@ -77,12 +78,13 @@ app.get('/posted', function (req, res) {
 
       // console.log("following array of logged in user ", req.session.username);
       var filtering_criteria = "";
-      user.findOne({ username: req.session.username }, 'following', (err, userData) => {
+      var highlighting_criteria = "";
+      user.findOne({ username: req.session.username }, 'following newUserTopicList', (err, userData) => {
         console.log("following array of logged in user ", userData.following);
         filtering_criteria = userData.following;
-
+        highlighting_criteria = userData.newUserTopicList;
         if (userData.following.length == 0) {
-          res.render('display-posts', { posts: [] });
+          res.render('display-posts', { posts: []});
         } else {
           post.find(function (err, posts) {
             //for the user...
@@ -90,21 +92,39 @@ app.get('/posted', function (req, res) {
             var users = filtering_criteria.map(function (value) {
               return value.username;
             });
-            console.log("all users are ", users);
 
+            var highlight = highlighting_criteria.map(function (value) {
+              return value;
+            });
+
+            console.log("all users are ", users);
+            newHighlightedTopics = userData.newUserTopicList;
+            
             for (var i = 0; i < posts.length; i++) {
               //see if posts username matches and one of the topics match for each post
+             
               var index = -1;
+              var pConcat = posts[i].user + posts[i].topic;
               if (users.indexOf(posts[i].user) !== -1) {
                 index = users.indexOf(posts[i].user);
                 if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
                   console.log("here, post found");
-                  filtered_posts.push(posts[i]);
+                  filtered_posts.push({
+                    post: posts[i], 
+                    isHighlighted: false
+                  });
                 }
               }
-
+              if (highlight.indexOf(pConcat) !== -1 && pConcat !== null) {
+                filtered_posts.push({
+                  post: posts[i],
+                  isHighlighted: true
+                });
+                }
             }
-
+            
+            userData.newUserTopicList = [];
+            userData.save();
 
             filtered_posts.sort(function (a, b) {
               var keyA = new Date(a.date),
@@ -468,8 +488,7 @@ app.post("/signup", (req, res) => {
     email: e,
     username: u,
     password: encrypttedP,
-    topics: [],
-    newtopics: []
+    topics: []
   });
   //saving the new user to the database
 
@@ -550,14 +569,19 @@ app.post("/posted", (req, res) => {
     dislikes: 0
   });
 
-  user.findOne({ username: req.session.username }, 'username topics newtopics', (err, userData) => {
+  user.findOne({ username: req.session.username }, 'username topics followingMeList', (err, userData) => {
     if (!userData.topics.includes(req.body.topic)) {//Save this to the topics list and remove it once it is done.
       userData.topics.push(req.body.topic);
       userData.save();
-      userData.newtopics.push(req.body.topic);
-      userData.save();
-    }else{
-      userData.newtopics.pull(req.body.topic);
+      var i;
+      var newCombo = req.session.username + req.body.topic;
+      for(i = 0; i < userData.followingMeList.length; i++){
+        
+        user.findOne({_id: userData.followingMeList[i]}, 'newUserTopicList', (err, followerData) => {
+          followerData.newUserTopicList.push(newCombo);
+          followerData.save();
+        });
+      }
     }
   });
 
