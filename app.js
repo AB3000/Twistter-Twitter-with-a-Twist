@@ -80,7 +80,7 @@ app.get('/posted', function (req, res) {
       var filtering_criteria = "";
       var highlighting_criteria = "";
       user.findOne({ username: req.session.username }, 'following newUserTopicList', (err, userData) => {
-        console.log("following array of logged in user ", userData.following);
+        //console.log("following array of logged in user ", userData.following);
         filtering_criteria = userData.following;
         highlighting_criteria = userData.newUserTopicList;
         if (userData.following.length == 0) {
@@ -88,7 +88,7 @@ app.get('/posted', function (req, res) {
         } else {
           post.find(function (err, posts) {
             //for the user...
-            console.log('first part is ', filtering_criteria[0].username);
+            //console.log('first part is ', filtering_criteria[0].username);
             var users = filtering_criteria.map(function (value) {
               return value.username;
             });
@@ -97,7 +97,7 @@ app.get('/posted', function (req, res) {
               return value;
             });
 
-            console.log("all users are ", users);
+            //console.log("all users are ", users);
             newHighlightedTopics = userData.newUserTopicList;
             
             for (var i = 0; i < posts.length; i++) {
@@ -108,7 +108,7 @@ app.get('/posted', function (req, res) {
               if (users.indexOf(posts[i].user) !== -1) {
                 index = users.indexOf(posts[i].user);
                 if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
-                  console.log("here, post found");
+                  //console.log("here, post found");
                   filtered_posts.push({
                     post: posts[i], 
                     isHighlighted: false
@@ -134,7 +134,7 @@ app.get('/posted', function (req, res) {
               if (keyA > keyB) return 1;
               return 0;
             });
-            console.log('posts are ', filtered_posts);
+            //console.log('posts are ', filtered_posts);
             res.render('display-posts', { posts: filtered_posts });
 
           });
@@ -169,11 +169,13 @@ app.get('/user-followed', function (req, res) {
           if (userData.following[j].username == req.query.user_followed) {
 
             if (req.query.topics == null) {
+              console.log("empty");
               if (j > -1) {
                 userData.following.splice(j, 1);
                 console.log('SPLICING');
               }
             } else {
+              console.log("not empty");
               console.log(userData.following[j].username + '=' + req.query.user_followed);
               console.log(j);
               var topicSize = userData.following[j].topics.length
@@ -195,6 +197,17 @@ app.get('/user-followed', function (req, res) {
             }
           }
           // console.log(userData.following[j].topics);
+        } else {
+          //completely unfollowed this user (following[j]) so must also remove userData from following[j]'s followingMeList (for highlighting)
+          user.findOne({ username: following_person.username }, 'followingMeList', (err, unfollowMe) => {
+            unfollowMe.followingMeList.forEach(function (personThatUnfollowed) {
+              console.log(personThatUnfollowed._id);
+              if (personThatUnfollowed._id == req.session.userID) {
+                unfollowMe.followingMeList.pull(personThatUnfollowed);
+                unfollowMe.save();
+              }
+            });
+          });
         }
         userData.save();
       }
