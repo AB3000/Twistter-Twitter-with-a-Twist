@@ -302,7 +302,7 @@ app.get('/settings', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password });
+      res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password, colorScheme: req.session.colorScheme });
       console.log(user);
     }
   });
@@ -348,6 +348,23 @@ app.post('/editName', function (req, res) {
       }
       else {
         req.session.username = req.body.uname;
+        res.redirect('/settings');
+      }
+    });
+
+});
+
+app.post('/editcolor', function (req, res) {
+
+  console.log(req.body.color);
+  user.findByIdAndUpdate(req.session.userID,
+    { $set: { colorScheme: req.body.color } },
+    function (err) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        req.session.colorScheme=req.body.color;
         res.redirect('/settings');
       }
     });
@@ -452,7 +469,8 @@ app.post("/signup", (req, res) => {
     email: e,
     username: u,
     password: encrypttedP,
-    topics: []
+    topics: [],
+    colorScheme: "default"
   });
   //saving the new user to the database
 
@@ -494,8 +512,8 @@ app.post("/login", (req, res) => {
 
   //looks for a user in the database with the same email
 
-  user.findOne({ email: e }, 'email username password', (err, userData) => {
-    //console.log(userData);
+  user.findOne({ email: e }, 'email username password colorScheme', (err, userData) => {
+    console.log(userData);
     if (userData == null) {
       res.sendFile(path.join(__dirname + '/login.html'))
       //res.status(200).send("UserData is null")
@@ -508,7 +526,8 @@ app.post("/login", (req, res) => {
       req.session.username = userData.username;
       req.session.posts = userData.posts;
       req.session.password = p;
-      //console.log(userData.username);
+      req.session.colorScheme=userData.colorScheme;
+      console.log(userData.colorScheme);
       //console.log(req.session.userID);
       res.redirect('/posted');
     } else {

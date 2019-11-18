@@ -39,6 +39,11 @@ let userSchema = new Schema({
         topics: [String]
       }], 
       default: [] 
+    },
+    colorScheme:{
+      type: String,
+      required: true,
+      default: "defalut11"
     }
 });
 
