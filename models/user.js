@@ -43,7 +43,7 @@ let userSchema = new Schema({
     colorScheme:{
       type: String,
       required: true,
-      default: "defalut11"
+      default: "defalut"
     }
 });
 
