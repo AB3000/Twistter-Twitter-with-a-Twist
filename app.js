@@ -501,7 +501,8 @@ app.post("/signup", (req, res) => {
     email: e,
     username: u,
     password: encrypttedP,
-    topics: []
+    topics: [],
+    newtopics: []
   });
   //saving the new user to the database
 
