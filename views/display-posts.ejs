@@ -21,12 +21,11 @@
               <p class="card-title">username: <%= posts[i].post.user%></p>
               
               <form method="post" action="/like">
-                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input type="hidden" name="id" value=<%= posts[i].post._id%>>
                 <input class="btn btn-primary button-width" type="submit" value="Like">
               </form>
-
               <form method="post" action="/dislike">
-                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input type="hidden" name="id" value=<%= posts[i].post._id%>>
                 <input class="btn btn-primary button-width" type="submit" value="Dislike">
               </form>
             </div>
@@ -38,4 +37,3 @@
 <% } else { %>
   No Posts to Display!
 <% } %>
-

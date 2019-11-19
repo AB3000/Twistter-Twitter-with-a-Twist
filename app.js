@@ -557,7 +557,6 @@ app.post("/login", (req, res) => {
       req.session.username = userData.username;
       req.session.posts = userData.posts;
       req.session.password = p;
-      req.session.selfReference = userData;
       //console.log(userData.username);
       //console.log(req.session.userID);
       res.redirect('/posted');
@@ -623,17 +622,16 @@ app.post("/like", (req, res) => {
           //console.log(post);
           beenDisliked = post.disliked;
           alreadyInteracted = true;
-          //res.redirect('/posted');
         } else {
           //undo a dislike and like instead
           beenDisliked = post.disliked;
           alreadyInteracted = false;
-          //res.redirect('/posted');
           //console.log(post);
         }
 
       }
     })
+
     if (!alreadyInteracted) {
       //update user's liked posts
       userData.interactions.push(newInteraction);
@@ -644,16 +642,13 @@ app.post("/like", (req, res) => {
         //if has been disliked, switch to a like
         if (beenDisliked) {
           postData.dislikes -= 1;
-          //res.redirect('/posted');
         }
-
         postData.save();
         //console.log("LIKED----------------------------------");
       });
     }
     res.redirect('/posted');
   });
-  res.status(204).send();
 });
 
 app.post("/dislike", (req, res) => {
@@ -676,11 +671,11 @@ app.post("/dislike", (req, res) => {
           //undo a dislike and like instead
           beenLiked = post.liked;
           alreadyInteracted = false;
-          //res.redirect('/posted');
           //console.log("TEST: " + post);
         }
       }
     })
+
     if (!alreadyInteracted) {
       //update user's liked posts
       userData.interactions.push(newInteraction);
@@ -692,16 +687,14 @@ app.post("/dislike", (req, res) => {
         //if has been disliked, switch to a like
         if (beenLiked) {
           postData.likes -= 1;
-          //res.redirect('/posted');
         }
-        //res.redirect('/posted');
+
         postData.save();
         //console.log("DISLIKED---------------------------------");
       });
     }
     res.redirect('/posted');
   });
-  res.status(204).send();
 });
 
 module.exports = router
