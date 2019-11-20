@@ -69,6 +69,7 @@ app.get('/discover', function (req, res) {
 app.get('/posted', function (req, res) {
   post.find(function (err, posts) {
     var filtered_posts = [];
+    
     if (err) {
       console.log(err);
     } else {
@@ -77,34 +78,53 @@ app.get('/posted', function (req, res) {
 
       // console.log("following array of logged in user ", req.session.username);
       var filtering_criteria = "";
-      user.findOne({ username: req.session.username }, 'following', (err, userData) => {
-        console.log("following array of logged in user ", userData.following);
+      var highlighting_criteria = "";
+      user.findOne({ username: req.session.username }, 'following newUserTopicList', (err, userData) => {
+        //console.log("following array of logged in user ", userData.following);
         filtering_criteria = userData.following;
-
+        highlighting_criteria = userData.newUserTopicList;
         if (userData.following.length == 0) {
-          res.render('display-posts', { posts: [] });
+          res.render('display-posts', { posts: []});
         } else {
           post.find(function (err, posts) {
             //for the user...
-            console.log('first part is ', filtering_criteria[0].username);
+            //console.log('first part is ', filtering_criteria[0].username);
             var users = filtering_criteria.map(function (value) {
               return value.username;
             });
-            console.log("all users are ", users);
 
+            var highlight = highlighting_criteria.map(function (value) {
+              return value;
+            });
+
+            //console.log("all users are ", users);
+            newHighlightedTopics = userData.newUserTopicList;
+            
             for (var i = 0; i < posts.length; i++) {
               //see if posts username matches and one of the topics match for each post
+             
               var index = -1;
+              var pConcat = posts[i].user + posts[i].topic;
               if (users.indexOf(posts[i].user) !== -1) {
                 index = users.indexOf(posts[i].user);
                 if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
-                  console.log("here, post found");
-                  filtered_posts.push(posts[i]);
+                  //console.log("here, post found");
+                  filtered_posts.push({
+                    post: posts[i], 
+                    isHighlighted: false
+                  });
                 }
               }
-
+              if (highlight.indexOf(pConcat) !== -1 && pConcat !== null) {
+                filtered_posts.push({
+                  post: posts[i],
+                  isHighlighted: true
+                });
+                }
             }
-
+            
+            userData.newUserTopicList = [];
+            userData.save();
 
             filtered_posts.sort(function (a, b) {
               var keyA = new Date(a.date),
@@ -114,7 +134,7 @@ app.get('/posted', function (req, res) {
               if (keyA > keyB) return 1;
               return 0;
             });
-            console.log('posts are ', filtered_posts);
+            //console.log('posts are ', filtered_posts);
             res.render('display-posts', { posts: filtered_posts });
 
           });
@@ -149,11 +169,13 @@ app.get('/user-followed', function (req, res) {
           if (userData.following[j].username == req.query.user_followed) {
 
             if (req.query.topics == null) {
+              console.log("empty");
               if (j > -1) {
                 userData.following.splice(j, 1);
                 console.log('SPLICING');
               }
             } else {
+              console.log("not empty");
               console.log(userData.following[j].username + '=' + req.query.user_followed);
               console.log(j);
               var topicSize = userData.following[j].topics.length
@@ -175,6 +197,17 @@ app.get('/user-followed', function (req, res) {
             }
           }
           // console.log(userData.following[j].topics);
+        } else {
+          //completely unfollowed this user (following[j]) so must also remove userData from following[j]'s followingMeList (for highlighting)
+          user.findOne({ username: following_person.username }, 'followingMeList', (err, unfollowMe) => {
+            unfollowMe.followingMeList.forEach(function (personThatUnfollowed) {
+              console.log(personThatUnfollowed._id);
+              if (personThatUnfollowed._id == req.session.userID) {
+                unfollowMe.followingMeList.pull(personThatUnfollowed);
+                unfollowMe.save();
+              }
+            });
+          });
         }
         userData.save();
       }
@@ -184,11 +217,27 @@ app.get('/user-followed', function (req, res) {
     if (!userExists) {
       var newFollowing = {
         username: req.query.user_followed,
-        topics: req.query.topics,
+        topics: req.query.topics
       };
       userData.following.push(newFollowing);
       userData.save();
       console.log("user added successfully");
+      var duplicateUser = false;
+      user.findOne({ username: req.query.user_followed }, 'username followingMeList', (err, posterData) => {
+        posterData.followingMeList.forEach(function (other_followers) {
+          if(other_followers.username == req.session.username){
+            duplicateUser = true;
+            //break;
+          }
+
+        })
+        if(!duplicateUser){
+          
+          posterData.followingMeList.push(req.session.userID);
+          posterData.save();
+        }
+      });
+
     }
 
     //redirect them to the timeline instead
@@ -533,14 +582,19 @@ app.post("/posted", (req, res) => {
     dislikes: 0
   });
 
-  user.findOne({ username: req.session.username }, 'username topics newtopics', (err, userData) => {
+  user.findOne({ username: req.session.username }, 'username topics followingMeList', (err, userData) => {
     if (!userData.topics.includes(req.body.topic)) {//Save this to the topics list and remove it once it is done.
       userData.topics.push(req.body.topic);
       userData.save();
-      userData.newtopics.push(req.body.topic);
-      userData.save();
-    }else{
-      userData.newtopics.pull(req.body.topic);
+      var i;
+      var newCombo = req.session.username + req.body.topic;
+      for(i = 0; i < userData.followingMeList.length; i++){
+        
+        user.findOne({_id: userData.followingMeList[i]}, 'newUserTopicList', (err, followerData) => {
+          followerData.newUserTopicList.push(newCombo);
+          followerData.save();
+        });
+      }
     }
   });
 
@@ -569,17 +623,16 @@ app.post("/like", (req, res) => {
           //console.log(post);
           beenDisliked = post.disliked;
           alreadyInteracted = true;
-          //res.redirect('/posted');
         } else {
           //undo a dislike and like instead
           beenDisliked = post.disliked;
           alreadyInteracted = false;
-          //res.redirect('/posted');
           //console.log(post);
         }
 
       }
     })
+
     if (!alreadyInteracted) {
       //update user's liked posts
       userData.interactions.push(newInteraction);
@@ -590,16 +643,13 @@ app.post("/like", (req, res) => {
         //if has been disliked, switch to a like
         if (beenDisliked) {
           postData.dislikes -= 1;
-          //res.redirect('/posted');
         }
-
         postData.save();
         //console.log("LIKED----------------------------------");
       });
     }
     res.redirect('/posted');
   });
-  res.status(204).send();
 });
 
 app.post("/dislike", (req, res) => {
@@ -622,11 +672,11 @@ app.post("/dislike", (req, res) => {
           //undo a dislike and like instead
           beenLiked = post.liked;
           alreadyInteracted = false;
-          //res.redirect('/posted');
           //console.log("TEST: " + post);
         }
       }
     })
+
     if (!alreadyInteracted) {
       //update user's liked posts
       userData.interactions.push(newInteraction);
@@ -638,16 +688,14 @@ app.post("/dislike", (req, res) => {
         //if has been disliked, switch to a like
         if (beenLiked) {
           postData.likes -= 1;
-          //res.redirect('/posted');
         }
-        //res.redirect('/posted');
+
         postData.save();
         //console.log("DISLIKED---------------------------------");
       });
     }
     res.redirect('/posted');
   });
-  res.status(204).send();
 });
 
 module.exports = router
