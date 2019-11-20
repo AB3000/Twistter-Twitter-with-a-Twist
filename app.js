@@ -591,6 +591,10 @@ app.post("/quote", (req, res) => {
   });
 
   res.redirect('/posted');
+//   res.writeHead(302, {
+//     'Location': '/display_personal'
+//   });
+// res.end(); 
 
 }); //end of quote
 
