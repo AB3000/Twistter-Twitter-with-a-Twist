@@ -36,6 +36,12 @@
                 <input class="btn btn-primary button-width" type="submit" value="Like" style="margin: 5px">
               </form>
 
+              <form method="post" action="/dislike">
+                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input class="btn btn-primary button-width" type="submit" value="Dislike" style="margin: 5px">
+              </form>
+
+
               <form method="post" action="/quote">
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>
                 <input class="btn btn-primary button-width" type="submit" value="Quote" style="float: right; margin: 20px">
@@ -45,12 +51,9 @@
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>
                 <input class="btn btn-primary button-width"  value="Quote With Comment" onclick="expand()" style="float: right; margin: 20px">
                 <input class="hide" type="text" id="textInput" value="..." />
+              </input>
               </form>
-
-              <form method="post" action="/dislike">
-                <input type="hidden" name="id" value=<%= posts[i]._id%>>
-                <input class="btn btn-primary button-width" type="submit" value="Dislike" style="margin: 5px">
-              </form>
+              
             </div>
           </div>
         </div>
