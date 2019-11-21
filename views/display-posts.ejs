@@ -4,7 +4,12 @@
 <script>
   expand = function() {
     console.log("function change called")
-    $('#textInput').attr('class', 'show');
+    if($('#textInput').attr('class') == 'hide'){
+      $('#textInput').attr('class', 'show');
+    } else {
+      $('#textInput').attr('class', 'hide');
+    }
+    
 }
 </script>
 <% if(posts.length>0) { %>
