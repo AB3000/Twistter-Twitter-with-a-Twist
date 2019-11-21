@@ -9,7 +9,6 @@ var session = require('express-session');
 const util = require('util');
 var ejs = require('ejs');
 var bodyParser = require('body-parser');
-// const ejs_helpers = require('./views/function.js');
 
 
 //app.use(express.static(__dirname + "/views"));
@@ -85,11 +84,9 @@ app.get('/posted', function (req, res) {
       var filtering_criteria = "";
       user.findOne({ username: req.session.username }, 'following', (err, userData) => {
         console.log("following array of logged in user ", userData.following);
-        console.log("ejs helpers are ", ejs_helpers);
         filtering_criteria = userData.following;
 
         if (userData.following.length == 0) {
-          // app.locals.helpers = ejs_helpers;
           res.render('display-posts', {posts: [] });
         } else {
           post.find(function (err, posts) {
@@ -121,7 +118,6 @@ app.get('/posted', function (req, res) {
               return 0;
             });
             console.log('posts are ', filtered_posts);
-            // app.locals.helpers = ejs_helpers;
             res.render('display-posts', {posts: filtered_posts});
 
           });
