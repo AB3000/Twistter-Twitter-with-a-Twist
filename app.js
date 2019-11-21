@@ -9,6 +9,7 @@ var session = require('express-session');
 const util = require('util');
 var ejs = require('ejs');
 var bodyParser = require('body-parser');
+// const ejs_helpers = require('./views/function.js');
 
 
 //app.use(express.static(__dirname + "/views"));
@@ -16,6 +17,11 @@ var bodyParser = require('body-parser');
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// app.locals.expand = function onButtonClick(){
+//   console.log("HERE YOU PIECES OF STUFF")
+//   document.getElementById('textInput').className="show";
+// }
 
 var AES = require("crypto-js/aes");
 var SHA256 = require("crypto-js/sha256");
@@ -79,18 +85,18 @@ app.get('/posted', function (req, res) {
       var filtering_criteria = "";
       user.findOne({ username: req.session.username }, 'following', (err, userData) => {
         console.log("following array of logged in user ", userData.following);
+        console.log("ejs helpers are ", ejs_helpers);
         filtering_criteria = userData.following;
 
         if (userData.following.length == 0) {
-          res.render('display-posts', { posts: [] });
+          // app.locals.helpers = ejs_helpers;
+          res.render('display-posts', {posts: [] });
         } else {
           post.find(function (err, posts) {
             //for the user...
-            console.log('first part is ', filtering_criteria[0].username);
             var users = filtering_criteria.map(function (value) {
               return value.username;
             });
-            console.log("all users are ", users);
 
             for (var i = 0; i < posts.length; i++) {
               //see if posts username matches and one of the topics match for each post
@@ -115,7 +121,8 @@ app.get('/posted', function (req, res) {
               return 0;
             });
             console.log('posts are ', filtered_posts);
-            res.render('display-posts', { posts: filtered_posts });
+            // app.locals.helpers = ejs_helpers;
+            res.render('display-posts', {posts: filtered_posts});
 
           });
         }

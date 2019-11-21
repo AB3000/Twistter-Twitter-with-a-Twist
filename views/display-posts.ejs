@@ -1,5 +1,13 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <% include ../posts.html%>
-
+<link rel="stylesheet" type= "text/css" href="../posts.css">
+<script>
+  expand = function() {
+    console.log("HERE YOU PIECES OF STUFF")
+    $('#textInput').className="show";
+}
+</script>
+<% console.log("ejs helpers are ", helpers);%>
 <% if(posts.length>0) { %>
   <% for(var i=posts.length-1; i>=0;i--) { %>
     <section>
@@ -28,6 +36,15 @@
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>
                 <input class="btn btn-primary button-width" type="submit" value="Quote" style="float: right; margin: 20px">
               </form>
+
+              <form method="post" action="/quote">
+                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <!-- <label class="expandSearch"> -->
+                <!-- <input type="text" placeholder="Search..." name="search"> -->
+                <input class="btn btn-primary button-width textInput"  value="Quote With Comment" onclick="expand()"> style="float: right; margin: 20px">
+                <!-- </label> -->
+              </form>
+
               <form method="post" action="/dislike">
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>
                 <input class="btn btn-primary button-width" type="submit" value="Dislike" style="margin: 5px">
