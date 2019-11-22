@@ -38,6 +38,7 @@
         <div class="form-group">
             <% if(posts[i].quote==true) { %>
               <p class="card-text"><%= posts[i].user %><%=" quoted " %><%= posts[i].originalAuthor %></p>
+              <p class="card-text"><%= posts[i].comment %></p>
             <% } %>
 
           <h5 class="card-header"><%= posts[i].title %></h5>

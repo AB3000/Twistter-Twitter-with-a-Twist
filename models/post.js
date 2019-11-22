@@ -10,6 +10,7 @@ let postSchema = new Schema({
 	likes: {type: Number, required: false}, 
 	dislikes: {type: Number, required: false},
 	quote: {type: Boolean, required: false},
+	comment: {type: String, required: false},
 	originalAuthor: {type: String, required: false}
 });
 // Export the model

@@ -83,7 +83,7 @@ app.get('/posted', function (req, res) {
       // console.log("following array of logged in user ", req.session.username);
       var filtering_criteria = "";
       user.findOne({ username: req.session.username }, 'following', (err, userData) => {
-        console.log("following array of logged in user ", userData.following);
+        // console.log("following array of logged in user ", userData.following);
         filtering_criteria = userData.following;
 
         if (userData.following.length == 0) {
@@ -101,7 +101,7 @@ app.get('/posted', function (req, res) {
               if (users.indexOf(posts[i].user) !== -1) {
                 index = users.indexOf(posts[i].user);
                 if (filtering_criteria[index].topics.indexOf(posts[i].topic) != -1) {
-                  console.log("here, post found");
+                  // console.log("here, post found");
                   filtered_posts.push(posts[i]);
                 }
               }
@@ -117,7 +117,7 @@ app.get('/posted', function (req, res) {
               if (keyA > keyB) return 1;
               return 0;
             });
-            console.log('posts are ', filtered_posts);
+            // console.log('posts are ', filtered_posts);
             res.render('display-posts', {posts: filtered_posts});
 
           });
@@ -559,6 +559,17 @@ app.post("/posted", (req, res) => {
 */
 app.post("/quote", (req, res) => {
   console.log("QUOTES");
+  console.log("req body is ", req.body);
+
+  console.log("comment is ", req.body.comment);
+
+  text="";
+  if(req.body.comment != undefined){
+      text = req.body.comment;
+  } 
+
+
+
   //console.log("hereisreq ", req.body.id.toString());
   post.findOne({ _id: req.body.id }, 'title description topic date user likes dislikes', (err, postData) => {
     //console.log(postData);
@@ -573,8 +584,8 @@ app.post("/quote", (req, res) => {
     likes: 0,
     dislikes: 0,
     quote: true,
-    originalAuthor: postData.user
-
+    originalAuthor: postData.user,
+    comment: text, 
   });
 
   //NEED TO SEE IF WE SHOULD SAVE RETWEETED TOPICS TO QUOTERS??
@@ -594,10 +605,6 @@ app.post("/quote", (req, res) => {
   });
 
   res.redirect('/posted');
-//   res.writeHead(302, {
-//     'Location': '/display_personal'
-//   });
-// res.end(); 
 
 }); //end of quote
 
