@@ -355,8 +355,8 @@ app.post('/editName', function (req, res) {
 });
 
 app.post('/editcolor', function (req, res) {
-
-  console.log(req.body.color);
+  localStorage.setItem("navColor",req.body.color)
+  //console.log("navColor");
   user.findByIdAndUpdate(req.session.userID,
     { $set: { colorScheme: req.body.color } },
     function (err) {
@@ -370,6 +370,7 @@ app.post('/editcolor', function (req, res) {
     });
 
 });
+
 
 app.post('/editEmail', function (req, res) {
 
