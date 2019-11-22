@@ -54,7 +54,7 @@ app.get('/discover', function (req, res) {
   if (Object.keys(req.query).length == 0) {
     user.find(function (err, users) {
       //render all users
-      res.render('discovery_page', { users: users });
+      res.render('discovery_page', { users: users, colorScheme: req.session.colorScheme });
     });
   } else {
     //render only users matching what user typed in
@@ -62,7 +62,7 @@ app.get('/discover', function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.render('discovery_page', { users: users });
+        res.render('discovery_page', { users: users, colorScheme: req.session.colorScheme });
       }
     });
   }
@@ -86,7 +86,7 @@ app.get('/posted', function (req, res) {
         filtering_criteria = userData.following;
 
         if (userData.following.length == 0) {
-          res.render('display-posts', { posts: [] });
+          res.render('display-posts', { posts: [], colorScheme: req.session.colorScheme });
         } else {
           post.find(function (err, posts) {
             //for the user...
@@ -119,7 +119,7 @@ app.get('/posted', function (req, res) {
               return 0;
             });
             console.log('posts are ', filtered_posts);
-            res.render('display-posts', { posts: filtered_posts });
+            res.render('display-posts', { posts: filtered_posts, colorScheme: req.session.colorScheme });
 
           });
         }
@@ -260,7 +260,7 @@ app.get('/id', function (req, res) {
             app.locals.userTopics = userTopics;
           }
           //pass in the user's posts and topics
-          res.render('display-others-posts', { posts: posts});
+          res.render('display-others-posts', { posts: posts, colorScheme: req.session.colorScheme});
         }
       });
     });
@@ -292,7 +292,7 @@ app.get('/display_personal', function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.render('display-personal-posts', { posts: posts, email: req.session.email, username: req.session.username });
+        res.render('display-personal-posts', { posts: posts, email: req.session.email, username: req.session.username, colorScheme: req.session.colorScheme });
         // console.log(posts);
       }
     });
@@ -359,10 +359,6 @@ app.post('/editName', function (req, res) {
 });
 
 app.post('/editcolor', function (req, res) {
-  //localStorage.setItem('navColor',req.body.color);
-  app.locals.navColor = req.body.color;
-  res.render('navbar.ejs',{ navColor : app.locals.navColor });
-  //console.log(navColor);
   user.findByIdAndUpdate(req.session.userID,
     { $set: { colorScheme: req.body.color } },
     function (err) {
@@ -534,7 +530,7 @@ app.post("/login", (req, res) => {
       req.session.posts = userData.posts;
       req.session.password = p;
       req.session.colorScheme=userData.colorScheme;
-      console.log(userData.colorScheme);
+      //console.log(userData.colorScheme);
       //console.log(req.session.userID);
       res.redirect('/posted');
     } else {
