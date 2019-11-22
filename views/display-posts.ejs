@@ -2,15 +2,32 @@
 <% include ../posts.html%>
 <link rel="stylesheet" type= "text/css" href="../posts.css">
 <script>
-  expand = function() {
-    console.log("function change called")
-    if($('#textInput').attr('class') == 'hide'){
-      $('#textInput').attr('class', 'show');
-    } else {
-      $('#textInput').attr('class', 'hide');
-    }
-    
-}
+  var numberID = 0;
+
+  $(document).click(function(event) {
+
+      var text = $(event.target).attr('id');
+      console.log("clicked is ", text);
+      console.log("value is ", $(event.target).val());
+
+      if(text != undefined && text.includes("quoteButton")){
+        var numberID = text.match(/(\d+)/); 
+        var classID = '#textInput_' + numberID;
+        var buttonID = "#submit_" + numberID
+        if($(classID).attr('class') == 'hide'){
+               $(classID).attr('class', 'show-box');
+               $(buttonID).attr('class', 'show-button');
+        } else {
+            $(classID).attr('class', 'hide');
+            $(buttonID).attr('class', 'hide');
+        }
+      }
+  });
+
+  text = function(){
+    console.log("restroom");
+  }
+
 </script>
 <% if(posts.length>0) { %>
   <% for(var i=posts.length-1; i>=0;i--) { %>
@@ -49,11 +66,11 @@
 
               <form method="post" action="/quote">
                 <input type="hidden" name="id" value=<%= posts[i]._id%>>
-                <input class="btn btn-primary button-width"  value="Quote With Comment" onclick="expand()" style="float: right; margin: 20px">
-                <input class="hide" type="text" id="textInput" value="..." />
-              </input>
+                <input class="btn btn-primary button-width" id="quoteButton_<%=i%>"type="button" value="Quote With Comment" style="float: right; margin: 20px">
+                    <input class="hide" type="text" id="textInput_<%=i%>" placeholder="Add your comment here!" name="comment"/>
+                    <button class="hide" type="submit" id="submit_<%=i%>">Quote!</button>
+                </input>
               </form>
-              
             </div>
           </div>
         </div>
