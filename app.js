@@ -9,6 +9,7 @@ var session = require('express-session');
 const util = require('util');
 var ejs = require('ejs');
 var bodyParser = require('body-parser');
+var hbs = require('express-handlebars');
 
 
 //app.use(express.static(__dirname + "/views"));
@@ -16,6 +17,8 @@ var bodyParser = require('body-parser');
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', hbs({extname: 'hbs'/*, defaultLayout: 'navbar.hbs', layoutsDir: __dirname + '/views/layouts/'*/}));
+app.engine('hbs', hbs({extname: 'hbs'}));
 
 var AES = require("crypto-js/aes");
 var SHA256 = require("crypto-js/sha256");
@@ -50,7 +53,7 @@ app.get('/discover', function (req, res) {
   if (Object.keys(req.query).length == 0) {
     user.find(function (err, users) {
       //render all users
-      res.render('discovery_page', { users: users });
+      res.render('discovery_page.ejs', { users: users });
     });
   } else {
     //render only users matching what user typed in
@@ -58,7 +61,7 @@ app.get('/discover', function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.render('discovery_page', { users: users });
+        res.render('discovery_page.ejs', { users: users });
       }
     });
   }
@@ -82,7 +85,7 @@ app.get('/posted', function (req, res) {
         filtering_criteria = userData.following;
 
         if (userData.following.length == 0) {
-          res.render('display-posts', { posts: [] });
+          res.render('display-posts.ejs', { posts: [] });
         } else {
           post.find(function (err, posts) {
             //for the user...
@@ -115,7 +118,7 @@ app.get('/posted', function (req, res) {
               return 0;
             });
             console.log('posts are ', filtered_posts);
-            res.render('display-posts', { posts: filtered_posts });
+            res.render('display-posts.ejs', { posts: filtered_posts });
 
           });
         }
@@ -256,7 +259,7 @@ app.get('/id', function (req, res) {
             app.locals.userTopics = userTopics;
           }
           //pass in the user's posts and topics
-          res.render('display-others-posts', { posts: posts});
+          res.render('display-others-posts.ejs', { posts: posts});
         }
       });
     });
@@ -288,7 +291,7 @@ app.get('/display_personal', function (req, res) {
       if (err) {
         console.log(err);
       } else {
-        res.render('display-personal-posts', { posts: posts, email: req.session.email, username: req.session.username });
+        res.render('display-personal-posts.ejs', { posts: posts, email: req.session.email, username: req.session.username });
         // console.log(posts);
       }
     });
@@ -302,12 +305,11 @@ app.get('/settings', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render('settings', { username: req.session.username, email: req.session.email, password: req.session.password, colorScheme: req.session.colorScheme });
+      res.render('settings.ejs', { username: req.session.username, email: req.session.email, password: req.session.password, colorScheme: req.session.colorScheme });
       console.log(user);
     }
   });
 });
-
 
 app.get('/deleteUser', function (req, res) {
   post.find(function (err, posts) {
@@ -355,8 +357,6 @@ app.post('/editName', function (req, res) {
 });
 
 app.post('/editcolor', function (req, res) {
-
-  console.log(req.body.color);
   user.findByIdAndUpdate(req.session.userID,
     { $set: { colorScheme: req.body.color } },
     function (err) {
@@ -364,8 +364,9 @@ app.post('/editcolor', function (req, res) {
         console.log(err);
       }
       else {
+        res.render('layouts/navbar.hbs', { color: 'navbar-light bg-danger' });
         req.session.colorScheme=req.body.color;
-        res.redirect('/settings');
+        //res.redirect('/settings');
       }
     });
 
@@ -527,8 +528,6 @@ app.post("/login", (req, res) => {
       req.session.posts = userData.posts;
       req.session.password = p;
       req.session.colorScheme=userData.colorScheme;
-      console.log(userData.colorScheme);
-      //console.log(req.session.userID);
       res.redirect('/posted');
     } else {
       //res.status(200).send("Failed Login");
