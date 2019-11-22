@@ -10,6 +10,10 @@ const util = require('util');
 var ejs = require('ejs');
 var bodyParser = require('body-parser');
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  localStorage = new LocalStorage('./scratch');
+}
 
 //app.use(express.static(__dirname + "/views"));
 //app.use(bodyParser.urlencoded({extended: true}));
@@ -356,7 +360,7 @@ app.post('/editName', function (req, res) {
 
 app.post('/editcolor', function (req, res) {
   localStorage.setItem("navColor",req.body.color)
-  //console.log("navColor");
+  //console.log(navColor);
   user.findByIdAndUpdate(req.session.userID,
     { $set: { colorScheme: req.body.color } },
     function (err) {
