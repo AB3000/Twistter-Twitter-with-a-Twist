@@ -14,22 +14,22 @@
         
         var themes = {
             "default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
-            "Red" : "navbar navbar-expand-lg navbar-dark bg-company-red fixed-top",
-            "Blue" : "navbar navbar-expand-lg navbar-dark bg-primary fixed-top"
+            "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",
+            "Blue" : "navbar navbar-expand-lg navbar-dark bg-light fixed-top"
         }
     
-        function changeTheme() {
-            var themeurl = themes['<%=colorScheme %>']; 
+        function changeTheme(themeType) {
+            var themeurl = themes[themeType]; 
             console.log("hello");
             console.log(themeurl);
             document.getElementById("mynavbar").className = themeurl;
         };
-        window.addEventListener('none',changeTheme(),false);
+        //window.addEventListener('none',changeTheme(),false);
     </script>
 </head>
 
 <body>
-  <nav id="my navbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <nav id="my navbar" onclick="changeTheme('<%=colorScheme %>')" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Twistter</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
