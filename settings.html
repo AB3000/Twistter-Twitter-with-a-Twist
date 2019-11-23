@@ -44,17 +44,18 @@
 <br><br><br><br>
 </form>
 <script>
-    console.log('<%=colorScheme %>');
+    //console.log('<%=colorScheme %>');
       
       var themes = {
           "Default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
           "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",
-          "Blue" : "navbar navbar-expand-lg navbar-dark bg-light fixed-top"
+          "Blue" : "navbar navbar-expand-lg navbar-dark bg-primary fixed-top",
+          "Light" : "navbar navbar-expand-lg navbar-dark bg-secondary fixed-top"
       }
 
           var themeurl = themes['<%=colorScheme %>']; 
-          console.log("hello");
-          console.log(themeurl);
+          // console.log("hello");
+          // console.log(themeurl);
           document.getElementById("mynavbar").className = themeurl;
   </script>
     <section>
@@ -103,6 +104,7 @@
                                     <option value="Default">default</option>
                                     <option value="Red">Red</option>
                                     <option value="Blue">Blue</option>
+                                    <option value="Light">Light</option>
                                   </select>
                                   <br><br>
                                   <input class="btn btn-primary button-width" type="submit" value="Edit">

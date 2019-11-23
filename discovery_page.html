@@ -16,7 +16,7 @@
   
   <body>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <nav id="mynavbar" nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Twistter</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -64,7 +64,17 @@
       </div>
     </form>
   </div>
-
+  <script>
+        var themes = {
+            "Default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
+            "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",
+            "Blue" : "navbar navbar-expand-lg navbar-dark bg-primary fixed-top",
+            "Light" : "navbar navbar-expand-lg navbar-dark bg-secondary fixed-top"
+        }
+  
+            var themeurl = themes['<%=colorScheme %>']; 
+            document.getElementById("mynavbar").className = themeurl;
+    </script>
   <script>
     //timer delay to see when user has stopped typing for a while
     var delay = (function () {
