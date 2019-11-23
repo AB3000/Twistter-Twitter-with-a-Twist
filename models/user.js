@@ -40,11 +40,23 @@ let userSchema = new Schema({
       }], 
       default: [] 
     },
+
     colorScheme:{
       type: String,
       required: true,
       default: "defalut"
+    },
+    followingMeList: {
+      type: [ObjectId],
+      default:[],
+      required: false
+    },
+    newUserTopicList: {
+      type: [String], 
+      default: [],
+      required: false
     }
+    
 });
 
 userSchema.plugin(uniqueValidator);
