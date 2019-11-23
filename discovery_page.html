@@ -65,6 +65,15 @@
     </form>
   </div>
   <script>
+var bcolor = {
+        "Default": "white",
+          "Red" : "hsl(360 , 50%, 90%)",
+          "Blue" : "hsl(203, 61%, 90%)",
+          "Light" : "hsl(203, 15%, 91%)"
+       }
+      var color = bcolor['<%=colorScheme %>'];
+      document.body.style.backgroundColor = color;
+
         var themes = {
             "Default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
             "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",

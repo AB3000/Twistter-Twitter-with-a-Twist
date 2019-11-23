@@ -46,6 +46,16 @@
 <script>
     //console.log('<%=colorScheme %>');
       
+
+       var bcolor = {
+        "Default": "white",
+          "Red" : "hsl(360 , 50%, 90%)",
+          "Blue" : "hsl(203, 61%, 90%)",
+          "Light" : "hsl(203, 15%, 91%)"
+       }
+      var color = bcolor['<%=colorScheme %>'];
+      document.body.style.backgroundColor = color;
+
       var themes = {
           "Default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
           "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",
@@ -101,7 +111,7 @@
                                     <span class="input-group-text" id="basic-addon1">ColorScheme: <%=colorScheme %></span>
                                   </div>
                                   <select class="form-control input-lg" name="color">
-                                    <option value="Default">default</option>
+                                    <option value="Default">Default</option>
                                     <option value="Red">Red</option>
                                     <option value="Blue">Blue</option>
                                     <option value="Light">Light</option>
