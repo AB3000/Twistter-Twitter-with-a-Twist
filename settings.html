@@ -9,27 +9,11 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <!-- <link rel="stylesheet" href="posts.css"> -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-      console.log('<%=colorScheme %>');
-        
-        var themes = {
-            "default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
-            "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",
-            "Blue" : "navbar navbar-expand-lg navbar-dark bg-light fixed-top"
-        }
     
-        function changeTheme(themeType) {
-            var themeurl = themes[themeType]; 
-            console.log("hello");
-            console.log(themeurl);
-            document.getElementById("mynavbar").className = themeurl;
-        };
-        //window.addEventListener('none',changeTheme(),false);
-    </script>
 </head>
 
-<body>
-  <nav id="my navbar" onclick="changeTheme('<%=colorScheme %>')" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<body></body>
+  <nav id="mynavbar"  class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Twistter</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,6 +43,20 @@
   <form>
 <br><br><br><br>
 </form>
+<script>
+    console.log('<%=colorScheme %>');
+      
+      var themes = {
+          "Default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
+          "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",
+          "Blue" : "navbar navbar-expand-lg navbar-dark bg-light fixed-top"
+      }
+
+          var themeurl = themes['<%=colorScheme %>']; 
+          console.log("hello");
+          console.log(themeurl);
+          document.getElementById("mynavbar").className = themeurl;
+  </script>
     <section>
     
             <div class="container py-3">
