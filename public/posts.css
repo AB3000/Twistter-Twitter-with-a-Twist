@@ -1,0 +1,15 @@
+.hide{
+  display:none;
+}
+.show-box {
+  display:block;
+  bottom: 0; 
+  width: 75%; 
+  height: 100px; 
+  margin: 5px;
+}
+
+.show-button {
+  display:block;
+}
+
