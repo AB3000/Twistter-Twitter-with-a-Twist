@@ -1,5 +1,34 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <% include ../posts.html%>
-<% console.log(posts.length) %>
+<link rel="stylesheet" type= "text/css" href="../posts.css">
+<script>
+  var numberID = 0;
+
+  $(document).click(function(event) {
+
+      var text = $(event.target).attr('id');
+      console.log("clicked is ", text);
+      console.log("value is ", $(event.target).val());
+
+      if(text != undefined && text.includes("quoteButton")){
+        var numberID = text.match(/(\d+)/); 
+        var classID = '#textInput_' + numberID;
+        var buttonID = "#submit_" + numberID
+        if($(classID).attr('class') == 'hide'){
+               $(classID).attr('class', 'show-box');
+               $(buttonID).attr('class', 'show-button');
+        } else {
+            $(classID).attr('class', 'hide');
+            $(buttonID).attr('class', 'hide');
+        }
+      }
+  });
+
+  text = function(){
+    console.log("restroom");
+  }
+
+</script>
 <% if(posts.length>0) { %>
   <% for(var i=posts.length-1; i>=0;i--) { %>
     <section>
@@ -11,7 +40,10 @@
               <div class="card-body mb-2">
             <%}%>
             <div class="form-group">
-              <h5 class="card-header"><%= posts[i].post.title %></h5>
+              <% if(posts[i].quote==true) { %>
+                <p class="card-text"><%= posts[i].user %><%=" quoted " %><%= posts[i].originalAuthor %></p>
+              <% } %>
+              <h5 class="card-header"><%= posts[i].title %></h5>
               <br>
               <p class="card-text"><%= posts[i].post.description %></p>
               <p class="card-title">topic: <%= posts[i].post.topic%></p>
@@ -21,12 +53,26 @@
               <p class="card-title">username: <%= posts[i].post.user%></p>
               
               <form method="post" action="/like">
-                <input type="hidden" name="id" value=<%= posts[i].post._id%>>
-                <input class="btn btn-primary button-width" type="submit" value="Like">
+                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input class="btn btn-primary button-width" type="submit" value="Like" style="margin: 5px">
               </form>
               <form method="post" action="/dislike">
-                <input type="hidden" name="id" value=<%= posts[i].post._id%>>
-                <input class="btn btn-primary button-width" type="submit" value="Dislike">
+                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input class="btn btn-primary button-width" type="submit" value="Dislike" style="margin: 5px">
+              </form>
+
+
+              <form method="post" action="/quote">
+                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input class="btn btn-primary button-width" type="submit" value="Quote" style="float: right; margin: 20px">
+              </form>
+
+              <form method="post" action="/quote">
+                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input class="btn btn-primary button-width" id="quoteButton_<%=i%>"type="button" value="Quote With Comment" style="float: right; margin: 20px">
+                    <input class="hide" type="text" id="textInput_<%=i%>" placeholder="Add your comment here!" name="comment"/>
+                    <button class="hide" type="submit" id="submit_<%=i%>">Quote!</button>
+                </input>
               </form>
             </div>
           </div>
