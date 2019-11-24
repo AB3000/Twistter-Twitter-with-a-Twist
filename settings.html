@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Twistter</title>
@@ -9,10 +9,11 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <!-- <link rel="stylesheet" href="posts.css"> -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<body></body>
+  <nav id="mynavbar"  class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Twistter</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +43,31 @@
   <form>
 <br><br><br><br>
 </form>
+<script>
+    //console.log('<%=colorScheme %>');
+      
+
+       var bcolor = {
+        "Default": "white",
+          "Red" : "hsl(360 , 50%, 90%)",
+          "Blue" : "hsl(203, 61%, 90%)",
+          "Light" : "hsl(203, 15%, 91%)"
+       }
+      var color = bcolor['<%=colorScheme %>'];
+      document.body.style.backgroundColor = color;
+
+      var themes = {
+          "Default": "navbar navbar-expand-lg navbar-dark bg-dark fixed-top",
+          "Red" : "navbar navbar-expand-lg navbar-dark bg-danger fixed-top",
+          "Blue" : "navbar navbar-expand-lg navbar-dark bg-primary fixed-top",
+          "Light" : "navbar navbar-expand-lg navbar-dark bg-secondary fixed-top"
+      }
+
+          var themeurl = themes['<%=colorScheme %>']; 
+          // console.log("hello");
+          // console.log(themeurl);
+          document.getElementById("mynavbar").className = themeurl;
+  </script>
     <section>
     
             <div class="container py-3">
@@ -75,6 +101,22 @@
                                     <span class="input-group-text" id="basic-addon1">Password</span>
                                   </div>
                                   <input type="password" class="form-control input-lg" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;" aria-describedby="basic-addon1" name="pw">
+                                  <input class="btn btn-primary button-width" type="submit" value="Edit">
+                                  </div>
+                                </form>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                        <form method="post" action="/editcolor">
+                                          
+                                    <span class="input-group-text" id="basic-addon1">ColorScheme: <%=colorScheme %></span>
+                                  </div>
+                                  <select class="form-control input-lg" name="color">
+                                    <option value="Default">Default</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Light">Light</option>
+                                  </select>
+                                  <br><br>
                                   <input class="btn btn-primary button-width" type="submit" value="Edit">
                                   </div>
                                 </form>

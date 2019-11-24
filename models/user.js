@@ -40,6 +40,12 @@ let userSchema = new Schema({
       }], 
       default: [] 
     },
+
+    colorScheme:{
+      type: String,
+      required: true,
+      default: "defalut"
+    },
     followingMeList: {
       type: [ObjectId],
       default:[],
