@@ -75,7 +75,7 @@ app.get('/discover', function (req, res) {
 
 
 
-app.get('/posted', function (req, res) {
+app.get('/timeline', function (req, res) {
   post.find(function (err, posts) {
     var filtered_posts = [];
     
@@ -251,7 +251,7 @@ app.get('/user-followed', function (req, res) {
     }
 
     //redirect them to the timeline instead
-    res.redirect('/posted');
+    res.redirect('/timeline');
 
   });
 
@@ -588,7 +588,7 @@ app.post("/login", (req, res) => {
       req.session.colorScheme=userData.colorScheme;
       //console.log(userData.colorScheme);
       //console.log(req.session.userID);
-      res.redirect('/posted');
+      res.redirect('/timeline');
     } else {
       //res.status(200).send("Failed Login");
       //res.send('Your username/password is incorrect, try again')
@@ -597,7 +597,7 @@ app.post("/login", (req, res) => {
   });
 })
 
-app.post("/posted", (req, res) => {
+app.post("/timeline", (req, res) => {
   // console.log("POSTS");
   var currDate = new Date();
   var newPost = new post({
@@ -632,7 +632,7 @@ app.post("/posted", (req, res) => {
     if (err) return console.error(err);
     else return console.log('succesfully saved');
   })
-  res.redirect('/posted');
+  res.redirect('/timeline');
 });
 
 /*
@@ -685,7 +685,7 @@ app.post("/quote", (req, res) => {
 
   });
 
-  res.redirect('/posted');
+  res.redirect('/timeline');
 
 }); //end of quote
 
@@ -731,7 +731,7 @@ app.post("/like", (req, res) => {
         //console.log("LIKED----------------------------------");
       });
     }
-    res.redirect('/posted');
+    res.redirect('/timeline');
   });
 });
 
@@ -777,7 +777,7 @@ app.post("/dislike", (req, res) => {
         //console.log("DISLIKED---------------------------------");
       });
     }
-    res.redirect('/posted');
+    res.redirect('/timeline');
   });
 });
 
