@@ -528,7 +528,7 @@ app.post("/signup", (req, res) => {
     username: u,
     password: encrypttedP,
     topics: [],
-    colorScheme: "default",
+    colorScheme: "Default",
     newtopics: []
   });
   //saving the new user to the database
