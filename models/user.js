@@ -44,7 +44,7 @@ let userSchema = new Schema({
     colorScheme:{
       type: String,
       required: true,
-      default: "defalut"
+      default: "Default"
     },
     followingMeList: {
       type: [ObjectId],
