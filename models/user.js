@@ -40,7 +40,6 @@ let userSchema = new Schema({
       }], 
       default: [] 
     },
-
     colorScheme:{
       type: String,
       required: true,
@@ -55,6 +54,10 @@ let userSchema = new Schema({
       type: [String], 
       default: [],
       required: false
+    }, 
+    active: {
+      default: false,
+      required: true
     }
     
 });
