@@ -20,7 +20,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(path.join(__dirname, "public")));
-
+ 
 // app.locals.expand = function onButtonClick(){
 //   console.log("HERE YOU PIECES OF STUFF")
 //   document.getElementById('textInput').className="show";
@@ -51,6 +51,12 @@ app.get("/signup", function(req, res, html) {
 app.get("/login", function(req, res, html) {
   res.sendFile(path.join(__dirname + "/login.html"));
 });
+
+app.get("/redirection", function(req, res, html) {
+  res.sendFile(path.join(__dirname + "/redirection.html"));
+});
+
+
 
 app.get("/discover", function(req, res) {
   if (Object.keys(req.query).length == 0) {
