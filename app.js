@@ -56,6 +56,7 @@ app.get('/login', function (req, res, html) {
 });
 
 app.get('/discover', function (req, res) {
+  app.locals.currUser = req.session.username;
   if (Object.keys(req.query).length == 0) {
     user.find(function (err, users) {
       //render all users
@@ -608,7 +609,8 @@ app.post("/timeline", (req, res) => {
     user: req.session.username,
     likes: 0,
     dislikes: 0,
-    quote: false
+    quote: false,
+    isRemoved: false
   });
 
   user.findOne({ username: req.session.username }, 'username topics followingMeList', (err, userData) => {
@@ -635,6 +637,83 @@ app.post("/timeline", (req, res) => {
   res.redirect('/timeline');
 });
 
+
+/**
+ * Goes through different database items to delete user's post
+ */
+
+app.post("/deletePost", function (req, res) {
+console.log("DELETE POST");
+//first have to loop through all user's posts to see if there are any post sw that topic left
+  //if yes, then just delete post
+  //if no, then need to loop through user's topic list, delete topic
+    //then loop through all users following list and delete topic
+//need to work with quotes regardless
+
+console.log("USER LENGTH", user.length )
+var count = 0;
+var removedFlag = 0;
+post.find(function (err, posts) { 
+
+  for (var i = 0; i < posts.length; i++) {
+    //need to gather count of posts with that topic
+    if (posts[i].user === req.session.username.toString() && posts[i].topic === req.body.topicCheck.toString()) {
+        count++;
+    }
+
+    //find any quoted posts
+      if (posts[i].quoted_id === req.body.post_to_delete.toString() ) {
+        post.findOne({ _id: posts[i]._id }, 'description isRemoved', (err, postData) => {
+          //console.log(postData);
+          removedFlag = 1;
+          postData.description = "";
+          postData.isRemoved = true;  
+          postData.save();
+      });
+    }
+  }
+
+    //delete post
+     post.findByIdAndDelete(req.body.post_to_delete, function (err){
+      if (err) {
+         console.log(err);
+      } 
+    });
+
+     //if count is greater than 1, then just refresh page after deletion
+     if (count==1) {
+      //if count is 1, then need to handle deletion of topics-followings
+      user.findOne({ username: req.session.username }, 'topics', (err, userData) => {
+        //this will delete the topic from the author's topic list
+        var index = userData.topics.indexOf(req.body.topicCheck);
+        if (index > -1) {
+          userData.topics.splice(index, 1);
+          userData.save();
+        }
+      });
+      //now we have to delete the topic from all users who follow the topic
+      user.find((err, users) => {
+            for (var userSize = 0; userSize < users.length; userSize++) {
+              for (var folSize = 0; folSize < users[userSize].following.length; folSize++) {
+                  if (users[userSize].following[folSize].username === req.session.username.toString() ) {
+                    user.findOne({ username: users[userSize].username}, 'following', (err, userData) => {
+                    var topicIndex = userData.following[folSize].topics.indexOf(req.body.topicCheck);
+                    if (topicIndex > -1) {
+                      userData.following[folSize].topics.splice(topicIndex, 1);
+                      userData.save();
+                  }
+                  });
+                }
+              }
+            }
+
+      });
+    }
+    res.redirect('/display_personal');
+});
+
+});
+
 /*
  * Saves new posts when someone quotes another user 
 */
@@ -653,7 +732,7 @@ app.post("/quote", (req, res) => {
 
   //console.log("hereisreq ", req.body.id.toString());
   post.findOne({ _id: req.body.id }, 'title description topic date user likes dislikes', (err, postData) => {
-    //console.log(postData);
+    console.log(postData);
 
     var currDate = new Date();
     var newPost = new post({
@@ -665,6 +744,8 @@ app.post("/quote", (req, res) => {
     likes: 0,
     dislikes: 0,
     quote: true,
+    isRemoved: false,
+    quoted_id: req.body.id,
     originalAuthor: postData.user,
     comment: text, 
   });

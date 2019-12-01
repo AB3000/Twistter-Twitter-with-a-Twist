@@ -41,11 +41,16 @@
               <p class="card-text"><%= posts[i].comment %></p>
             <% } %>
 
+            <% if(posts[i].isRemoved==false) { %>
           <h5 class="card-header"><%= posts[i].title %></h5>
           <br>
           <p class="card-text"><%= posts[i].description %></p>
           <p class="card-title">topic: <%= posts[i].topic%></p>
           <a href="#" class="btn btn-primary">Like</a>
+          <% } else { %>
+            <p class="card-title"><%= "Quoted post has been removed." %></p>
+            <p class="card-title">topic: <%= posts[i].topic%></p>
+            <% } %> 
           
           <% if(posts[i].quote==false) { %>
           <form method="post" action="/quote">
