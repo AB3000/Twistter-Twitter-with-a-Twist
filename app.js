@@ -20,7 +20,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(path.join(__dirname, "public")));
- 
+
 // app.locals.expand = function onButtonClick(){
 //   console.log("HERE YOU PIECES OF STUFF")
 //   document.getElementById('textInput').className="show";
@@ -55,8 +55,6 @@ app.get("/login", function(req, res, html) {
 app.get("/redirection", function(req, res, html) {
   res.sendFile(path.join(__dirname + "/redirection.html"));
 });
-
-
 
 app.get("/discover", function(req, res) {
   if (Object.keys(req.query).length == 0) {
@@ -517,6 +515,7 @@ var passport = require("passport");
 var bodyParser = require("body-parser");
 var user = require("./models/user"); //reference to user schema
 var post = require("./models/post"); //reference to post schema
+var activation = require("./models/activation"); //reference to activation schema
 //var Posts = mongoose.model('Posts', postSchema);
 
 //Connection start
@@ -543,6 +542,11 @@ app.post("/signup", (req, res) => {
   const p = req.body.password;
 
   //formatting the email and password info into the user schema
+
+  //using CryptoJS to encrypt password
+  encrypttedP = CryptoJS.SHA1(p);
+  encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
+
   var newUser = new user({
     email: e,
     username: u,
@@ -561,26 +565,6 @@ app.post("/signup", (req, res) => {
     }
   });
 
-  var mailOptions = {
-    from: "twistter307@gmail.com",
-    to: e,
-    subject: "Thank you for signing up with Twistter",
-    text: "Hello, Hope you enjoy the application :)"
-  };
-
-  transporter.sendMail(mailOptions, function(error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
-
-  //using CryptoJS to encrypt password
-  encrypttedP = CryptoJS.SHA1(p);
-  encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
-
-  
   //res.status(204).send();
   //res.end();
 
@@ -609,12 +593,30 @@ app.post("/signup", (req, res) => {
         return;
       });
     } else {
+      //send email only if meets signup criteria (unique username, unique email)
 
       //hashing the user
-      hashedUser = CryptoJS.SHA11(name);
+      hashedUser = CryptoJS.SHA1(u);
       hashedUser = hashedUser.toString(CryptoJS.enc.Base64);
 
-      res.sendFile(path.join(__dirname + "/login.html"));
+      var mailOptions = {
+        from: "twistter307@gmail.com",
+        to: e,
+        subject: "Thank you for signing up with Twistter",
+        text:
+          "Hello, hope you enjoy the application :)" +
+          "Please click on the following link to activate your account:"
+      };
+
+      transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+
+      res.sendFile(path.join(__dirname + "/redirection.html"));
       console.log("new user successfully saved");
     }
   });

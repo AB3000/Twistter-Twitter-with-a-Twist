@@ -56,7 +56,7 @@ let userSchema = new Schema({
       required: false
     }, 
     active: {
-      type: [Boolean],
+      type: Boolean,
       default: false,
       required: true
     },
