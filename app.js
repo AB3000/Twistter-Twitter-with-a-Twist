@@ -56,6 +56,10 @@ app.get("/redirection", function(req, res, html) {
   res.sendFile(path.join(__dirname + "/redirection.html"));
 });
 
+app.get("/verification", function(req, res, html) {
+  res.sendFile(path.join(__dirname + "/verification.html"));
+});
+
 app.get("/discover", function(req, res) {
   if (Object.keys(req.query).length == 0) {
     user.find(function(err, users) {
@@ -599,13 +603,16 @@ app.post("/signup", (req, res) => {
       hashedUser = CryptoJS.SHA1(u);
       hashedUser = hashedUser.toString(CryptoJS.enc.Base64);
 
+      host=req.get('host');
+      link="http://"+req.get('host')+"/verification?id="+hashedUser;
+      
       var mailOptions = {
         from: "twistter307@gmail.com",
-        to: e,
+        to: e.email,
         subject: "Thank you for signing up with Twistter",
         text:
-          "Hello, hope you enjoy the application :)" +
-          "Please click on the following link to activate your account:"
+          "Hello, hope you enjoy the application :)\n" +
+          "Please click on the following link to activate your account: " + link
       };
 
       transporter.sendMail(mailOptions, function(error, info) {
