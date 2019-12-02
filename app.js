@@ -691,12 +691,14 @@ app.post("/login", (req, res) => {
       if (userData == null) {
         res.sendFile(path.join(__dirname + "/login.html"));
         //res.status(200).send("UserData is null")
-      }  else if(!userData.active){
+      }  else if(!(userData.active)){
         //CASE WHERE USER EXISTS BUT HAS NOT VERIFIED ACCOUNT YET
         res.sendFile(
           path.join(__dirname + "/login.html"),
           "Please check your email to verify your account!"
         );
+
+        console.log("user is not active");
       } else if (encrypttedP === userData.password) {
         //Redirect here!
         //Redirect to main posts page
@@ -713,6 +715,7 @@ app.post("/login", (req, res) => {
       } else {
         //res.status(200).send("Failed Login");
         //res.send('Your username/password is incorrect, try again')
+        console.log("username/password incorrect");
         res.sendFile(
           path.join(__dirname + "/login.html"),
           "Error your username/password is incorrect, try again"
