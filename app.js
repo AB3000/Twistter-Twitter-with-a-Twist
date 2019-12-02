@@ -56,6 +56,8 @@ app.get("/redirection", function(req, res, html) {
   res.sendFile(path.join(__dirname + "/redirection.html"));
 });
 
+
+
 app.get("/verification", function(req, res, html) {
 
   console.log("id is ", req.query["id"]);
@@ -64,8 +66,10 @@ app.get("/verification", function(req, res, html) {
 
   activation.findOne({ hash: hashId }, (err, hashData) => {
     if (err) {
-
-    } else {
+        throw err;
+    } 
+    
+    if(hashData){ //user visits verification link for the first time
       user.findOneAndUpdate(
         { username: hashData.username},
         { $set: { active: true } },
@@ -82,9 +86,11 @@ app.get("/verification", function(req, res, html) {
               }
             });
             res.sendFile(path.join(__dirname + "/verification.html"));
-          }
+          } 
         }
       );
+    } else  { //user already visited link (has been verified)
+      res.sendFile(path.join(__dirname + "/verification-expired.html"));
     }
   });
 });
@@ -685,6 +691,12 @@ app.post("/login", (req, res) => {
       if (userData == null) {
         res.sendFile(path.join(__dirname + "/login.html"));
         //res.status(200).send("UserData is null")
+      }  else if(!userData.active){
+        //CASE WHERE USER EXISTS BUT HAS NOT VERIFIED ACCOUNT YET
+        res.sendFile(
+          path.join(__dirname + "/login.html"),
+          "Please check your email to verify your account!"
+        );
       } else if (encrypttedP === userData.password) {
         //Redirect here!
         //Redirect to main posts page
