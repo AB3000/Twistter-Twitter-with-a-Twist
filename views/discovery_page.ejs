@@ -7,6 +7,7 @@
     <div class="row" id="current_users">
         <% users.forEach((user) => { %>
 
+        <% if(user.username !== currUser) { %>
         <div class="column" style="background-color:#aaa;">
             <div id="circle">
                 <div id="text"><%= user.username.substring(0,1).toUpperCase() %>
@@ -21,7 +22,7 @@
                 </h1>
             </form>
         </div>
-
+        <% } %>
         <% }) %>
     </div>
 </section>

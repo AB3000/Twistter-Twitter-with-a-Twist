@@ -10,6 +10,8 @@ let postSchema = new Schema({
 	likes: {type: Number, required: false}, 
 	dislikes: {type: Number, required: false},
 	quote: {type: Boolean, required: false},
+	isRemoved: {type: Boolean, required: false},
+	quoted_id: {type: String, required: false},
 	comment: {type: String, required: false},
 	originalAuthor: {type: String, required: false}
 });

@@ -40,10 +40,12 @@
               <div class="card-body mb-2">
             <%}%>
             <div class="form-group">
-              <% if(posts[i].quote==true) { %>
-                <p class="card-text"><%= posts[i].user %><%=" quoted " %><%= posts[i].originalAuthor %></p>
+              <% if(posts[i].post.quote==true) { %>
+                <p class="card-text"><%= posts[i].post.user %><%=" quoted " %><%= posts[i].post.originalAuthor %></p>
               <% } %>
-              <h5 class="card-header"><%= posts[i].title %></h5>
+
+              <% if(posts[i].post.isRemoved==false) { %>
+              <h5 class="card-header"><%= posts[i].post.title %></h5>
               <br>
               <p class="card-text"><%= posts[i].post.description %></p>
               <p class="card-title">topic: <%= posts[i].post.topic%></p>
@@ -51,29 +53,48 @@
               <p class="card-title">dislikes: <%= posts[i].post.dislikes%></p>
               <p class="card-title">date: <%= posts[i].post.date%></p>
               <p class="card-title">username: <%= posts[i].post.user%></p>
-              
+             
               <form method="post" action="/like">
-                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input type="hidden" name="id" value=<%= posts[i].post._id %>>
                 <input class="btn btn-primary button-width" type="submit" value="Like" style="margin: 5px">
               </form>
               <form method="post" action="/dislike">
-                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input type="hidden" name="id" value=<%= posts[i].post._id %>>
                 <input class="btn btn-primary button-width" type="submit" value="Dislike" style="margin: 5px">
               </form>
 
 
               <form method="post" action="/quote">
-                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input type="hidden" name="id" value=<%= posts[i].post._id %>>
                 <input class="btn btn-primary button-width" type="submit" value="Quote" style="float: right; margin: 20px">
               </form>
 
               <form method="post" action="/quote">
-                <input type="hidden" name="id" value=<%= posts[i]._id%>>
+                <input type="hidden" name="id" value=<%= posts[i].post._id %>>
                 <input class="btn btn-primary button-width" id="quoteButton_<%=i%>"type="button" value="Quote With Comment" style="float: right; margin: 20px">
                     <input class="hide" type="text" id="textInput_<%=i%>" placeholder="Add your comment here!" name="comment"/>
                     <button class="hide" type="submit" id="submit_<%=i%>">Quote!</button>
                 </input>
               </form>
+
+              <% } else { %>
+  
+                <p class="card-title"><%= "Quoted post has been removed." %></p>
+                <p class="card-title">topic: <%= posts[i].post.topic%></p>
+                
+                <form method="post" action="/like">
+                  <input type="hidden" name="id" value=<%= posts[i].post._id %>>
+                  <input class="btn btn-primary button-width" type="submit" value="Like" style="margin: 5px">
+                </form>
+                <form method="post" action="/dislike">
+                  <input type="hidden" name="id" value=<%= posts[i].post._id %>>
+                  <input class="btn btn-primary button-width" type="submit" value="Dislike" style="margin: 5px">
+                </form>
+                
+
+                <% } %>
+            
+            
             </div>
           </div>
         </div>

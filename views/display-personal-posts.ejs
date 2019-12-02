@@ -14,20 +14,30 @@
 <section>
   <div class="container py-3">
     <div class="card w-75">
+        <form method="post" action="/deletePost">
+          <button name ="post_to_delete" value=<%= posts[i]._id %> type="submit" class="close" aria-label="Close" style="position:relative; bottom:30pt; left:290pt; cursor:pointer; display:inline-block">
+              <input type="hidden" name="topicCheck" value=<%= posts[i].topic%>>
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </form>
       <div class="card-body mb-2">
         <div class="form-group">
-
             <% if(posts[i].quote==true) { %>
               <p class="card-text"><%= posts[i].user %><%=" quoted " %><%= posts[i].originalAuthor %></p>
               <p class="card-text"><%= posts[i].comment %></p>
             <% } %>
-            
+
+            <% if(posts[i].isRemoved == false) { %>
           <h5 class="card-header"><%= posts[i].title %></h5>
           <br>
           <p class="card-text"><%= posts[i].description %></p>
           <p class="card-title">topic: <%= posts[i].topic%></p>
           <p class="card-title">likes: <%= posts[i].likes%></p>
           <p class="card-title">dislikes: <%= posts[i].dislikes%></p>
+          <% } else { %>
+            <p class="card-title"><%= "Quoted post has been removed." %></p>
+            <p class="card-title">topic: <%= posts[i].topic%></p>
+            <% } %>
         </div>
       </div>
     </div>
