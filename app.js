@@ -57,7 +57,36 @@ app.get("/redirection", function(req, res, html) {
 });
 
 app.get("/verification", function(req, res, html) {
-  res.sendFile(path.join(__dirname + "/verification.html"));
+
+  console.log("id is ", req.query["id"]);
+  var hashId = req.query["id"].replace(/ /g, "+");
+  console.log("id is ", hashId);
+
+  activation.findOne({ hash: hashId }, (err, hashData) => {
+    if (err) {
+
+    } else {
+      user.findOneAndUpdate(
+        { username: hashData.username},
+        { $set: { active: true } },
+        { upsert: true },
+        function(err, doc) {
+          if (err) {
+            throw err;
+          } else {
+            console.log(doc.username + " updated. ");
+            //remove from verification collection
+            activation.findByIdAndRemove(hashData._id, function(err) {
+              if (err) {
+                console.log(err);
+              }
+            });
+            res.sendFile(path.join(__dirname + "/verification.html"));
+          }
+        }
+      );
+    }
+  });
 });
 
 app.get("/discover", function(req, res) {
@@ -603,16 +632,17 @@ app.post("/signup", (req, res) => {
       hashedUser = CryptoJS.SHA1(u);
       hashedUser = hashedUser.toString(CryptoJS.enc.Base64);
 
-      host=req.get('host');
-      link="http://"+req.get('host')+"/verification?id="+hashedUser;
-      
+      host = req.get("host");
+      link = "http://" + req.get("host") + "/verification?id=" + hashedUser;
+
       var mailOptions = {
         from: "twistter307@gmail.com",
         to: e.email,
         subject: "Thank you for signing up with Twistter",
         text:
           "Hello, hope you enjoy the application :)\n" +
-          "Please click on the following link to activate your account: " + link
+          "Please click on the following link to activate your account: " +
+          link
       };
 
       transporter.sendMail(mailOptions, function(error, info) {
@@ -623,7 +653,15 @@ app.post("/signup", (req, res) => {
         }
       });
 
-      res.sendFile(path.join(__dirname + "/redirection.html"));
+      var newActivation = new activation({
+        hash: hashedUser,
+        username: u
+      });
+
+      //save hash and username
+      newActivation.save();
+
+      res.redirect("/redirection");
       console.log("new user successfully saved");
     }
   });
