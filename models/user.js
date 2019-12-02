@@ -40,11 +40,10 @@ let userSchema = new Schema({
       }], 
       default: [] 
     },
-
     colorScheme:{
       type: String,
       required: true,
-      default: "defalut"
+      default: "Default"
     },
     followingMeList: {
       type: [ObjectId],
@@ -55,7 +54,12 @@ let userSchema = new Schema({
       type: [String], 
       default: [],
       required: false
-    }
+    }, 
+    active: {
+      type: Boolean,
+      default: false,
+      required: true
+    },
     
 });
 

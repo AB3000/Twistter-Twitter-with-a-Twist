@@ -85,3 +85,8 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
+.card-body h2{
+    color: white;
+    text-align: center;
+}
