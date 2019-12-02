@@ -85,3 +85,12 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
+.card-body h2{
+    color: white;
+    text-align: center;
+}
+
+/* .col-md-4.center-block button{
+    justify-content: center;
+} */
