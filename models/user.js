@@ -21,6 +21,11 @@ let userSchema = new Schema({
       type: String,
       required: true
     }, 
+    bio: {
+      type: String,
+      required: true,
+      default: "Add a short bio to tell people more about you."
+    },
     topics: {
       type: [String], 
       default: [], 

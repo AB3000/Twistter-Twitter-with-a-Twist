@@ -116,10 +116,18 @@
                                     <option value="Blue">Blue</option>
                                     <option value="Light">Light</option>
                                   </select>
-                                  <br><br>
                                   <input class="btn btn-primary button-width" type="submit" value="Edit">
-                                  </div>
+                                </div>
                                 </form>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                        <form method="post" action="/bio">
+                                    <span class="input-group-text" id="basic-addon1">Bio</span>
+                                  </div>
+                                  <input type="bio" class="form-control input-lg" placeholder="<%=bio %>"  aria-describedby="basic-addon1" name="bio">
+                                  <input class="btn btn-primary button-width" type="submit" value="Edit">
+                                </div>
+                            </form>
                                   <button type="button" class="btn btn-primary button-width">
                                       <a style="color:white;" href="/deleteUser">Delete account</a>
                               </button>

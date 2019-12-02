@@ -15,16 +15,9 @@ if (typeof localStorage === "undefined" || localStorage === null) {
   localStorage = new LocalStorage("./scratch");
 }
 
-//app.use(express.static(__dirname + "/views"));
-//app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(express.static(path.join(__dirname, "public")));
-
-// app.locals.expand = function onButtonClick(){
-//   console.log("HERE YOU PIECES OF STUFF")
-//   document.getElementById('textInput').className="show";
-// }
 
 var AES = require("crypto-js/aes");
 var SHA256 = require("crypto-js/sha256");
@@ -132,15 +125,12 @@ app.get("/timeline", function(req, res) {
     } else {
       //send the filtered version of posts to ejs
       //go through user's followings, and get user topic combinations
-
-      // console.log("following array of logged in user ", req.session.username);
       var filtering_criteria = "";
       var highlighting_criteria = "";
       user.findOne(
         { username: req.session.username },
         "following newUserTopicList",
         (err, userData) => {
-          //console.log("following array of logged in user ", userData.following);
           filtering_criteria = userData.following;
           highlighting_criteria = userData.newUserTopicList;
           if (userData.following.length == 0) {
@@ -150,8 +140,6 @@ app.get("/timeline", function(req, res) {
             });
           } else {
             post.find(function(err, posts) {
-              //for the user...
-              //console.log('first part is ', filtering_criteria[0].username);
               var users = filtering_criteria.map(function(value) {
                 return value.username;
               });
@@ -160,7 +148,6 @@ app.get("/timeline", function(req, res) {
                 return value;
               });
 
-              //console.log("all users are ", users);
               newHighlightedTopics = userData.newUserTopicList;
 
               for (var i = 0; i < posts.length; i++) {
@@ -174,7 +161,6 @@ app.get("/timeline", function(req, res) {
                     filtering_criteria[index].topics.indexOf(posts[i].topic) !=
                     -1
                   ) {
-                    //console.log("here, post found");
                     filtered_posts.push({
                       post: posts[i],
                       isHighlighted: false
@@ -201,7 +187,6 @@ app.get("/timeline", function(req, res) {
                 return 0;
               });
 
-              //console.log('posts are ', filtered_posts);
               res.render("display-posts", {
                 posts: filtered_posts,
                 colorScheme: req.session.colorScheme
@@ -215,9 +200,6 @@ app.get("/timeline", function(req, res) {
 });
 
 app.get("/user-followed", function(req, res) {
-  // console.log('req is', req);
-  // console.log('req topics are ', req.query.topics);
-  // console.log('req username is ', req.query.user_followed);
   user.findOne(
     { username: req.session.username },
     "following",
@@ -236,17 +218,12 @@ app.get("/user-followed", function(req, res) {
             //once user is found, delete all topics from list
             if (userData.following[j].username == req.query.user_followed) {
               if (req.query.topics == null) {
-                console.log("empty");
+                
                 if (j > -1) {
                   userData.following.splice(j, 1);
-                  console.log("SPLICING");
+                  
                 }
               } else {
-                console.log("not empty");
-                console.log(
-                  userData.following[j].username + "=" + req.query.user_followed
-                );
-                console.log(j);
                 var topicSize = userData.following[j].topics.length;
                 for (k = 0; k < topicSize; k++) {
                   userData.following[j].topics.pop();
@@ -265,7 +242,7 @@ app.get("/user-followed", function(req, res) {
                 userData.following[j].topics.push(req.query.topics[l]);
               }
             }
-            // console.log(userData.following[j].topics);
+           
           } else {
             //completely unfollowed this user (following[j]) so must also remove userData from following[j]'s followingMeList (for highlighting)
             user.findOne(
@@ -430,9 +407,10 @@ app.get("/display_personal", function(req, res) {
             posts: posts,
             email: req.session.email,
             username: req.session.username,
-            colorScheme: req.session.colorScheme
+            colorScheme: req.session.colorScheme,
+            bio: req.session.bio
           });
-          // console.log(posts);
+         
         }
       });
     }
@@ -448,7 +426,8 @@ app.get("/settings", function(req, res) {
         username: req.session.username,
         email: req.session.email,
         password: req.session.password,
-        colorScheme: req.session.colorScheme
+        colorScheme: req.session.colorScheme,
+        bio: req.session.bio
       });
       console.log(user);
     }
@@ -460,10 +439,8 @@ app.get("/deleteUser", function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      console.log(posts);
       for (var i = 0; i < posts.length; i++) {
         if (posts[i].user == req.session.username) {
-          console.log(posts[i]);
           post.findByIdAndRemove(posts[i]._id, function(err) {
             if (err) {
               console.log(err);
@@ -484,7 +461,6 @@ app.get("/deleteUser", function(req, res) {
 });
 
 app.post("/editName", function(req, res) {
-  console.log(req.body.uname);
   user.findByIdAndUpdate(
     req.session.userID,
     { $set: { username: req.body.uname } },
@@ -493,6 +469,21 @@ app.post("/editName", function(req, res) {
         console.log(err);
       } else {
         req.session.username = req.body.uname;
+        res.redirect("/settings");
+      }
+    }
+  );
+});
+
+app.post("/bio", function(req, res) {
+  user.findByIdAndUpdate(
+    req.session.userID,
+    { $set: { bio: req.body.bio } },
+    function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        req.session.bio = req.body.bio;
         res.redirect("/settings");
       }
     }
@@ -556,7 +547,6 @@ var bodyParser = require("body-parser");
 var user = require("./models/user"); //reference to user schema
 var post = require("./models/post"); //reference to post schema
 var activation = require("./models/activation"); //reference to activation schema
-//var Posts = mongoose.model('Posts', postSchema);
 
 //Connection start
 mongoose.Promise = global.Promise;
@@ -605,9 +595,7 @@ app.post("/signup", (req, res) => {
     }
   });
 
-  //res.status(204).send();
-  //res.end();
-
+  
   //saving the new user to the database
 
   newUser.save(function(err, e) {
@@ -686,18 +674,14 @@ app.post("/login", (req, res) => {
 
   user.findOne(
     { email: e },
-    "email username password colorScheme",
+    "email username password colorScheme bio",
     (err, userData) => {
       console.log(userData);
       if (userData == null) {
-        res.sendFile(path.join(__dirname + "/login.html"));
-        //res.status(200).send("UserData is null")
+        res.sendFile(path.join(__dirname, "/login_incorrect.html"));
       }  else if(userData.active == false){
         //CASE WHERE USER EXISTS BUT HAS NOT VERIFIED ACCOUNT YET
-        res.sendFile(
-          path.join(__dirname + "/login.html"),
-          "Please check your email to verify your account!"
-        );
+        res.sendFile(path.join(__dirname, "/login_verify.html"));
 
         console.log("user is not active");
       } else if (encrypttedP === userData.password) {
@@ -710,24 +694,17 @@ app.post("/login", (req, res) => {
         req.session.posts = userData.posts;
         req.session.password = p;
         req.session.colorScheme = userData.colorScheme;
-        //console.log(userData.colorScheme);
-        //console.log(req.session.userID);
+        req.session.bio = userData.bio;
+       
         res.redirect("/timeline");
       } else {
-        //res.status(200).send("Failed Login");
-        //res.send('Your username/password is incorrect, try again')
-        console.log("username/password incorrect");
-        res.sendFile(
-          path.join(__dirname + "/login.html"),
-          "Error your username/password is incorrect, try again"
-        );
+        res.sendFile(path.join(__dirname, "/login_incorrect.html"));
       }
     }
   );
 });
 
 app.post("/timeline", (req, res) => {
-  // console.log("POSTS");
   var currDate = new Date();
   var newPost = new post({
     title: req.body.title,
@@ -765,7 +742,6 @@ app.post("/timeline", (req, res) => {
     }
   );
 
-  //console.log("newPost is", newPost);
   newPost.save(function(err, e) {
     if (err) return console.error(err);
     else return console.log("succesfully saved");
@@ -937,15 +913,14 @@ app.post("/like", (req, res) => {
       userData.interactions.forEach(function(post) {
         if (post.postID === req.body.id.toString()) {
           if (!post.disliked) {
-            //console.log("CANT LIKE-------------------------------------------------");
-            //console.log(post);
+            
             beenDisliked = post.disliked;
             alreadyInteracted = true;
           } else {
             //undo a dislike and like instead
             beenDisliked = post.disliked;
             alreadyInteracted = false;
-            //console.log(post);
+            
           }
         }
       });
@@ -965,7 +940,7 @@ app.post("/like", (req, res) => {
               postData.dislikes -= 1;
             }
             postData.save();
-            //console.log("LIKED----------------------------------");
+            
           }
         );
       }
@@ -990,14 +965,13 @@ app.post("/dislike", (req, res) => {
       userData.interactions.forEach(function(post) {
         if (post.postID === req.body.id.toString()) {
           if (!post.liked) {
-            //console.log("CANT DISLIKE-------------------------------------------------");
-            //console.log("TEST@: " + post);
+           
             alreadyInteracted = true;
           } else {
             //undo a dislike and like instead
             beenLiked = post.liked;
             alreadyInteracted = false;
-            //console.log("TEST: " + post);
+           
           }
         }
       });
@@ -1019,7 +993,7 @@ app.post("/dislike", (req, res) => {
             }
 
             postData.save();
-            //console.log("DISLIKED---------------------------------");
+           
           }
         );
       }

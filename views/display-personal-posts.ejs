@@ -5,7 +5,8 @@
   <div class="container py-3">
     <p class="container-text"><%="Hi " %><%=username %><%="! " %></p>
     <p class="container-text"><%="Your email id is: " %><%=email %></p>
-    <p class="container-text"><%="Head to the settings page if you would like to change your username, email or password!"%></p>
+    <p class="container-text"><%="Bio: " %><%=bio %></p>
+    <p class="container-text"><%="Head to the settings page if you would like to change your username, email, bio or password!"%></p>
   </div>
 </section>
 <% if(posts.length>0) { %>
@@ -48,5 +49,5 @@
 <% } %>
 
 <% } else { %>
-No Posts to Display!
+  <div class="container py-3">No Posts to Display!</div>
 <% } %>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login Page</title>
+	<!--for mobile friendly-->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Description" content="Login page - login to view functionality of Twistter!">
+	<!--Bootsrap 4 CDN-->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!--Fontawesome CDN-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+	<!--Custom styles-->
+	<link rel="stylesheet" type="text/css" href="./styles.css">
+</head>
+<body>
+<div class="container">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card">
+			<div class="card-header">
+				<h3>Sign In</h3>
+			</div>
+			<div class="card-body">
+				  <form method="post" action="/login">
+					<label style="font-size: 4px;"for="first">Email
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+							<input style="width: 300px;" type="text" name="email" class="form-control" placeholder="email">
+					</div>
+				</label>
+				<label style="font-size: 4px;" for="first">Password
+					<div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input style="width: 300px;" name="password" type="password" class="form-control" placeholder="password">
+					</div>
+				</label>
+				<p style="width: 500px; color: white;">Please check your email to verify your account!</p>
+					<div class="form-group">
+            <input type="submit" value="Login">
+					</div>
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="d-flex justify-content-center links">
+					Don't have an account?<a style ="color:#33ccff" href="/signup">Sign Up</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
