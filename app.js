@@ -613,7 +613,7 @@ app.post("/signup", (req, res) => {
             "alert('Email already registered with account. Please try a different email.')";
         }
       }
-      fs.readFile("./signup.html", "utf8", function(err, data) {
+      fs.readFile("./signup-error.html", "utf8", function(err, data) {
         res.writeHead(200, { "Content-Type": "text/html" });
         var result = data.replace(/\<\/script>/g, alert + "</script>");
         res.write(result);
