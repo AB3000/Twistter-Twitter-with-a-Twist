@@ -710,7 +710,7 @@ app.post("/login", (req, res) => {
   //looks for a user in the database with the same email
 
   user.findOne(
-    { email: e },
+    {  $or:[{username: e}, {email: e }] }, 
     "email username password colorScheme bio",
     (err, userData) => {
       console.log(userData);
@@ -748,7 +748,17 @@ app.get("/logout", (req, res) => {
   req.session.destroy();
   res.sendFile(path.join(__dirname + '/login.html'));
 })
+
 app.post("/timeline", (req, res) => {
+  //multiple topics
+  console.log(req.body.topic);
+  var topicArr = req.body.topic.split(",");
+  var topicArrLen = topicArr.length;
+  for (var i = 0; i < topicArr.length; i++) {
+    topicArr[i] = topicArr[i].trim();
+    //console.log("~" + topicArr[i] + "~");
+  }
+
   var flag = 0;
   if (req.session.username == null) {
     flag = 2;
@@ -756,11 +766,13 @@ app.post("/timeline", (req, res) => {
     res.render('login');
     return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
   }
+  req.body.topic = topicArr[0];
   var currDate = new Date();
   var newPost = new post({
     title: req.body.title,
     description: req.body.description,
     topic: req.body.topic,
+    subtopics: topicArr, 
     date: currDate,
     user: req.session.username,
     likes: 0,
