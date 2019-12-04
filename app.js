@@ -749,6 +749,7 @@ app.get("/logout", (req, res) => {
   res.sendFile(path.join(__dirname + '/login.html'));
 })
 app.post("/timeline", (req, res) => {
+  var flag = 0;
   if (req.session.username == null) {
     flag = 2;
     app.locals.flag = flag;
