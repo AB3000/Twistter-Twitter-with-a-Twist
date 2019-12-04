@@ -89,6 +89,9 @@ app.get("/verification", function(req, res, html) {
 });
 
 app.get('/discover', function (req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   app.locals.currUser = req.session.username;
   if (Object.keys(req.query).length == 0) {
     user.find(function(err, users) {
@@ -117,6 +120,9 @@ app.get('/discover', function (req, res) {
 });
 
 app.get("/timeline", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   post.find(function(err, posts) {
     var filtered_posts = [];
 
@@ -200,6 +206,9 @@ app.get("/timeline", function(req, res) {
 });
 
 app.get("/user-followed", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   user.findOne(
     { username: req.session.username },
     "following",
@@ -300,6 +309,9 @@ app.get("/user-followed", function(req, res) {
 });
 
 app.get("/id", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   var user_clicked_id = "";
   var userTopics = "";
   var followedTopics = "";
@@ -380,6 +392,9 @@ app.get("/id", function(req, res) {
 });
 
 app.get("/display_personal", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   app.locals.userIDejs = req.session.username;
   //THERE IS SOMETIMES AN ISSUE HERE WHERE THE DOCUMENT IS NULL
   //IF IT IS NULL, THEN WE CAN RENDER A PAGE WHERE WE PROMPT THE USER TO LOGIN
@@ -418,6 +433,9 @@ app.get("/display_personal", function(req, res) {
 });
 
 app.get("/settings", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   user.find(function(err, users) {
     if (err) {
       console.log(err);
@@ -435,6 +453,9 @@ app.get("/settings", function(req, res) {
 });
 
 app.get("/deleteUser", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   post.find(function(err, posts) {
     if (err) {
       console.log(err);
@@ -461,6 +482,9 @@ app.get("/deleteUser", function(req, res) {
 });
 
 app.post("/editName", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   user.findByIdAndUpdate(
     req.session.userID,
     { $set: { username: req.body.uname } },
@@ -476,6 +500,9 @@ app.post("/editName", function(req, res) {
 });
 
 app.post("/bio", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   user.findByIdAndUpdate(
     req.session.userID,
     { $set: { bio: req.body.bio } },
@@ -491,6 +518,9 @@ app.post("/bio", function(req, res) {
 });
 
 app.post("/editcolor", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   user.findByIdAndUpdate(
     req.session.userID,
     { $set: { colorScheme: req.body.color } },
@@ -506,6 +536,9 @@ app.post("/editcolor", function(req, res) {
 });
 
 app.post("/editEmail", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   console.log(req.body.email);
   user.findByIdAndUpdate(
     req.session.userID,
@@ -522,6 +555,9 @@ app.post("/editEmail", function(req, res) {
 });
 
 app.post("/editPw", function(req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   console.log(req.body.pw);
   //encrypting the password for storing in DB
   encrypttedP = CryptoJS.SHA1(req.body.pw);
@@ -669,6 +705,7 @@ app.post("/login", (req, res) => {
   const p = req.body.password;
   encrypttedP = CryptoJS.SHA1(p);
   encrypttedP = encrypttedP.toString(CryptoJS.enc.Base64);
+  var flag = 0;
 
   //looks for a user in the database with the same email
 
@@ -698,13 +735,27 @@ app.post("/login", (req, res) => {
        
         res.redirect("/timeline");
       } else {
+        flag = 1;
+        app.locals.flag = flag;
+        //console.log(flag);
         res.sendFile(path.join(__dirname, "/login_incorrect.html"));
       }
     }
   );
 });
-
+//Logout
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.sendFile(path.join(__dirname + '/login.html'));
+})
 app.post("/timeline", (req, res) => {
+  var flag = 0;
+  if (req.session.username == null) {
+    flag = 2;
+    app.locals.flag = flag;
+    res.render('login');
+    return res.sendFile(path.join(__dirname + '/notloggedIn.html'));
+  }
   var currDate = new Date();
   var newPost = new post({
     title: req.body.title,
@@ -755,6 +806,9 @@ app.post("/timeline", (req, res) => {
  */
 
 app.post("/deletePost", function (req, res) {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/login.html'));
+  }
 console.log("DELETE POST");
 //first have to loop through all user's posts to see if there are any post sw that topic left
   //if yes, then just delete post
@@ -830,6 +884,9 @@ post.find(function (err, posts) {
  * Saves new posts when someone quotes another user
  */
 app.post("/quote", (req, res) => {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/login.html'));
+  }
   console.log("QUOTES");
   console.log("req body is ", req.body);
 
@@ -898,6 +955,9 @@ app.post("/quote", (req, res) => {
 }); //end of quote
 
 app.post("/like", (req, res) => {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/login.html'));
+  }
   user.findOne(
     { username: req.session.username },
     "interactions",
@@ -950,6 +1010,9 @@ app.post("/like", (req, res) => {
 });
 
 app.post("/dislike", (req, res) => {
+  if (req.session.username == null) {
+    return res.sendFile(path.join(__dirname + '/login.html'));
+  }
   user.findOne(
     { username: req.session.username },
     "interactions",
