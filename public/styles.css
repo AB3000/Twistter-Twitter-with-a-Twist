@@ -15,7 +15,7 @@ align-content: center;
 
 .card{
 height: 370px;
-margin-top: auto;
+margin-top: 5%;
 margin-bottom: auto;
 width: 400px;
 background-color: rgba(0,0,0,0.5) !important;
@@ -90,3 +90,11 @@ margin-left: 4px;
     color: white;
     text-align: center;
 }
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20%;
+    padding: 0px;
+  }
