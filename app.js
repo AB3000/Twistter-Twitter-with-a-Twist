@@ -917,21 +917,7 @@ app.post("/quote", (req, res) => {
     comment: text, 
   });
 
-  //NEED TO SEE IF WE SHOULD SAVE RETWEETED TOPICS TO QUOTERS??
-  user.findOne({ username: req.session.username }, 'username topics', (err, userData) => {
-    console.log("TESTING TOPICS ", userData.topics)
-    if (!userData.topics.includes(postData.topic)) {
-      userData.topics.push(postData.topic);
-      userData.save();
-    }
-  });
-
-  newPost.save(function (err, e) {
-    if (err) return console.error(err);
-    else return console.log('succesfully saved');
-  })
-
-      //NEED TO SEE IF WE SHOULD SAVE RETWEETED TOPICS TO QUOTERS??
+      //TOPIC OF POST RETWEETED GETS SAVED TO QUOTERS
       user.findOne(
         { username: req.session.username },
         "username topics",
