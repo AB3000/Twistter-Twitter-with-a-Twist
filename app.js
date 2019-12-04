@@ -705,11 +705,21 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/timeline", (req, res) => {
+
+  //multiple topics
+  console.log(req.body.topic);
+  var topicArr = req.body.topic.split(",");
+  var topicArrLen = topicArr.length;
+  for (var i = 0; i < topicArr.length; i++) {
+    topicArr[i] = topicArr[i].trim();
+    console.log("~" + topicArr[i] + "~");
+  }
+
   var currDate = new Date();
   var newPost = new post({
     title: req.body.title,
     description: req.body.description,
-    topic: req.body.topic,
+    topic: topicArr,
     date: currDate,
     user: req.session.username,
     likes: 0,
@@ -722,18 +732,33 @@ app.post("/timeline", (req, res) => {
     { username: req.session.username },
     "username topics followingMeList",
     (err, userData) => {
-      if (!userData.topics.includes(req.body.topic)) {
+      var containsNewTopic = false;
+      var newTopicArr = [];
+      for (var i = 0; i < topicArr.length; i++) {
+        if (!userData.topics.includes(topicArr[i])) {
+          //this post has a new topic
+          newTopicArr.push(topicArr[i]);
+          containsNewTopic = true;
+        }
+      }
+      if (containsNewTopic) {
         //Save this to the topics list and remove it once it is done.
-        userData.topics.push(req.body.topic);
+        for (var i = 0; i < topicArr.length; i++) {
+          userData.topics.push(topicArr[i]);
+        }
         userData.save();
         var i;
-        var newCombo = req.session.username + req.body.topic;
+        //var newCombo = req.session.username + req.body.topic;
         for (i = 0; i < userData.followingMeList.length; i++) {
           user.findOne(
             { _id: userData.followingMeList[i] },
             "newUserTopicList",
             (err, followerData) => {
-              followerData.newUserTopicList.push(newCombo);
+              for (var i = 0; i < newTopicArr.length; i++) {
+                var newCombo = req.session.username + newTopicArr[i];
+                followerData.newUserTopicList.push(newCombo);
+              }
+              //followerData.newUserTopicList.push(newCombo);
               followerData.save();
             }
           );
