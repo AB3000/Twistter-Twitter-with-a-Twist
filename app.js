@@ -710,7 +710,7 @@ app.post("/login", (req, res) => {
   //looks for a user in the database with the same email
 
   user.findOne(
-    { email: e },
+    { $or:[{username: e}, {email: e }] },
     "email username password colorScheme bio",
     (err, userData) => {
       console.log(userData);
