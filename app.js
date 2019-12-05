@@ -711,9 +711,10 @@ app.post("/login", (req, res) => {
 
   user.findOne(
     { $or:[{username: e}, {email: e }] },
-    "email username password colorScheme bio",
+    "email username password colorScheme bio active",
+    
     (err, userData) => {
-      console.log(userData);
+      console.log("userData is " + userData);
       if (userData == null) {
         res.sendFile(path.join(__dirname, "/login_incorrect.html"));
       }  else if(userData.active == false){
