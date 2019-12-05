@@ -476,7 +476,7 @@ app.get("/deleteUser", function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.redirect("/login");
+      res.redirect("/logout");
     }
   });
 });
@@ -710,10 +710,11 @@ app.post("/login", (req, res) => {
   //looks for a user in the database with the same email
 
   user.findOne(
-    {  $or:[{username: e}, {email: e }] }, 
-    "email username password colorScheme bio",
+    { $or:[{username: e}, {email: e }] },
+    "email username password colorScheme bio active",
+    
     (err, userData) => {
-      console.log(userData);
+      console.log("userData is " + userData);
       if (userData == null) {
         res.sendFile(path.join(__dirname, "/login_incorrect.html"));
       }  else if(userData.active == false){
