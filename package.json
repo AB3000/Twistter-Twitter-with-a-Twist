@@ -28,7 +28,7 @@
     "mongoose": "^5.7.5",
     "mongoose-unique-validator": "^2.0.3",
     "node-localstorage": "^2.1.4",
-    "nodemailer": "^6.3.0",
+    "nodemailer": "^6.4.16",
     "passport": "^0.4.0",
     "read-file": "^0.2.0"
   }
